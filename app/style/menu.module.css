@@ -6,7 +6,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;
+    z-index: 250;
 }
 .navbar{
     width: 100%;
@@ -19,7 +19,7 @@
     left: 0;
     background: #1A1A1A80;
     backdrop-filter: blur(24px);
-    z-index: 100;
+    z-index: 250;
     border-bottom: .1vw solid rgba(255, 255, 255, 0.774);
     transition: .3s all ease-in-out;
 }
@@ -129,10 +129,15 @@
     border-radius: 100vw;
     text-transform: uppercase;
     background: #FFFFFF1A;
-    font-weight: 300;
+    font-weight: 400;
     font-family: 'montserrat';
     letter-spacing: .05vw !important;
     backdrop-filter: blur(15.399999618530273px);
     box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     cursor: pointer;
+    transition: .3s all;
+}
+.btn_primary:hover{
+    background-color: white;
+    color: #1A1A1A;
 }

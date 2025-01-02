@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/page";
+import Footer from "@/components/Footer/page"
 import { MenuProvider } from '@/context/MenuContext';
+import { LocationProvider } from '@/context/LocationContext'; 
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -19,10 +21,11 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
     <html lang="en">
       <body className={`${montserrat.variable}`}>
         <MenuProvider>
-          <Navbar/>
-          {children}
-
-          <h1>Footer</h1>
+          <LocationProvider>
+            <Navbar/>
+            {children}
+            <Footer/>
+          </LocationProvider>
         </MenuProvider>
       </body>
     </html>
