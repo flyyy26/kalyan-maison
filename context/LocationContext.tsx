@@ -6,9 +6,10 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface Location {
   id: number;
   name: string;
-  cover: string;
-  banner_image: string;
-  images: string[];
+  banner: string;
+  gallery: string[];
+  section_image: string[];
+  images_circle: string[];
   address: string;
   phone: string;
   day: string;
@@ -24,9 +25,9 @@ interface LocationContextType {
 
 // Data lokasi
 const initialLocations: Location[] = [
-  { id: 1, name: 'Gunawarman', cover: '/images/gunawarman_cover.png', banner_image: '/images/gunawarman_banner.png', images: ['/images/gunawarman_1.png', '/images/gunawarman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_bottom' },
-  { id: 2, name: 'Sudirman', cover: '/images/sudirman_cover.png', banner_image: '/images/sudirman_banner.png', images: ['/images/sudirman_1.png', '/images/sudirman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_right' },
-  { id: 3, name: 'Kemang', cover: '/images/kemang_cover.png', banner_image: '/images/kemang_banner.png', images: ['/images/kemang_image_1.png', '/images/kemang_image_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_left' },
+  { id: 1, name: 'Gunawarman', gallery: ['/images/galeri_1.png', '/images/galeri_2.png', '/images/galeri_4.png'], banner: '/images/gunawarman_cover.png', section_image: ['/images/gunawarman_banner.png', '/images/sudirman_banner.png', '/images/kemang_banner.png'], images_circle: ['/images/gunawarman_1.png', '/images/gunawarman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_bottom' },
+  { id: 2, name: 'Sudirman', gallery: ['/images/galeri_3.png', '/images/galeri_2.png', '/images/galeri_1.png'],banner: '/images/sudirman_cover.png', section_image: ['/images/sudirman_banner.png', '/images/kemang_banner.png', '/images/gunawarman_banner.png'], images_circle: ['/images/sudirman_1.png', '/images/sudirman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_right' },
+  { id: 3, name: 'Kemang', gallery: ['/images/galeri_4.png', '/images/galeri_2.png', '/images/galeri_3.png'],banner: '/images/kemang_cover.png', section_image: ['/images/kemang_banner.png', '/images/sudirman_banner.png', '/images/gunawarman_banner.png'], images_circle: ['/images/kemang_image_1.png', '/images/kemang_image_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_left' },
 ];
 
 // Membuat context dengan tipe LocationContextType

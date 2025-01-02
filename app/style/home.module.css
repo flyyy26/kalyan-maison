@@ -271,6 +271,12 @@
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
   }
+  .dropdown_menu_bottom{
+    bottom: inherit;
+    top: 100%;
+    margin-top: .9vw;
+    margin-bottom: inherit;
+  }
   .dropdown_menu_show {
     opacity: 1;
     visibility: visible;
@@ -392,6 +398,14 @@
 .branch_section_2{
     padding-right: 4.3vw;
     padding-left: 2.2vw;
+}
+.branch_section_page{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 2.8vw 4.3vw;
+    padding-right: 2.2vw;
 }
 .branch_heading{
     backdrop-filter: blur(24px);

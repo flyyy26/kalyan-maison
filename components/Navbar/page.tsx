@@ -16,9 +16,11 @@ const Navbar = () => {
         {/* <div className={`${menu.navbar_container} ${isOpen ? menu.navbarContainer_active : ''}`}> */}
             <div className={`${menu.navbar} ${isOpen ? menu.navbarBorder : ''}`}>
                 <div className={menu.navbar_layout}>
-                    <div className={menu.logo}>
-                        <Image fill src={Logo} alt='Kalyan Maison Logo' objectFit='contain'/>
-                    </div>
+                    <Link href="/">
+                        <div className={menu.logo}>
+                            <Image fill src={Logo} alt='Kalyan Maison Logo' objectFit='contain'/>
+                        </div>
+                    </Link>
                     <button
                         className={`${menu.hamburger} ${isOpen ? menu.iconOpen : ''}`}
                         aria-label="Toggle Menu"
@@ -39,9 +41,9 @@ const Navbar = () => {
             </div>
             <nav className={`${menu.menu} ${isOpen ? menu.menuOpen : ''}`}>
                 <ul>
-                    <li><a href="#home">All Lounges</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Blog</a></li>
+                    <li><a href="/our-lounges">All Lounges</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/blog">Blog</a></li>
                 </ul>
             </nav>
         {/* </div> */}

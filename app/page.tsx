@@ -4,11 +4,12 @@ import Image from 'next/image';
 import home from "@/app/style/home.module.css"
 import line from "@/public/images/line_banner.png"
 import { HiChevronDown } from "react-icons/hi2";
-import Link from 'next/link';
-import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { useMenu } from '@/context/MenuContext';
 import { useLocationContext } from '@/context/LocationContext'; 
 import { useState } from 'react';
+import Link from 'next/link';
+import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa";
+import ContactSection from "@/components/Contact_section/page"
 
 export default function Home() {
   const { isOpen } = useMenu();
@@ -22,15 +23,8 @@ export default function Home() {
     setOpenSelect(!openSelect); // Toggle dropdown visibility
   };
 
-  // Array lokasi dengan dua gambar per lokasi
-  // const locations = [
-  //   { id: 1, name: 'Gunawarman', cover: '/images/gunawarman_cover.png', banner_image: '/images/gunawarman_banner.png' ,images: ['/images/gunawarman_1.png', '/images/gunawarman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: home.btn_tab_bottom, },
-  //   { id: 2, name: 'Sudirman', cover: '/images/sudirman_cover.png', banner_image: '/images/sudirman_banner.png' ,images: ['/images/sudirman_1.png', '/images/sudirman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: home.btn_tab_right},
-  //   { id: 3, name: 'Kemang', cover: '/images/kemang_cover.png', banner_image: '/images/kemang_banner.png' ,images: ['/images/kemang_image_1.png', '/images/kemang_image_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: home.btn_tab_left},
-  // ];
-
   const activeBannerImage =
-  locations.find((branch) => branch.id === hoveredTab)?.cover || '/images/bg_banner.png';
+  locations.find((branch) => branch.id === hoveredTab)?.banner || '/images/bg_banner.png';
 
   return (
     <>
@@ -77,7 +71,7 @@ export default function Home() {
               <p>+62 {branch.phone}</p>
             </div>
             <div className={home.galeri_banner_dynamic}>
-              {branch.images.map((image, index) => (
+              {branch?.images_circle.slice(0, 2).map((image, index) => (
                 <div key={index} className={home.galeri_banner_dynamic_box}>
                   <Image src={image} fill alt={`Banner Image ${branch.name}`} />
                 </div>
@@ -131,21 +125,22 @@ export default function Home() {
             </Link>
           </div>
           <div className={`${home.image_hover} ${hoveredImageId ? home.image_hover_active : ''}`}>
-              {hoveredImageId !== null && (
-                <>
-                  {locations
-                    .find(loc => loc.id === hoveredImageId)
-                    ?.images.map((image, index) => (
-                      <div key={index} className={home.image_hover_box}>
-                        <Image
-                          src={image}
-                          fill
-                          alt={`Image ${index + 1}`}
-                        />
-                      </div>
-                    ))}
-                </>
-              )}
+            {hoveredImageId !== null && (
+              <>
+                {locations
+                  .find(loc => loc.id === hoveredImageId)
+                  ?.images_circle.slice(0, 2) // Batasi hanya dua gambar
+                  .map((image, index) => (
+                    <div key={index} className={home.image_hover_box}>
+                      <Image
+                        src={image}
+                        fill
+                        alt={`Image ${index + 1}`}
+                      />
+                    </div>
+                  ))}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -161,7 +156,7 @@ export default function Home() {
             className={home.branch_section}
             key={location.id}
             style={{
-              background: `url(${location.banner_image}), linear-gradient(179.66deg, rgba(26, 26, 26, 0) 0.29%,rgba(26, 26, 26, 0.29) 63.24%)`
+              background: `url(${location.section_image.slice(0, 1)}), linear-gradient(179.66deg, rgba(26, 26, 26, 0) 0.29%,rgba(26, 26, 26, 0.29) 63.24%)`
             }}
           >
             <div className={home.branch_layout}>
@@ -189,7 +184,7 @@ export default function Home() {
             className={`${home.branch_section} ${home.branch_section_2}`}
             key={location.id}
             style={{
-              background: `url(${location.banner_image}), linear-gradient(179.66deg, rgba(26, 26, 26, 0) 0.29%,rgba(26, 26, 26, 0.29) 63.24%)`
+              background: `url(${location.section_image.slice(0, 1)}), linear-gradient(179.66deg, rgba(26, 26, 26, 0) 0.29%,rgba(26, 26, 26, 0.29) 63.24%)`
             }}
           >
             <div className={home.branch_layout}>
@@ -214,47 +209,10 @@ export default function Home() {
           </div>
         )
       ))}
-
-      <div className={home.section_contact}>
-        <div className={home.button_layout}>
-          <Link href="/"><button>All Lounges</button></Link>
-        </div>
-
-        <div className={home.contact_container}>
-          <div className={home.contact_layout}>
-            <h1 className={home.heading_contact}>Need More Information?</h1>
-            <p>Please don’t hesitate to reach out to one of our representative for further inquiries.</p>
-            <div className={home.banner_social_media}>
-              <Link href="/">
-                <button className={home.banner_social_media_box}>
-                  <FaInstagram />
-                </button>
-              </Link>
-              <Link href="/">
-                <button className={home.banner_social_media_box}>
-                  <FaFacebook />
-                </button>
-              </Link>
-              <Link href="/">
-                <button className={home.banner_social_media_box}>
-                  <FaTiktok />
-                </button>
-              </Link>
-              <Link href="/">
-                <button className={home.banner_social_media_box}>
-                  <FaWhatsapp />
-                </button>
-              </Link>
-            </div>
-          </div>
-          <div className={home.contact_layout}>
-              <div className={home.contact_button}>
-                <Link href="/"><button>Contact Via Whatsapp</button></Link>
-                <Link href="/"><button>Contact Via Instagram</button></Link>
-              </div>
-          </div>
-        </div>
+      <div className={home.button_layout}>
+        <Link href="/our-lounges"><button>All Lounges</button></Link>
       </div>
+      <ContactSection/>
     </>
   );
 }

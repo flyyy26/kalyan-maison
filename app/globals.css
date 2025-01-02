@@ -5,7 +5,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1a1a;
     --foreground: #ededed;
   }
 }
@@ -39,4 +39,32 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.swiper-slide{
+  width: 78% !important;
+}
+.lounge_image_overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1A1A1A 0%, rgba(26, 26, 26, 0) 100%);
+  z-index: 13;
+  opacity: 1;
+  transition: .3s all;
+}
+.swiper-slide-active .lounge_image_overlay{
+  opacity: 0;
+}
+.swiper-button-prev{
+  display:none !important;
+}
+.swiper-button-next, .swiper-rtl .swiper-button-prev {
+  right: 2.3vw !important;
+  left: auto;
+}
+.swiper-button-prev, .swiper-button-next{
+  color: white !important;
 }

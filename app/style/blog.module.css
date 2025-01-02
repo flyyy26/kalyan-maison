@@ -1,0 +1,77 @@
+.heading_blog{
+    width: 100%;
+    text-align: center;
+    padding: 6vw;
+    padding-top: 13vw;
+    background-color: #1A1A1A;
+}
+.heading_blog span{
+    font-size: 1.84vw;
+    letter-spacing: .06vw;
+    text-transform: uppercase;
+}
+.heading_blog h1{
+    font-size: 4.96vw;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    letter-spacing: .05vw;
+    margin-top: .4vw;
+}
+.list_blog{
+    width: 100%;
+    padding: 0 8.7vw;
+    padding-bottom: 16vw;
+    background-color: #1A1A1A;
+    display: flex;
+    flex-direction: column;
+    gap: 1.7vw;
+}
+.list_box_blog{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1.7vw;
+}
+.list_img_blog{
+    width: 100%;
+    height: 25vw;
+    position: relative;
+}
+.list_content_blog{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 1.7vw 0;
+}
+.list_heading_blog h3{
+    font-size: 1.84vw;
+    letter-spacing: .06vw;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    margin-bottom: .7vw;
+}
+.list_heading_blog span{
+    font-size: .95vw;
+    letter-spacing: .05vw;
+}
+.list_btn_blog button{
+    width: max-content;
+    font-size: 1vw;
+    padding: .83vw 2.8vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+}
+.list_btn_blog button:hover{
+    background-color: #fff;
+    color: #1A1A1A;
+}
