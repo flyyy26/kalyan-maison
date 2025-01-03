@@ -6,7 +6,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 250;
+    z-index: 100;
 }
 .navbar{
     width: 100%;
@@ -70,7 +70,7 @@
 .menu {
     position: absolute;
     top: 7.4vw;
-    z-index: 0;
+    
     left: 0;
     width: 100%;
     height: 46.65vw;
@@ -83,6 +83,7 @@
     backdrop-filter: blur(24px);
     border-bottom: .1vw solid rgba(255, 255, 255, 0.774);
     opacity: 0;
+    z-index: -100;
     transition: .3s all ease-in-out;
     text-align: center;
     padding-top: 3.7vw;

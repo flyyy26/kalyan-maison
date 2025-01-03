@@ -49,6 +49,9 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1.2vw;
 }
+.list_box_blog{
+    margin-bottom: 1.4vw;
+}
 .list_img_blog{
     width: 100%;
     height: 25vw;

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { HiChevronDown } from "react-icons/hi2";
 import ContactSection from "@/components/Contact_section/page"
 
-const page = () => {
+const Reservation = () => {
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
     const toggleDropdown = (id: string) => {
@@ -106,4 +106,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Reservation

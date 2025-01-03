@@ -47,7 +47,7 @@ export default function OurLounges(){
                             loop={true}
                             navigation={true}
                             modules={[Navigation]}
-                            className="mySwiper"
+                            className="slideLounge"
                         >
                             {location.gallery.map((image, index) => (
                                 <SwiperSlide key={index}>
@@ -78,7 +78,7 @@ export default function OurLounges(){
                         </div>
                         <div className={home.branch_layout}>
                         <div className={home.branch_button}>
-                            <Link href="/"><button>Explore More</button></Link>
+                            <Link href={`/our-lounges/${location.slug}`}><button>Explore More</button></Link>
                             <Link href="/"><button>Menu</button></Link>
                         </div>
                         </div>
