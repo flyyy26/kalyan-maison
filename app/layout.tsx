@@ -22,6 +22,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
       <body className={`${montserrat.variable}`}>
         <MenuProvider>
           <LocationProvider>
+            
             <Navbar/>
             {children}
             <Footer/>

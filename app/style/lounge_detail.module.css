@@ -1,0 +1,30 @@
+.banner{
+    width: 100%;
+    padding: 15vw 0;
+    padding-top: 19vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-position: center !important;
+    background-size: cover !important;
+}
+.heading_banner{
+    text-align: center;
+    padding: 0 28vw;
+}
+.heading_banner h1{
+    font-size: 4.96vw;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    letter-spacing: .05vw;
+    margin-bottom: .7vw;
+}
+.heading_banner p{
+    letter-spacing: .05vw;
+    font-size: 1vw;
+    width: 70%;
+    line-height: 1.4;
+    margin: auto;
+    margin-bottom: 1.2vw;
+}

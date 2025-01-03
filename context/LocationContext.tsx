@@ -42,7 +42,7 @@ export const LocationProvider = ({ children }: LocationProviderProps) => {
   const [locations, setLocations] = useState<Location[]>(initialLocations);
 
   return (
-    <LocationContext.Provider value={{ locations, setLocations }}>
+    <LocationContext.Provider value={{ locations, setLocations, }}>
       {children}
     </LocationContext.Provider>
   );

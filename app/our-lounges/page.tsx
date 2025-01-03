@@ -4,7 +4,7 @@ import style from '@/app/style/lounge.module.css'
 import home from '@/app/style/home.module.css'
 import { HiChevronDown } from "react-icons/hi2";
 import { useLocationContext } from '@/context/LocationContext'; 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 // Import Swiper React components
 import Image from 'next/image';
 import Link from 'next/link';

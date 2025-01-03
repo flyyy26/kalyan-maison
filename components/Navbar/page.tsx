@@ -36,14 +36,14 @@ const Navbar = () => {
                 </div>
                 <div className={menu.navbar_layout}>
                     <span>EN</span>
-                    <Link href="/"><button className={menu.btn_primary}>Reserve</button></Link>
+                    <Link href="/reservation"><button className={menu.btn_primary}>Reserve</button></Link>
                 </div>
             </div>
             <nav className={`${menu.menu} ${isOpen ? menu.menuOpen : ''}`}>
                 <ul>
-                    <li><a href="/our-lounges">All Lounges</a></li>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/blog">Blog</a></li>
+                    <li><Link onClick={toggleMenu} href="/our-lounges">All Lounges</Link></li>
+                    <li><Link onClick={toggleMenu} href="/about">About Us</Link></li>
+                    <li><Link onClick={toggleMenu} href="/blog">Blog</Link></li>
                 </ul>
             </nav>
         {/* </div> */}

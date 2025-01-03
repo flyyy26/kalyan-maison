@@ -289,12 +289,13 @@
     border: .1vw solid white;
     border-radius: 100vw;
     text-transform: uppercase;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     background: #FFFFFF1A;
     font-weight: 300;
     font-family: 'montserrat';
     letter-spacing: .05vw !important;
-    backdrop-filter: blur(15.399999618530273px);
-    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    
     cursor: pointer;
     display: flex;
     align-items: center;
