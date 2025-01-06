@@ -2,12 +2,14 @@ import style from '@/app/style/lounge_detail.module.css';
 import Image from 'next/image';
 import ClientSwiper from '@/components/slideLounge/page';
 import ContactSection from '@/components/Contact_section/page'
+import Link from 'next/link';
+import { BsChevronLeft } from "react-icons/bs";
 
 export default async function DetailLounge({
     params,
-  }: {
-    params: Promise<{ lounge_detail: string }>;
-  }) {
+    }: {
+        params: Promise<{ lounge_detail: string }>;
+    }) {
 
     const Locations = [
         { id: 1, slug: 'gunawarman', name: 'Gunawarman', gallery: ['/images/galeri_1.png', '/images/galeri_2.png', '/images/galeri_4.png'], banner: '/images/gunawarman_cover.png', section_image: ['/images/gunawarman_banner.png', '/images/sudirman_banner.png', '/images/kemang_banner.png', '/images/gunawarman_cover.png'], images_circle: ['/images/gunawarman_1.png', '/images/gunawarman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_bottom' },
@@ -19,6 +21,8 @@ export default async function DetailLounge({
 
     const currentLounge = Locations.find((lounge) => lounge.slug === loungeDetail);
 
+    const filteredLocations = Locations.filter((lounge) => lounge.slug !== loungeDetail);
+
     const swiperImages = currentLounge ? currentLounge.gallery : [];
 
     return(
@@ -26,6 +30,11 @@ export default async function DetailLounge({
             {currentLounge ? (
                 <>
                     <div className={style.banner}  style={{ background: `url(${currentLounge.banner}`}}>
+                        <div className={style.location_arrow}>
+                            {filteredLocations.map((location_item) => (
+                                <Link href={`/our-lounges/${location_item.slug}`} className={style.next_lounge} key={location_item.id}><BsChevronLeft/>{location_item.name}</Link>
+                            ))}
+                        </div>
                         <div className={style.heading_banner}>
                             <h1>Kalyan Maison {currentLounge.name}</h1>
                             <p>{currentLounge.address}</p>

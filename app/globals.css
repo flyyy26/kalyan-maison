@@ -134,3 +134,22 @@ a {
 #nprogress .peg {
   box-shadow: 0 0 10px #29d, 0 0 5px #29d;
 }
+
+::-webkit-scrollbar {
+  width: .5vw;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #424242; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

@@ -7,10 +7,40 @@
     justify-content: center;
     background-position: center !important;
     background-size: cover !important;
+    position: relative;
 }
 .heading_banner{
     text-align: center;
     padding: 0 28vw;
+}
+.location_arrow{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 0 1.5vw;
+}
+.location_arrow a{
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    letter-spacing: .07vw;
+    font-size: .9vw;
+    display: flex;
+    align-items: center;
+}
+.location_arrow a svg{
+    font-size: 3.4vw;
+    color: rgba(255, 255, 255, 0.781);
+}
+.location_arrow a:nth-child(2){
+    flex-direction: row-reverse;
+}
+.location_arrow a:nth-child(2) svg{
+    transform: rotate(180deg);
 }
 .heading_banner h1{
     font-size: 4.96vw;

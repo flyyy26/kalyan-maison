@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import ContactSection from "@/components/Contact_section/page"
 
+
 export default function Home() {
   const { isOpen } = useMenu();
   const { locations } = useLocationContext();
@@ -28,7 +29,6 @@ export default function Home() {
 
   return (
     <>
-
       <div className={home.banner} style={{ backgroundImage: `url(${activeBannerImage})` }}> 
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
         {locations.map((location) => (
@@ -36,7 +36,7 @@ export default function Home() {
             key={location.id}
             className={`${home.btn_tab} ${home[location.className]}`}// Tambahkan class posisi
           >
-            <Link href='https://youtube.com' target='blank_'
+            <Link href={`/our-lounges/${location.slug}`}
               className={`${home.circle} ${
                 hoveredTab === location.id ? home.active : ''
               }`} // Tambahkan class jika dihover
