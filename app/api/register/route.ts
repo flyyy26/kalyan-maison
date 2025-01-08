@@ -1,7 +1,6 @@
 // app/api/register/route.ts
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import Admin from '../../lib/models/admin';
 import { ConnectDB } from '@/app/lib/config/db';
 

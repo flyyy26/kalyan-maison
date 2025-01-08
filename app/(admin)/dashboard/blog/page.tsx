@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Blog {
   _id: string;
@@ -143,11 +144,12 @@ export default function BlogForm() {
                   <td>{blog.title}</td>
                   <td>{blog.description}</td>
                   <td>
-                    <img
+                    <Image
+                      width="100"
+                      height="100"
                       src={blog.image}
                       alt={blog.title}
                       className="blog-image"
-                      style={{ maxWidth: '100px', height: 'auto' }}
                     />
                   </td>
                   {/* <td>
