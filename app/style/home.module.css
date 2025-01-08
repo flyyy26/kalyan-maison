@@ -96,6 +96,7 @@
     text-transform: uppercase;
     font-size: 1.84vw;
     letter-spacing: .06vw;
+    color: white;
 }
 .heading_banner h1{
     font-size: 4.96vw;
@@ -103,6 +104,7 @@
     font-weight: 300;
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
+    color: white;
     margin-top: .4vw;
 }
 .galeri_banner_dynamic{
@@ -142,6 +144,7 @@
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
     margin-bottom: .7vw;
+    color: white;
 }
 .heading_banner_dynamic p{
     letter-spacing: .05vw;
@@ -150,6 +153,7 @@
     line-height: 1.4;
     margin: auto;
     margin-bottom: 1.2vw;
+    color: white;
 }
 .heading_banner {
     opacity: 1;
@@ -234,6 +238,7 @@
 .dropdown button svg{
     font-size: 1.4vw;
     transition: .3s all;
+    color: white;
 }
 .dropdown_active button svg{
     transform: rotate(-180deg);
@@ -259,6 +264,7 @@
     display: flex;
     align-items: center;
     gap: .4vw;
+    color: white;
   }
   
   .dropdown_menu {
@@ -276,6 +282,7 @@
     top: 100%;
     margin-top: .9vw;
     margin-bottom: inherit;
+    color: white;
   }
   .dropdown_menu_show {
     opacity: 1;
@@ -295,7 +302,7 @@
     font-weight: 300;
     font-family: 'montserrat';
     letter-spacing: .05vw !important;
-    
+    color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -375,11 +382,13 @@
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
     margin-bottom: .5vw;
+    color: white;
 }
 .section_2_content p{
     font-size: .95vw;
     letter-spacing: .05vw;
     padding-right: 1vw;
+    color: white;
 }
 
 .branch_section{
@@ -421,6 +430,7 @@
     font-weight: 600;
     border-radius: 100vw;
     margin-bottom: 1.1vw;
+    color: white;
 }
 .branch_detail_layout{
     display: grid;
@@ -436,11 +446,13 @@
     font-size: .95vw;
     letter-spacing: .05vw;
     line-height: 1.5;
+    color: white;
 }
 .branch_detail_layout_2 p{
     font-size: .95vw;
     letter-spacing: .05vw;
     line-height: 1.5;
+    color: white;
 }
 .branch_layout_right{
     text-align: end;
@@ -453,11 +465,13 @@
     letter-spacing: .05vw;
     margin-bottom: .1vw;
     display: block;
+    color: white;
 }
 .branch_phone p{
     font-size: .95vw;
     letter-spacing: .05vw;
     margin-top: 1.5vw;
+    color: white;
 }
 .branch_button{
     display: flex;
@@ -477,6 +491,7 @@
     box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     cursor: pointer;
     transition: .3s all;
+    color: white;
 }
 .branch_button a:nth-child(2) button{
     color: black;
@@ -511,6 +526,7 @@
     box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     cursor: pointer;
     transition: .3s all;
+    color: white;
 }
 .button_layout button:hover{
     background-color: #fff;
@@ -537,6 +553,7 @@
     letter-spacing: .05vw;
     padding-right: 12vw;
     margin-bottom: 1.3vw;
+    color: white;
 }
 .contact_button{
     display: flex;
@@ -559,6 +576,7 @@
     box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     cursor: pointer;
     transition: .3s all;
+    color: white;
 }
 .contact_button button:hover{
     background-color: #fff;
