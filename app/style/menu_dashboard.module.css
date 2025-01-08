@@ -1,0 +1,159 @@
+.navbar_container{
+    position: relative;
+}
+.navbarContainer_active{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+.navbar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4vw 2.2vw;
+    position: relative;
+    background: #1A1A1A80;
+    backdrop-filter: blur(24px);
+    z-index: 250;
+    border-bottom: .1vw solid rgba(255, 255, 255, 0.774);
+    transition: .3s all ease-in-out;
+    background-image: url(../../public/images/bg_footer.png);
+    background-size: cover;
+    background-position: center;
+}
+.navbarBorder{
+    border-bottom: none;
+}
+.navbar_layout{
+    display: flex;
+    align-items: center;
+    gap: 1.8vw;
+}
+.navbar_layout ul{
+    display: flex;
+    list-style: none;
+    gap: 2vw;
+}
+.navbar_layout ul li a{
+    text-transform: uppercase;
+    letter-spacing: .05vw;
+    font-size: 1vw;
+    color: white;
+}
+.navbar_layout ul li a:hover{
+    text-decoration: underline;
+}
+.logo{
+    width: 100%;
+    width: 5vw;
+    height: 4.6vw;
+    aspect-ratio: 70/45;
+    position: relative;
+}
+.hamburger{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+}
+.hamburger svg{
+    font-size: 2.2vw;
+}
+.icon {
+    position: absolute; /* Supaya ikon saling tumpang tindih */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Transisi yang halus */
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+.menu {
+    position: absolute;
+    top: 7.4vw;
+    
+    left: 0;
+    width: 100%;
+    height: 46.65vw;
+    background: #1A1A1A80;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    backdrop-filter: blur(24px);
+    border-bottom: .1vw solid rgba(255, 255, 255, 0.774);
+    opacity: 0;
+    z-index: -100;
+    transition: .3s all ease-in-out;
+    text-align: center;
+    padding-top: 3.7vw;
+}
+
+.menuOpen {
+    opacity: 1;
+    z-index: 100;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin: 1vw 0;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 2.6vw;
+    font-weight: 300;
+    letter-spacing: .05vw;
+    text-transform: uppercase;
+    transition: .3s all;
+    display: block;
+}
+.menu ul li a:hover{
+    transform: scale(1.07);
+    font-weight: 500;
+    text-shadow: 0px 0px 22.5px 0px #FFFFFF80;
+}
+.navbar_layout span{
+    font-size: 1vw;
+    text-transform: uppercase;
+    letter-spacing: .05vw !important;
+}
+.btn_primary{
+    font-size: 1vw;
+    padding: .75vw 1.7vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+}
+.btn_primary:hover{
+    background-color: white;
+    color: #1A1A1A;
+}

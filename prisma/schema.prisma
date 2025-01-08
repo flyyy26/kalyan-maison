@@ -21,3 +21,22 @@ model Admin {
   role     String  @default("admin") // Role field to differentiate users
   createdAt DateTime @default(now())
 }
+
+model Blog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  image     String?
+  video     String?  // Menyimpan URL atau path ke video (dapat null jika tidak ada video)
+  date      String?
+  createdAt DateTime @default(now())
+}
+
+model Image {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  originalName String
+  size         Int
+  path         String
+  createdAt    DateTime @default(now())
+}
