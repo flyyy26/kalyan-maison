@@ -1,9 +1,11 @@
-// app/api/login/route.ts
+// app/api/register/route.ts
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import Admin from '../../lib/models/admin';
 import { ConnectDB } from '@/app/lib/config/db';
+
+// Konfigurasi MongoDB
 
 const LoadDB = async () => {
   await ConnectDB();
@@ -14,7 +16,6 @@ LoadDB();
 export async function POST(request: Request) {
   try {
 
-    // Ambil data dari request
     const { username, password } = await request.json();
 
     // Validasi input
@@ -25,30 +26,30 @@ export async function POST(request: Request) {
       );
     }
 
-    // Cari admin berdasarkan username
-    const admin = await Admin.findOne({ username });
-    if (!admin) {
+    // Cek apakah username sudah terdaftar
+    const existingAdmin = await Admin.findOne({ username });
+    if (existingAdmin) {
       return NextResponse.json(
-        { status: 404, error: 'Admin dengan username tersebut tidak ditemukan.' },
-        { status: 404 }
+        { status: 400, error: 'Username sudah terdaftar.' },
+        { status: 400 }
       );
     }
 
-    // Verifikasi password
-    const isPasswordValid = await bcrypt.compare(password, admin.password);
-    if (!isPasswordValid) {
-      return NextResponse.json(
-        { status: 401, error: 'Password yang Anda masukkan salah.' },
-        { status: 401 }
-      );
-    }
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Return data admin tanpa password
-    const { password: _, ...adminData } = admin.toObject();
-    return NextResponse.json(adminData, { status: 200 });
+    // Buat admin baru
+    const newAdmin = new Admin({
+      username,
+      password: hashedPassword,
+    });
+
+    await newAdmin.save();
+
+    return NextResponse.json({ status: 201, message: 'Admin berhasil dibuat.' }, { status: 201 });
 
   } catch (error) {
-    console.error('Error saat login:', error);
+    console.error('Error saat registrasi:', error);
     return NextResponse.json(
       { status: 500, error: 'Terjadi kesalahan pada server. Silakan coba lagi.' },
       { status: 500 }

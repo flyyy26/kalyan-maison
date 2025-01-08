@@ -48,8 +48,6 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-container">
       <h2>Selamat Datang, {admin.username}</h2>
-      <p>Email: {admin.email}</p>
-      <p>Role: {admin.role}</p>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );

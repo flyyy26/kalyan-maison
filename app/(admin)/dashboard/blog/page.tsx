@@ -1,147 +1,173 @@
 'use client';
 
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-export default function InputBlogPage() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [date, setDate] = useState('');
-  const [image, setImage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+interface Blog {
+  _id: string;
+  title: string;
+  description: string;
+  image: string;
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+export default function BlogForm() {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState<File | null>(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  const fetchBlogs = async () => {
+    const response = await axios.get('/api/blog')
+    setBlogs(response.data.blogs)
+  }
+
+  useEffect(()=>{
+    fetchBlogs();
+  }, [])
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setImage(file || null);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setLoading(true);
-    setSuccess(false);
+    setSuccessMessage('');
+    setErrorMessage('');
+
+    if (!title || !description || !image) {
+      setErrorMessage('Semua field harus diisi!');
+      setLoading(false);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('image', image);
 
     try {
       const response = await fetch('/api/blog', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, content, image, date }),
+        body: formData,
       });
 
       if (response.ok) {
-        setTitle('');
-        setContent('');
-        setImage('');
-        setDate('');
-        setSuccess(true);
+        const result = await response.json();
+        if (result.success) {
+          setSuccessMessage(result.msg);
+          setTitle('');
+          setDescription('');
+          setImage(null);
+          
+        } else {
+          setErrorMessage(result.msg || 'Gagal menambahkan blog.');
+        }
       } else {
-        console.error('Failed to create blog');
+        setErrorMessage('Terjadi kesalahan saat mengirim data.');
       }
     } catch (error) {
       console.error('Error:', error);
+      setErrorMessage('Terjadi kesalahan jaringan.');
     } finally {
       setLoading(false);
+      window.location.reload()
     }
   };
 
-  type Blog = {
-    id: number;
-    title: string;
-    content: string;
-    image: string;
-    date: string;
-    createdAt: string;
-    };
-
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-
-    useEffect(() => {
-        // Fetch admin users from the API
-        async function fetchBlog() {
-        const response = await fetch("/api/blog");
-        const data = await response.json();
-        setBlogs(data);
-        }
-        fetchBlog();
-    }, []);
-
   return (
     <>
-    <div className="input-blog-container">
-      <h1>Input Blog</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
+    <div className="blog-form-container">
+      <h2>Tambah Blog</h2>
+      <form onSubmit={handleSubmit} className="blog-form">
+        <div className="form-group">
+          <label htmlFor="title">Judul</label>
           <input
             type="text"
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            placeholder="Masukkan judul blog"
           />
         </div>
-
-        <div>
-          <label htmlFor="content">Content:</label>
+        <div className="form-group">
+          <label htmlFor="description">Deskripsi</label>
           <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
-          />
+            placeholder="Masukkan deskripsi blog"
+          ></textarea>
         </div>
-
-        <div>
-          <label htmlFor="date">Date:</label>
+        <div className="form-group">
+          <label htmlFor="image">Unggah Gambar</label>
           <input
-            type='date'
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="image">Image URL:</label>
-          <input
-            type="text"
+            type="file"
             id="image"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            accept="image/*"
+            onChange={handleImageChange}
+            required
           />
         </div>
-
         <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit'}
+          {loading ? 'Mengirim...' : 'Tambahkan Blog'}
         </button>
-
-        {success && <p>Blog submitted successfully!</p>}
       </form>
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
-    <div className="blog-list">
-        <h2>All Blogs</h2>
-        <table>
+    <div className="blog-table-container">
+      <h2>Daftar Blog</h2>
+        <table className="blog-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Content</th>
-              <th>Image</th>
-              <th>Date</th>
-              <th>Created At</th>
+              <th>No</th>
+              <th>Judul</th>
+              <th>Deskripsi</th>
+              <th>Gambar</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {blogs.map((blog) => (
-              <tr key={blog.id}>
-                <td>{blog.id}</td>
-                <td>{blog.title}</td>
-                <td>{blog.content}</td>
-                <td>{blog.image}</td>
-                <td>{blog.date}</td>
-                <td>{new Date(blog.createdAt).toLocaleString()}</td>
+            {blogs.length > 0 ? (
+              blogs.map((blog, index) => (
+                <tr key={blog._id}>
+                  <td>{index + 1}</td>
+                  <td>{blog.title}</td>
+                  <td>{blog.description}</td>
+                  <td>
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="blog-image"
+                      style={{ maxWidth: '100px', height: 'auto' }}
+                    />
+                  </td>
+                  {/* <td>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(blog._id)}
+                    >
+                      Hapus
+                    </button>
+                  </td> */}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5}>Tidak ada blog tersedia.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
-      </div>
-</>
+    </div>
+  </>
   );
 }
