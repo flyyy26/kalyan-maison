@@ -547,6 +547,7 @@
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
     margin-bottom: .5vw;
+    color: white;
 }
 .contact_layout p{
     font-size: .95vw;

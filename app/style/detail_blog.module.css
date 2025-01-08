@@ -17,16 +17,19 @@
     font-weight: 300;
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
+    color: white;
 }
 .blog_heading span{
     font-size: .95vw;
     letter-spacing: .05vw;
+    color: white;
 }
 .blog_desc p{
     font-size: .95vw;
     letter-spacing: .05vw;
     margin-bottom: 1.3vw;
     line-height: 1.4;
+    color: white;
 }
 .other_post{
     padding: 3vw 8.7vw;
@@ -43,6 +46,7 @@
     font-weight: 300;
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
+    color: white;
 }
 .list_blog_layout{
     display: grid;
@@ -69,10 +73,12 @@
     font-weight: 300;
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     margin-bottom: .7vw;
+    color: white;
 }
 .list_content_blog span{
     font-size: .95vw;
     letter-spacing: .05vw;
+    color: white;
 }
 .list_btn_blog button{
     width: max-content;
@@ -90,6 +96,7 @@
     cursor: pointer;
     transition: .3s all;
     margin-top: 2.8vw;
+    color: white;
 }
 .list_btn_blog button:hover{
     background-color: #fff;

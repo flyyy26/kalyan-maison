@@ -9,7 +9,7 @@ export default async function BlogDetailPage({
     params: Promise<{ slug: string }>;
   }) {
   
-  const slug = (await params).slug;
+  const slug = (await params).slug; 
 
   // Data dummy
   const blogData = [

@@ -64,6 +64,7 @@
 .dropdown button svg{
     font-size: 1.4vw;
     transition: .3s all;
+    color: white;
 }
 .dropdown_active button svg{
     transform: rotate(-180deg);
@@ -172,7 +173,7 @@
     border: .1vw solid white;
 }
 
-
+ 
 .error{
   text-align: center;
   text-transform: uppercase;

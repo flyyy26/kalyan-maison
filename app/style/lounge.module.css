@@ -6,7 +6,7 @@
     background-position: center;
     background-size: cover;
     display: flex;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
     flex-direction: column;
 }
@@ -14,6 +14,7 @@
     font-size: 1.84vw;
     letter-spacing: .06vw;
     text-transform: uppercase;
+    color: white;
 }
 .banner h1{
     font-size: 4.96vw;
@@ -23,6 +24,7 @@
     letter-spacing: .05vw;
     margin-top: .4vw;
     margin-bottom: 1.6vw;
+    color: white;
 }
 .lounge_image{
     width: 100%;

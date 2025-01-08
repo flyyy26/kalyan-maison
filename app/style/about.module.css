@@ -9,9 +9,10 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
-.section_1 span{
+.section_1 span{ 
     font-size: 1.84vw;
     letter-spacing: .06vw;
+    color: white;
 }
 .section_1 h1{
     font-size: 4.96vw;
@@ -20,6 +21,7 @@
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
     margin-top: .4vw;
+    color: white;
 }
 .about_content{
     width: 48%;
@@ -30,5 +32,6 @@
 .about_content p{
     font-size: .95vw;
     letter-spacing: .05vw;
+    color: white;
     margin-bottom: 1.3vw;
 }

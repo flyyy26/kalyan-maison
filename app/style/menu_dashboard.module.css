@@ -62,9 +62,11 @@
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
+    color: white;
 }
 .hamburger svg{
     font-size: 2.2vw;
+    color: white;
 }
 .icon {
     position: absolute; /* Supaya ikon saling tumpang tindih */
@@ -85,7 +87,6 @@
 .menu {
     position: absolute;
     top: 7.4vw;
-    
     left: 0;
     width: 100%;
     height: 46.65vw;

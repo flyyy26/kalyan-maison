@@ -12,6 +12,7 @@
 .heading_banner{
     text-align: center;
     padding: 0 28vw;
+    color: white;
 }
 .location_arrow{
     display: flex;
@@ -31,6 +32,7 @@
     font-size: .9vw;
     display: flex;
     align-items: center;
+    color: white;
 }
 .location_arrow a svg{
     font-size: 3.4vw;
@@ -49,6 +51,7 @@
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     letter-spacing: .05vw;
     margin-bottom: .7vw;
+    color: white;
 }
 .heading_banner p{
     letter-spacing: .05vw;
@@ -57,6 +60,7 @@
     line-height: 1.4;
     margin: auto;
     margin-bottom: 1.2vw;
+    color: white;
 }
 
 .section_2{

@@ -25,7 +25,7 @@ export default async function DetailLounge({
 
     const swiperImages = currentLounge ? currentLounge.gallery : [];
 
-    return(
+    return( 
         <>
             {currentLounge ? (
                 <>
