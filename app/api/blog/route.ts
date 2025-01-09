@@ -1,7 +1,8 @@
 import { ConnectDB } from "@/app/lib/config/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import BlogModel from "@/app/lib/models/blogModel";
+import fs from 'fs';
 
 const LoadDB = async () => {
   await ConnectDB();
@@ -29,6 +30,14 @@ export async function POST(request: Request) {
       );
     }
 
+    const video = formData.get("video") as File | null;
+    if (!video) {
+      return NextResponse.json(
+        { success: false, msg: "Gambar tidak ditemukan dalam form data." },
+        { status: 400 }
+      );
+    }
+
     const imageByteData = await image.arrayBuffer();
     const buffer = Buffer.from(imageByteData);
 
@@ -37,15 +46,24 @@ export async function POST(request: Request) {
     await writeFile(path, buffer);
     const imgurl = `/${timestamp}_${image.name}`;
 
+    const videoByteData = await video.arrayBuffer();
+    const bufferVideo = Buffer.from(videoByteData);
+
+    // Tentukan path dan URL gambar
+    const pathVideo = `./public/${timestamp}_${video.name}`;
+    await writeFile(pathVideo, bufferVideo);
+    const videourl = `/${timestamp}_${video.name}`;
+
     // Siapkan data blog
     const blogData = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       image: imgurl,
+      video:videourl,
     };
 
     // Validasi data
-    if (!blogData.title || !blogData.description || !blogData.image) {
+    if (!blogData.title || !blogData.description || !blogData.image || !blogData.video) {
       return NextResponse.json(
         { success: false, msg: "Semua field wajib diisi." },
         { status: 400 }
@@ -64,4 +82,13 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+}
+
+export async function DELETE(request: NextRequest){
+  const id = await request.nextUrl.searchParams.get('id');
+  const blog = await BlogModel.findById(id);
+  fs.unlink(`./public${blog.image}`, ()=> {})
+  fs.unlink(`./public${blog.video}`, ()=> {})
+  await BlogModel.findByIdAndDelete(id);
+  return NextResponse.json({msg: "Blog terhapus"});
 }

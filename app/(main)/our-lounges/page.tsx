@@ -26,15 +26,17 @@ export default function OurLounges(){
 
     return(
         <>
-            <div className={style.banner}>
-                <span>Our</span>
-                <h1>Lounges</h1>
-                <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
-                    <button onClick={toggleDropdown}>
-                        Jakarta <HiChevronDown />
-                    </button>
-                    <div className={`${home.dropdown_menu} ${home.dropdown_menu_bottom} ${openSelect ? home.dropdown_menu_show : ''}`}>
-                        <button>Bali</button>
+            <div className={style.container_top}>
+                <div className={style.banner}>
+                    <span>Our</span>
+                    <h1>Lounges</h1>
+                    <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
+                        <button onClick={toggleDropdown}>
+                            Jakarta <HiChevronDown />
+                        </button>
+                        <div className={`${home.dropdown_menu} ${home.dropdown_menu_bottom} ${openSelect ? home.dropdown_menu_show : ''}`}>
+                            <button>Bali</button>
+                        </div>
                     </div>
                 </div>
             </div>

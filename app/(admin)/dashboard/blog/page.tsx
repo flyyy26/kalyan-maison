@@ -9,12 +9,14 @@ interface Blog {
   title: string;
   description: string;
   image: string;
+  video:string;
 }
 
 export default function BlogForm() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [video, setVideo] = useState<File | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,13 +37,18 @@ export default function BlogForm() {
     setImage(file || null);
   };
 
+  const handleVideoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileVideo = event.target.files?.[0];
+    setVideo(fileVideo || null);
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
     setSuccessMessage('');
     setErrorMessage('');
 
-    if (!title || !description || !image) {
+    if (!title || !description || !image || !video) {
       setErrorMessage('Semua field harus diisi!');
       setLoading(false);
       return;
@@ -50,7 +57,8 @@ export default function BlogForm() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('image', image);
+    formData.append('image', image); 
+    formData.append('video', video); 
 
     try {
       const response = await fetch('/api/blog', {
@@ -65,7 +73,7 @@ export default function BlogForm() {
           setTitle('');
           setDescription('');
           setImage(null);
-          
+          setVideo(null);
         } else {
           setErrorMessage(result.msg || 'Gagal menambahkan blog.');
         }
@@ -80,6 +88,26 @@ export default function BlogForm() {
       window.location.reload()
     }
   };
+
+  const deleteBlog = async (mongoId: string) => {
+    try {
+      const response = await axios.delete(`/api/blog`,{
+        params: {
+          id: mongoId
+        }
+      }); // Kirim ID langsung di URL
+      if (response.status === 200) {
+        alert('Berhasil dihapus');
+        fetchBlogs(); // Panggil ulang untuk memperbarui data
+      } else {
+        alert('Gagal menghapus blog');
+      }
+    } catch (error) {
+      console.error('Error deleting blog:', error);
+      alert('Terjadi kesalahan saat menghapus blog.');
+    }
+  };
+  
 
   return (
     <>
@@ -114,6 +142,16 @@ export default function BlogForm() {
             id="image"
             accept="image/*"
             onChange={handleImageChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="video">Unggah Video</label>
+          <input
+            type="file"
+            id="video"
+            accept="video/*"
+            onChange={handleVideoChange}
             required
           />
         </div>
@@ -152,14 +190,18 @@ export default function BlogForm() {
                       className="blog-image"
                     />
                   </td>
-                  {/* <td>
+                  <td>
+                    <video src={blog.video} controls
+            width="300"></video>
+                  </td>
+                  <td>
                     <button
                       className="delete-button"
-                      onClick={() => handleDelete(blog._id)}
+                      onClick={() => deleteBlog(blog._id)}
                     >
                       Hapus
                     </button>
-                  </td> */}
+                  </td>
                 </tr>
               ))
             ) : (
