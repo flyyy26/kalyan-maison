@@ -1,0 +1,33 @@
+{
+    "welcome" : "Welcome To",
+    "kalyanTeks" : "Kalyan Maison",
+    "allLounges" : "All Lounges",
+    "navbar" : {
+        "reserve" : "Reserve",
+        "allLounges" : "All Lounges",
+        "aboutUs" : "About Us",
+        "blog" : "Blog"
+    },
+    "home" : {
+        "unique" : "Unique Hookah Experience",
+        "uniqueDesc" : "We perfected every hookah to your request, whether you want it to be soft or strong, bland or flavourful, your hookah will be personalized according how you like it. It is one of our commitment to give you a hookah experience that you`ve never had before.",
+        "explore" : "Explore More"
+    },
+    "contactSection" : {
+        "heading" : "Need More Information?",
+        "desc" : "Please don’t hesitate to reach out to one of our representative for further inquiries.",
+        "contact_wa" : "Contact Via Whatsapp",
+        "contact_ig" : "Contact Via Instagram"
+    },
+    "footer" : {
+        "privacy" : "Privacy Policy",
+        "use" : "Terms of use",
+        "copyright" : "Copyright © 2024 Kalyan Maison | All Rights Reserved"
+    },
+    "lounge" : {
+        "heading" : "Lounges",
+        "smallHeading" : "Our",
+        "sectionHeading" : "An innovative lounge in the heart of Jakarta",
+        "spaces" : "Our Spaces"
+    }
+} 

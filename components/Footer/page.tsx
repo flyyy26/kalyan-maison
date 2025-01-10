@@ -1,10 +1,12 @@
 import React from 'react'
-import footer from '@/app/style/footer.module.css'
+import footer from '@/app/[locale]/style/footer.module.css'
 import Image from 'next/image'
 import Logo from '@/public/images/logo_footer.png'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 const page = () => {
+  const t =  useTranslations("footer");
   return (
     <>
       <div className={footer.footer_container}>
@@ -13,12 +15,12 @@ const page = () => {
         </div>
         <div className={footer.menu}>
             <ul>
-                <li><Link href="/">Privacy Policy</Link></li>
-                <li><Link href="/">Terms Of Use</Link></li>
+                <li><Link href="/">{t('privacy')}</Link></li>
+                <li><Link href="/">{t('use')}</Link></li>
             </ul>
         </div>
         <div className={footer.copyright}>
-            <span>Copyright © 2024 Kalyan Maison | All Rights Reserved</span>
+            <span>{t('copyright')}</span>
         </div>
       </div>
     </>

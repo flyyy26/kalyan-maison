@@ -1,0 +1,222 @@
+.navbar_container{
+    position: relative;
+}
+.navbarContainer_active{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+.navbar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4vw 2.2vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #1A1A1A80;
+    backdrop-filter: blur(24px);
+    z-index: 250;
+    border-bottom: .1vw solid rgba(255, 255, 255, 0.774);
+    transition: .3s all ease-in-out;
+}
+.navbarBorder{
+    border-bottom: none;
+}
+.navbar_layout{
+    display: flex;
+    align-items: center;
+    gap: 1.8vw;
+}
+.logo{
+    width: 100%;
+    width: 5vw;
+    height: 4.6vw;
+    aspect-ratio: 70/45;
+    position: relative;
+}
+.hamburger{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+}
+.hamburger svg{
+    font-size: 2.2vw;
+    color: white;
+}
+.icon {
+    position: absolute; /* Supaya ikon saling tumpang tindih */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Transisi yang halus */
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+.menu {
+    position: absolute;
+    top: 7.4vw;
+    left: 0;
+    width: 100%;
+    height: 46.65vw;
+    background: #1A1A1A80;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    backdrop-filter: blur(24px);
+    border-bottom: .1vw solid rgba(255, 255, 255, 0.774);
+    opacity: 0;
+    z-index: -100;
+    transition: .3s all ease-in-out;
+    text-align: center;
+    padding-top: 3.7vw;
+}
+
+.menuOpen {
+    opacity: 1;
+    z-index: 100;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin: 1vw 0;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 2.6vw;
+    font-weight: 300;
+    letter-spacing: .05vw;
+    text-transform: uppercase;
+    transition: .3s all;
+    display: block;
+}
+.menu ul li a:hover{
+    transform: scale(1.07);
+    font-weight: 500;
+    text-shadow: 0px 0px 22.5px 0px #FFFFFF80;
+}
+.navbar_layout span{
+    font-size: 1vw;
+    text-transform: uppercase;
+    letter-spacing: .05vw !important;
+    color: white;
+}
+.btn_primary{
+    font-size: 1vw;
+    padding: .75vw 1.7vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+    color: white;
+}
+.btn_primary:hover{
+    background-color: white;
+    color: #1A1A1A;
+}
+
+.dropdown button svg{
+    font-size: 1.4vw;
+    transition: .3s all;
+    color: white;
+}
+.dropdown_active button svg{
+    transform: rotate(-180deg);
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown button {
+    font-size: 1vw;
+    padding: .75vw 1.7vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 300;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4vw;
+    color: white;
+  }
+  
+  .dropdown_menu {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    bottom: 100%;
+    margin-bottom: .9vw;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+  .dropdown_menu_bottom{
+    bottom: inherit;
+    top: 100%;
+    margin-top: .9vw;
+    margin-bottom: inherit;
+    color: white;
+  }
+  .dropdown_menu_show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .dropdown_menu button {
+    width: 100%;
+    font-size: 1vw;
+    padding: .75vw 1.7vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    background: #FFFFFF1A;
+    font-weight: 300;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4vw;
+    justify-content: center;
+  }

@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import { Navigation, EffectFade } from 'swiper/modules';
-import style from '@/app/style/lounge_detail.module.css'
+import style from '@/app/[locale]/style/lounge_detail.module.css'
 
 interface ClientSwiperProps {
     slides: string[]; // Array data gambar yang akan dipetakan ke dalam slide

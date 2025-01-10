@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import menu from "@/app/style/menu_dashboard.module.css"
+import menu from "@/app/[locale]/style/menu_dashboard.module.css"
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from "@/public/images/logo.png"

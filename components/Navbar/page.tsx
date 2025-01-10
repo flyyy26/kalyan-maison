@@ -1,15 +1,25 @@
 "use client"
 
 import React from 'react'
-import menu from "@/app/style/menu.module.css"
+import menu from "@/app/[locale]/style/menu.module.css"
 import { AiOutlineMenu, AiOutlineClose  } from "react-icons/ai";
-import Link from 'next/link';
+// import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import Logo from "@/public/images/logo.png"
 import {useMenu} from "@/context/MenuContext"
+import {useTranslations} from 'next-intl';
+// import { useState } from 'react';
 
 const Navbar = () => {
     const { isOpen, toggleMenu } = useMenu();
+    const t =  useTranslations("navbar");
+    // const [openSelect, setOpenSelect] = useState(false);
+    
+    //   const toggleDropdown = () => {
+    //     setOpenSelect(!openSelect); // Toggle dropdown visibility
+    //   };
+    
 
     return (
         <>
@@ -36,14 +46,14 @@ const Navbar = () => {
                 </div>
                 <div className={menu.navbar_layout}>
                     <span>EN</span>
-                    <Link href="/reservation"><button className={menu.btn_primary}>Reserve</button></Link>
+                    <Link href="/reservation"><button className={menu.btn_primary}>{t('reserve')}</button></Link>
                 </div>
             </div>
             <nav className={`${menu.menu} ${isOpen ? menu.menuOpen : ''}`}>
                 <ul>
-                    <li><Link onClick={toggleMenu} href="/our-lounges">All Lounges</Link></li>
-                    <li><Link onClick={toggleMenu} href="/about">About Us</Link></li>
-                    <li><Link onClick={toggleMenu} href="/blog">Blog</Link></li>
+                    <li><Link onClick={toggleMenu} href="/our-lounges">{t('allLounges')}</Link></li>
+                    <li><Link onClick={toggleMenu} href="/about">{t('aboutUs')}</Link></li>
+                    <li><Link onClick={toggleMenu} href="/blog">{t('blog')}</Link></li>
                 </ul>
             </nav>
         {/* </div> */}
