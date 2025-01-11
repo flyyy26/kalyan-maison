@@ -29,5 +29,14 @@
         "smallHeading" : "Our",
         "sectionHeading" : "An innovative lounge in the heart of Jakarta",
         "spaces" : "Our Spaces"
+    },
+    "reservation" : {
+        "heading" : "Reservation",
+        "button" : "Reserve"
+    },
+    "blog" : {
+        "smallHeading" : "Kalyan Maison",
+        "view" : "View Post",
+        "other" : "Other Posts"
     }
 } 

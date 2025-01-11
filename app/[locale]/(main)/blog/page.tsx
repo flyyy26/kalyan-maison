@@ -1,18 +1,20 @@
 import React from 'react'
 import blog from '@/app/[locale]/style/blog.module.css'
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import ContactSection from "@/components/Contact_section/page"
+import { getTranslations } from 'next-intl/server';
 
 interface Blog {
     id: number;
-    slug:string;
+    slug:string; 
     heading: string;
     cover: string;
     date: string;
 }
 
 async function fetchBlogs(): Promise<Blog[]> {
+    
     // Simulasi fetch data
     return [
         { id: 1, slug:'e1-musthave-overview', heading: 'E1:MUSTHAVE OVERVIEW', cover: '/images/gunawarman_cover.png', date: '21 January, 2022'},
@@ -22,12 +24,13 @@ async function fetchBlogs(): Promise<Blog[]> {
   }
 
 export default async function Blog(){
+    const t = await getTranslations();
     const blogs = await fetchBlogs();
 
   return (
     <>
         <div className={blog.heading_blog}>
-            <span>Our</span>
+            <span>{t('blog.smallHeading')}</span>
             <h1>Blog</h1>
         </div>
         <div className={blog.list_blog}>
@@ -42,7 +45,7 @@ export default async function Blog(){
                             <span>{blog_item.date}</span>
                         </div>
                         <div className={blog.list_btn_blog}>
-                            <Link href={`/blog/${blog_item.slug}`}><button>View Post</button></Link>
+                            <Link href={`/blog/${blog_item.slug}`}><button>{t('blog.view')}</button></Link>
                         </div>
                     </div>
                 </div>

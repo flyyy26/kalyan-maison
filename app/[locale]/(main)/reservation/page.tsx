@@ -5,8 +5,10 @@ import style from '@/app/[locale]/style/reservation.module.css'
 import { useState } from 'react';
 import { HiChevronDown } from "react-icons/hi2";
 import ContactSection from "@/components/Contact_section/page"
+import { useTranslations } from 'next-intl';
 
 const Reservation = () => {
+    const t =  useTranslations();
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
     const toggleDropdown = (id: string) => {
@@ -20,7 +22,7 @@ const Reservation = () => {
     <>
          <div className={style.reservation_layout}>
             <div className={style.reservation_content}>
-                <h1>Reservation</h1>
+                <h1>{t('reservation.heading')}</h1>
                 <p>Terms n Conditions, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend mi vitae metus rutrum feugiat. Nam ultricies quis libero at laoreet. Aliquam interdum molestie purus, eget auctor eros faucibus non. Nam eget risus a nisl tempus interdum vel et nulla. Etiam vehicula magna non cursus faucibus. Mauris ullamcorper tristique ante, ut facilisis est luctus vel. Integer nibh libero, dignissim nec magna ac, mattis vehicula diam. Proin a dolor vel nulla eleifend dignissim.</p>
             </div>
             <div className={style.reservation_form}>
@@ -97,7 +99,7 @@ const Reservation = () => {
                             </div>
                         </div>
                     </div>
-                    <button className={style.btn_primary}>Reserve</button>
+                    <button className={style.btn_primary}>{t('reservation.button')}</button>
                 </form>
             </div>
          </div>

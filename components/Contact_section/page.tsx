@@ -4,7 +4,7 @@ import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import home from "@/app/[locale]/style/home.module.css"
 import {useTranslations} from 'next-intl';
 
-const page = () => {
+const ContactSection = () => {
   const t =  useTranslations("contactSection");
   return (
     <>
@@ -48,4 +48,4 @@ const page = () => {
   )
 }
 
-export default page
+export default ContactSection

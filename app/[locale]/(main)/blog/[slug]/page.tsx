@@ -1,14 +1,15 @@
 import style from '@/app/[locale]/style/detail_blog.module.css';
 import Image from 'next/image';
 import ContactSection from '@/components/Contact_section/page';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
+import { getTranslations } from 'next-intl/server';
 
 export default async function BlogDetailPage({
   params,
   }: {
     params: Promise<{ slug: string }>;
   }) {
-  
+  const t = await getTranslations('blog');
   const slug = (await params).slug; 
 
   // Data dummy
@@ -46,7 +47,7 @@ export default async function BlogDetailPage({
             </div>
             <div className={style.other_post}>
               <div className={style.other_post_heading}>
-                <h1>Other Posts</h1>
+                <h1>{t('other')}</h1>
               </div>
               <div className={style.list_blog_layout}>
                 {filteredBlogData.map((blog_item) => (
@@ -66,7 +67,7 @@ export default async function BlogDetailPage({
                       </div>
                       <div className={style.list_btn_blog}>
                         <Link href={`/blog/${blog_item.slug}`}>
-                          <button>View Post</button>
+                          <button>{t('view')}</button>
                         </Link>
                       </div>
                     </div>

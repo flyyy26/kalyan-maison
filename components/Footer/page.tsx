@@ -5,7 +5,7 @@ import Logo from '@/public/images/logo_footer.png'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
-const page = () => {
+const Footer = () => {
   const t =  useTranslations("footer");
   return (
     <>
@@ -27,4 +27,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Footer

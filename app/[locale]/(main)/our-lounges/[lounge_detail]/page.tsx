@@ -2,7 +2,7 @@ import style from '@/app/[locale]/style/lounge_detail.module.css';
 import Image from 'next/image';
 import ClientSwiper from '@/components/slideLounge/page';
 import ContactSection from '@/components/Contact_section/page'
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { BsChevronLeft } from "react-icons/bs";
 import { getTranslations } from 'next-intl/server';
 

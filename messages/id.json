@@ -3,7 +3,7 @@
     "kalyanTeks" : "Kalyan Maison",
     "allLounges" : "Semua Lounge",
     "navbar" : {
-        "reserve" : "Pesan" ,
+        "reserve" : "Reservasi" ,
         "allLounges" : "Semua Lounge",
         "aboutUs" : "Tentang Kami",
         "blog" : "Artikel"
@@ -29,5 +29,14 @@
         "smallHeading" : "Kalyan Maison",
         "sectionHeading" : "Lounge inovatif dan modern di pusat kota Jakarta",
         "spaces" : "Ruangan Kami"
+    },
+    "reservation" : {
+        "heading" : "Reservasi",
+        "button" : "Reservasi Sekarang"
+    },
+    "blog" : {
+        "smallHeading" : "Kalyan Maison",
+        "view" : "Lihat Postingan",
+        "other" : "Postingan Lainnya"
     }
 } 
