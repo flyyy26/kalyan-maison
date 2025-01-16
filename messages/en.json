@@ -36,7 +36,11 @@
     },
     "blog" : {
         "smallHeading" : "Kalyan Maison",
+        "heading" : "Blog",
         "view" : "View Post",
         "other" : "Other Posts"
+    },
+    "about" : {
+        "smallHeading" : "About"
     }
 } 

@@ -36,7 +36,11 @@
     },
     "blog" : {
         "smallHeading" : "Kalyan Maison",
+        "heading" : "Artikel",
         "view" : "Lihat Postingan",
         "other" : "Postingan Lainnya"
+    },
+    "about" : {
+        "smallHeading" : "Tentang"
     }
 } 

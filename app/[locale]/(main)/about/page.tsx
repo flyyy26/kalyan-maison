@@ -3,12 +3,14 @@
 import React from 'react'
 import about from '@/app/[locale]/style/about.module.css'
 import ContactSection from "@/components/Contact_section/page"
+import { useTranslations } from 'next-intl'
 
-const page = () => {
+const About = () => {
+  const t =  useTranslations();
   return (
     <>
        <div className={about.section_1}>
-            <span>About</span>
+            <span>{t('about.smallHeading')}</span>
             <h1>Kalyan Maison</h1>
             <div className={about.about_content}>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend mi vitae metus rutrum feugiat. Nam ultricies quis libero at laoreet. Aliquam interdum molestie purus, eget auctor eros faucibus non. Nam eget risus a nisl tempus interdum vel et nulla. Etiam vehicula magna non cursus faucibus. Mauris ullamcorper tristique ante, ut facilisis est luctus vel. Integer nibh libero, dignissim nec magna ac, mattis vehicula diam. Proin a dolor vel nulla eleifend dignissim.</p>
@@ -20,4 +22,4 @@ const page = () => {
   )
 }
 
-export default page
+export default About

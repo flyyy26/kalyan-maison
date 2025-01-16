@@ -4,7 +4,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface MenuContextProps {
   isOpen: boolean;
-  toggleMenu: () => void;
+  toggleMenu: (forceClose?: boolean) => void;
   hoveredImageId: number | null;
   setHoveredImageId: (id: number | null) => void;
   hoveredTab: number | null;
@@ -25,8 +25,12 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const [openSelect, setOpenSelect] = useState(false);
   const [activeBannerImage, setActiveBannerImage] = useState('/images/bg_banner.png');
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
+  const toggleMenu = (forceClose?: boolean) => {
+    if (forceClose) {
+      setIsOpen(false); // Tutup menu secara paksa
+    } else {
+      setIsOpen((prev) => !prev); // Toggle default
+    }
   };
 
   const toggleDropdown = () => {

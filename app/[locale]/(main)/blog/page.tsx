@@ -31,7 +31,7 @@ export default async function Blog(){
     <>
         <div className={blog.heading_blog}>
             <span>{t('blog.smallHeading')}</span>
-            <h1>Blog</h1>
+            <h1>{t('blog.heading')}</h1>
         </div>
         <div className={blog.list_blog}>
             {blogs.map((blog_item) => (
