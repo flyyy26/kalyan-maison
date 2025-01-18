@@ -7,7 +7,7 @@ import { useLocationContext } from '@/context/LocationContext';
 import React, { useState } from 'react';
 // Import Swiper React components
 import Image from 'next/image';
-import { Link } from '@/i18n/routing';
+import { Link } from '@/i18n/routing'; 
 import ContactSection from "@/components/Contact_section/page"
 import { Swiper, SwiperSlide } from 'swiper/react';
 

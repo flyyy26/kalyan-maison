@@ -107,7 +107,6 @@
     box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     background: #FFFFFF1A;
     border: .1vw solid white;
-   
     border-radius: .37vw;
   }
   .dropdown_menu_bottom{
@@ -205,5 +204,61 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width:768px) {
+  .reservation_layout{
+    padding: 35vw 4vw;
+    padding-bottom: 53vw;
+  }
+  .reservation_content h1{
+    font-size: 7vw;
+    letter-spacing: .15vw;
+    margin-bottom: 3vw;
+  }
+  .reservation_content p{
+      font-size: 2.8vw;
+      letter-spacing: .15vw;
+  }
+  .reservation_form{
+    margin-top: 8vw;
+    width: 90%;
+  }
+  .reservation_form form{
+    gap: 4vw;
+  }
+  .form_double{
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 4vw;
+  }
+  .form_single input{
+    font-size: 3.4vw;
+    padding: 2.7vw 4vw;
+    border-radius: 1vw;
+    letter-spacing: .15vw;
+  }
+  .dropdown button svg{
+    font-size: 4vw;
+  }
+  .dropdown button {
+    font-size: 3.4vw;
+    padding: 2.7vw 4vw;
+    border-radius: 1vw;
+    letter-spacing: .15vw !important;
+    gap: 1vw;
+  }
+  .dropdown_menu {
+    margin-bottom: 2vw;
+    border-radius: 1vw;
+  }
+  .dropdown_menu_bottom{
+    margin-top: 3vw;
+  }
+  .btn_primary{
+    font-size: 3.4vw;
+    padding: 2vw 4vw;
+    letter-spacing: .15vw !important;
+    margin-top: 3.8vw;
   }
 }

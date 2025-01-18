@@ -17,7 +17,7 @@ const ListLounge = () => {
   const { locations } = useLocationContext();
   return (
     <>
-      <div className={home.section_2}>
+      <div className={home.section_2}> 
         <div className={home.section_2_content}>
           <h1>{t('unique')}</h1>
           <p>{t('uniqueDesc')}</p>

@@ -1,7 +1,8 @@
-import { ConnectDB } from "@/app/[locale]/lib/config/db";
+// import { ConnectDB } from "@/app/lib/config/db";
+import { ConnectDB } from "@/app/lib/config/db";
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
-import BlogModel from "@/app/[locale]/lib/models/blogModel";
+import BlogModel from "@/app/lib/models/blogModel";
 import fs from 'fs';
 
 const LoadDB = async () => {
@@ -66,6 +67,9 @@ export async function POST(request: Request) {
     // Siapkan data blog
     const blogData = {
       title: formData.get("title") as string,
+      slug: formData.get("slug") as string,
+      titleEn: formData.get("titleEn") as string,
+      slugEn: formData.get("slugEn") as string,
       description: formData.get("description") as string,
       author: formData.get("author") as string,
       tags: JSON.parse(formData.get('tags') as string),
@@ -74,7 +78,7 @@ export async function POST(request: Request) {
     };
 
     // Validasi data
-    if (!blogData.title || !blogData.description || !blogData.image || !blogData.author || blogData.tags.length === 0 ) {
+    if (!blogData.title || !blogData.slug || !blogData.titleEn || !blogData.slugEn || !blogData.description || !blogData.image || !blogData.author || blogData.tags.length === 0 ) {
       return NextResponse.json(
         { success: false, msg: "Semua field wajib diisi." },
         { status: 400 }

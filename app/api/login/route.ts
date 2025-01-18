@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import { ConnectDB } from '@/app/[locale]/lib/config/db';
+import { ConnectDB } from '@/app/lib/config/db';
 import Admin from '../../lib/models/admin';
 
 const LoadDB = async () => {

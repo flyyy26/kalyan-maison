@@ -35,10 +35,12 @@
         "button" : "Reservasi Sekarang"
     },
     "blog" : {
+        "title": "judul id",
         "smallHeading" : "Kalyan Maison",
         "heading" : "Artikel",
         "view" : "Lihat Postingan",
-        "other" : "Postingan Lainnya"
+        "other" : "Postingan Lainnya",
+        "locale": "locale"
     },
     "about" : {
         "smallHeading" : "Tentang"

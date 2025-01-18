@@ -35,10 +35,12 @@
         "button" : "Reserve"
     },
     "blog" : {
-        "smallHeading" : "Kalyan Maison",
+        "title" : "judul",
+        "smallHeading" : "Our",
         "heading" : "Blog",
         "view" : "View Post",
-        "other" : "Other Posts"
+        "other" : "Other Posts",
+        "locale": "locale"
     },
     "about" : {
         "smallHeading" : "About"

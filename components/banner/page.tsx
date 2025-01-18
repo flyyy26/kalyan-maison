@@ -76,7 +76,7 @@ export default function Banner() {
           >
             <div className={home.heading_banner_dynamic}>
               <h1>Kalyan Maison {branch.name}</h1>
-              <p>{branch.address}</p>
+              <p>{branch.address}</p> 
               <p>+62 {branch.phone}</p>
             </div>
             <div className={home.galeri_banner_dynamic}>
@@ -88,7 +88,7 @@ export default function Banner() {
             </div>
           </div>
         ))}
-        <div className={home.banner_bottom_content}>
+        <div className={`${home.banner_bottom_content} ${isOpen ? home.banner_bottom_content_active : ''}`}>
           <div className={home.banner_branch}>
             <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
               <button onClick={toggleDropdown}>

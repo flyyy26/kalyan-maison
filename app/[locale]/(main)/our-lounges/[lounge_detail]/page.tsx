@@ -7,7 +7,7 @@ import { BsChevronLeft } from "react-icons/bs";
 import { getTranslations } from 'next-intl/server';
 
 export default async function DetailLounge({
-    params,
+    params, 
     }: {
         params: Promise<{ lounge_detail: string }>;
     }) {

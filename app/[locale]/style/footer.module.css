@@ -9,7 +9,7 @@
     justify-content: space-between;
     align-items: center;
 }
-.footer_logo{
+.footer_logo{ 
     width: 15vw;
     height: 6.8vw;
     position: relative;
@@ -31,4 +31,27 @@
     font-size: .95vw;
     letter-spacing: .06vw;
     color: white;
+}
+
+@media (max-width:768px) {
+    .footer_container{
+        padding: 7vw 4vw;
+        flex-direction: column;
+        gap: 4vw;
+    }
+    .footer_logo{ 
+        width: 45vw;
+        height: 14.8vw;
+    }
+    .menu ul{
+        gap: 7vw;
+    }
+    .menu ul li a{
+        font-size: 3vw;
+        letter-spacing: .1vw;
+    }
+    .copyright span{
+        font-size: 3vw;
+        letter-spacing: .1vw;
+    }
 }

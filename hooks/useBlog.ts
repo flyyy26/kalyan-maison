@@ -1,14 +1,20 @@
+'use client'
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 type Blog = {
   _id: string;
   title: string;
+  slug:string;
+  titleEn: string;
+  slugEn:string;
   description: string;
   author: string;
   image: string;
   video?: string;
   tags: string[];
+  date: string;
 };
 
 export const useBlog = () => {

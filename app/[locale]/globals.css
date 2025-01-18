@@ -154,3 +154,29 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+@media (max-width:768px) {
+  .swiperLounge .swiper-wrapper{
+    padding-bottom: 34vw;
+  }
+  .swiperLounge .swiper-button-prev, .swiperLounge .swiper-button-next{
+    top: inherit !important;
+    z-index: 100;
+    bottom: 0 !important;
+    background-color: #1A1A1A !important;
+    border-radius: 100vw !important;
+    color: white !important;
+    width: 7vw !important;
+    height:7vw !important;
+  }
+  .swiperLounge .swiper-button-prev:after, .swiperLounge .swiper-button-next:after{
+    font-size: 3vw !important;
+  }
+  .swiperLounge .swiper-button-prev, .swiperLounge .swiper-rtl .swiper-button-next{
+    left: 40vw !important;
+    right: inherit !important;
+  }
+  .swiperLounge .swiper-button-next, .swiperLounge .swiper-rtl .swiper-button-prev{
+    right: 40vw !important;
+  }
+}

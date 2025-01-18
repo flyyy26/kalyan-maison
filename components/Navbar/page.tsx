@@ -32,7 +32,7 @@ const Navbar = () => {
     };
     
 
-    return (
+    return ( 
         <>
         {/* <div className={`${menu.navbar_container} ${isOpen ? menu.navbarContainer_active : ''}`}> */}
             <div className={`${menu.navbar} ${isOpen ? menu.navbarBorder : ''}`}>

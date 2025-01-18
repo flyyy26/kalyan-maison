@@ -5,7 +5,7 @@ import about from '@/app/[locale]/style/about.module.css'
 import ContactSection from "@/components/Contact_section/page"
 import { useTranslations } from 'next-intl'
 
-const About = () => {
+const About = () => { 
   const t =  useTranslations();
   return (
     <>

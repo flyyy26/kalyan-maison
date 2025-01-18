@@ -584,3 +584,218 @@
     background-color: #fff;
     color: #1A1A1A;
 }
+
+@media (max-width:768px) {
+    .section_2{
+        
+        padding: 70vw 5vw;
+        padding-top: 14vw;
+        background-position: bottom center;
+        background-size: cover;
+        background-image: url(../../../public/images/bg_home_2-mobile.png);
+    }
+    .section_2_content{
+        padding-right: 0;
+        text-align: start;
+    }
+    .section_2_content h1{
+        font-size: 7vw;
+        letter-spacing: .07vw;
+        margin-bottom: 1.5vw;
+    }
+    .section_2_content p{
+        font-size: 3vw;
+        letter-spacing: .16vw;
+        padding-right: 1vw;
+        line-height: 1.4;
+    }
+
+    .branch_section{
+        width: 100%;
+        background-position: center;
+        background-size: cover;
+        padding: 2.5vw 4.3vw;
+        padding-right: 4.3vw;
+        height: 105vw;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .branch_section_page{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 9vw 4.3vw;
+        padding-right: 4.3vw;
+        background-color: #1A1A1A;
+    }
+    .branch_section_2{
+        padding-right: 4.3vw;
+        padding-left: 4.3vw;
+        flex-direction: column-reverse;
+    }
+    .branch_heading{
+        font-size: 4.5vw;
+        padding: 1.8vw 3.7vw;
+        letter-spacing: .05vw;
+        display: block;
+        margin: auto;
+        margin-bottom: 4vw;
+    }
+    .branch_detail_layout{
+        display: grid;
+        grid-template-columns: 100%;
+        grid-gap: 2.3vw;
+        text-align: center;
+    }
+    .branch_detail_layout_2{
+        display: flex;
+        flex-direction: column-reverse;
+        grid-template-columns: 100%;
+        grid-gap: 2.3vw;
+        text-align: center;
+    }
+    .branch_detail_layout p{
+        font-size: 3vw;
+        letter-spacing: .09vw;
+        line-height: 1.5;
+        text-align: center;
+    }
+    .branch_detail_layout_2 p{
+        font-size: 3vw;
+        letter-spacing: .09vw;
+        line-height: 1.5;
+    }
+    .branch_layout_right{
+        text-align: center;
+    }
+    .branch_phone{
+        text-align: center;
+    }
+    .branch_detail_layout_2 .branch_time{
+        margin-right: 0;
+    }
+    .branch_time span{
+        font-size: 3vw;
+        letter-spacing: .09vw;
+        margin-bottom: .8vw;
+    }
+    .branch_phone p{
+        font-size: 3vw;
+        letter-spacing: .09vw;
+        margin-top: 3vw;
+    }
+    .branch_button{
+        display: flex;
+        gap: 3vw;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 5vw;
+    }
+    .branch_button button{
+        font-size: 3vw;
+        padding: 1.8vw 4vw;
+        border: .1vw solid white;
+        width: 100%;
+    }
+    .button_layout{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #1A1A1A;
+        padding: 10.3vw 0;
+    }
+    .button_layout button{
+        font-size: 3vw;
+        padding: 1.8vw 4vw;
+        border: .1vw solid white;
+    }
+
+    .contact_container{
+        padding: 14vw 5vw;
+        grid-template-columns: repeat(1, 1fr);
+        text-align: center;
+    }
+    .heading_contact{
+        font-size: 7vw;
+        letter-spacing: .09vw;
+        margin-bottom: 1.5vw;
+        color: white;
+    }
+    .contact_layout p{
+        font-size: 3vw;
+        letter-spacing: .14vw;
+        padding-right: 0;
+        line-height: 1.5;
+        margin-bottom: 6vw;
+    }
+    .contact_button{
+        display: flex;
+        flex-direction: column;
+        gap: 4.5vw;
+        justify-content: center;
+        padding-left: 0;
+        margin-top: 6vw;
+    }
+    .banner_social_media{
+        display: flex;
+        align-items: center;
+        gap: 3vw;
+        justify-content: center;
+    }
+    .banner_social_media_box svg{
+        color: white;
+        font-size: 5vw;
+    }
+    .contact_button button{
+        font-size: 3vw;
+        padding: 2vw 4vw;
+        border: .1vw solid white;
+        letter-spacing: .14vw !important;
+    }
+    .banner_bottom_content_active{
+        position: absolute;
+        bottom: -290%;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2.2vw 5vw;
+    }
+    .banner_bottom_content_active .banner_branch{
+        display: flex;
+        flex-direction: column;
+        gap: 2vw;
+    }
+    .dropdown button {
+        font-size: 3vw;
+        padding: 1.8vw 4vw;
+        letter-spacing: .16vw !important;
+        gap: 1.3vw;
+    }
+    .dropdown button svg{
+        font-size: 3.6vw;
+    }
+    .dropdown_menu {
+        margin-bottom: 2.4vw;
+    }
+    .dropdown_menu_bottom{
+        margin-top: 2.4vw;
+      }
+    .dropdown {
+        margin-bottom: 4vw;
+    }
+    .branch_list{
+        gap: 3vw;
+        margin-bottom: 6vw;
+    }
+    .branch_list a{
+        letter-spacing: .14vw !important;
+        font-size: 3vw;
+    }
+}

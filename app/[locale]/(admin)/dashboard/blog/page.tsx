@@ -8,7 +8,7 @@ import { useBlog } from '@/hooks/useBlog';
 
 // interface Blog {
 //   _id: string;
-//   title: string;
+//   title: string; 
 //   description: string;
 //   image: string;
 //   video:string;
@@ -150,11 +150,42 @@ export default function BlogForm() {
   } = useBlog();
 
   const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [titleEn, setTitleEn] = useState('');
+  const [slugEn, setSlugEn] = useState('');
   const [description, setDescription] = useState('');
   const [author, setAuthor] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [video, setVideo] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
+
+  const createSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter khusus
+      .trim() // Hapus spasi di awal/akhir
+      .replace(/\s+/g, '-'); // Ganti spasi dengan tanda hubung
+  };
+  
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    setSlug(createSlug(newTitle)); // Buat slug otomatis dari judul
+  };
+
+  const createSlugEn = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter khusus
+      .trim() // Hapus spasi di awal/akhir
+      .replace(/\s+/g, '-'); // Ganti spasi dengan tanda hubung
+  };
+  
+  const handleTitleChangeEn = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitleEn(newTitle);
+    setSlugEn(createSlugEn(newTitle)); // Buat slug otomatis dari judul
+  };
   
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -169,13 +200,16 @@ export default function BlogForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!title || !description || !author || !image) {
+    if (!title || !slug || !description || !author || !image) {
       alert('All fields are required!');
       return;
     }
 
     const formData = new FormData();
     formData.append('title', title);
+    formData.append('slug', slug);
+    formData.append('titleEn', titleEn);
+    formData.append('slugEn', slugEn);
     formData.append('description', description);
     formData.append('image', image);
     if (video) formData.append('video', video);
@@ -185,6 +219,9 @@ export default function BlogForm() {
     const success = await addBlog(formData);
     if (success) {
       setTitle('');
+      setSlug('');
+      setTitleEn('');
+      setSlugEn('');
       setDescription('');
       setAuthor('');
       setImage(null);
@@ -204,9 +241,38 @@ export default function BlogForm() {
             type="text"
             id="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             required
             placeholder="Masukkan judul blog"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="titleEn">Judul En</label>
+          <input
+            type="text"
+            id="titleEn"
+            value={titleEn}
+            onChange={handleTitleChangeEn}
+            required
+            placeholder="Masukkan judul blog"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="slug">Slug</label>
+          <input
+            type="text"
+            id="slug"
+            value={slug}
+            readOnly // Slug hanya dibaca, dibuat otomatis
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="slug">Slug En</label>
+          <input
+            type="text"
+            id="slug"
+            value={slugEn}
+            readOnly // Slug hanya dibaca, dibuat otomatis
           />
         </div>
         <div className="form-group">
@@ -279,6 +345,7 @@ export default function BlogForm() {
             <tr>
               <th>No</th>
               <th>Judul</th>
+              <th>Judul En</th>
               <th>Deskripsi</th>
               <th>Author</th>
               <th>Gambar</th>
@@ -291,6 +358,7 @@ export default function BlogForm() {
                 <tr key={blog._id}>
                   <td>{index + 1}</td>
                   <td>{blog.title}</td>
+                  <td>{blog.titleEn}</td>
                   <td dangerouslySetInnerHTML={{ __html: blog.description }} />
                   <td>{blog.author}</td>
                   <td>

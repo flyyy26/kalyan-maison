@@ -35,3 +35,30 @@
     color: white;
     margin-bottom: 1.3vw;
 }
+
+@media (max-width:768px) {
+    .section_1{
+        padding:39vw 5vw;
+        padding-bottom: 45vw;
+    }
+    .section_1 span{ 
+        font-size: 3.5vw;
+        letter-spacing: .14vw;
+    }
+    .section_1 h1{
+        font-size: 7vw;
+        letter-spacing: .17vw;
+        margin-top: 1.4vw;
+    }
+    .about_content{
+        width: 90%;
+        margin-top: 3vw;
+        text-align: justify;
+    }
+    .about_content p{
+        font-size: 3vw;
+        letter-spacing: .14vw;
+        line-height: 1.5;
+        margin-bottom: 2vw;
+    }
+}

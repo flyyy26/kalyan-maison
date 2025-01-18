@@ -1,4 +1,3 @@
-
 .banner{
     width: 100%;
     height: 41vw;
@@ -31,4 +30,23 @@
     width: 100%;
     height: 39vw;
     position: relative;
+}
+@media (max-width:768px) {
+    .banner{
+        height: 81vw;
+        margin-top: 22vw;
+    }
+    .banner span{
+        font-size: 3vw;
+        letter-spacing: .18vw;
+    }
+    .banner h1{
+        font-size: 8vw;
+        letter-spacing: .14vw;
+        margin-top: 1.7vw;
+        margin-bottom: 3.5vw;
+    }
+    .lounge_image{
+        height: 79vw;
+    }
 }

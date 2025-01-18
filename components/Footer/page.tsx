@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 
 const Footer = () => {
   const t =  useTranslations("footer");
-  return (
+  return ( 
     <>
       <div className={footer.footer_container}>
         <div className={footer.footer_logo}>

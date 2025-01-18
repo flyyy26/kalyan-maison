@@ -17,7 +17,7 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:3000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -30,7 +30,7 @@ export default function LoginPage() {
         localStorage.setItem('adminAuthenticated', JSON.stringify(data));
 
         // Redirect ke dashboard
-        router.push('/dashboard');
+        router.push('./dashboard');
       } else {
         const errorData = await response.json();
         setError(errorData.error || 'Login gagal. Periksa kredensial Anda.');

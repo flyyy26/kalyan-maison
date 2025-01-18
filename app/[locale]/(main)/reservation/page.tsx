@@ -7,7 +7,7 @@ import { HiChevronDown } from "react-icons/hi2";
 import ContactSection from "@/components/Contact_section/page"
 import { useTranslations } from 'next-intl';
 
-const Reservation = () => {
+const Reservation = () => { 
     const t =  useTranslations();
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
