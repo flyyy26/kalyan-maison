@@ -8,7 +8,7 @@ import { GoTrash } from "react-icons/go";
 import { FiEdit2 } from "react-icons/fi";
 import { useState } from 'react';
 
-export default function BlogForm() {
+export default function LoungeForm() {
   const {
     blogs,
     deleteBlog,
@@ -45,12 +45,12 @@ export default function BlogForm() {
       ${blogs.length > 2 ? styles.blog_form_container_index_active : ''}
     `}>
         <div className={styles.blog_form_heading}>
-          <h2>Blog List</h2>
-          <Link href={`/dashboard/blog/create`}>
+          <h2>Lounge List</h2>
+          <Link href={`/dashboard/lounges/create`}>
             <button
               className={styles.btn_primary}
             >
-              Add Blog
+              Add Lounge
             </button>
           </Link>
         </div>
@@ -58,10 +58,10 @@ export default function BlogForm() {
           <thead>
             <tr>
               <th>No</th>
-              <th>Heading Id</th>
-              <th>Heading En</th>
-              <th>Author</th>
-              <th>Image</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>City</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -69,7 +69,7 @@ export default function BlogForm() {
             {blogs.length > 0 ? (
               blogs.map((blog, index) => (
                 <tr key={blog._id}>
-                  <td style={{textAlign: 'center'}}>{index + 1}</td>
+                  <td>{index + 1}</td>
                   <td>{blog.title}</td>
                   <td>{blog.titleEn}</td>
                   <td style={{textAlign: 'center'}}>{blog.author}</td>
@@ -77,8 +77,8 @@ export default function BlogForm() {
                     <Image
                       width="100"
                       height="100"
-                      src={`http://localhost:3000/${blog.image}`}
-                      alt="Blog"
+                      src={`http://localhost:3000${blog.image}`}
+                      alt={blog.title}
                       className="blog-image"
                     />
                   </td>
@@ -99,7 +99,7 @@ export default function BlogForm() {
               ))
             ) : (
               <tr>
-                <td style={{textAlign: 'center'}} colSpan={6}>No blogs available.</td>
+                <td style={{textAlign: 'center'}} colSpan={6}>Tidak ada blog tersedia.</td>
               </tr>
             )}
           </tbody>
@@ -109,13 +109,13 @@ export default function BlogForm() {
     {showConfirm && (
         <div className={styles.popupOverlay}>
           <div className={styles.popup}>
-            <p>Are you sure you want to delete your blog?</p>
+            <p>Apakah anda yakin untuk menghapus blog?</p>
             <div className={styles.flex_center}>
               <button className={styles.btn_primary} onClick={confirmDelete} disabled={isDeleting} >
-                {isDeleting ? 'Deleting...' : 'Delete Blog'}
+                {isDeleting ? 'Menghapus...' : 'Hapus Blog'}
               </button>
               <button className={styles.btn_primary} onClick={() => setShowConfirm(false)}>
-                Cancel
+                Batal
               </button>
             </div>
           </div>

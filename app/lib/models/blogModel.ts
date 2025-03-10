@@ -27,13 +27,13 @@ const Schema = new mongoose.Schema({
         type:String,
         required:true
     },
-    image:{
+    descriptionEn:{
         type:String,
         required:true
     },
-    video:{
+    image:{
         type:String,
-        required:false
+        required:true
     },
     author:{
         type:String,

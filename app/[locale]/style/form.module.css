@@ -1,0 +1,527 @@
+.blog_form_container{
+    width: 100%;
+    padding: 3vw 7vw;
+    background-color: #1A1A1A;
+    position: relative;
+}
+.blog_form_container_index{
+    height: 36.2vw;
+}
+.blog_form_container_index_active{
+    height: max-content;
+}
+.blog_form_container h2{
+    font-size: 4vw;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    letter-spacing: .05vw;
+    color: white;
+    margin-bottom: 4vw;
+}
+.blog_form_heading{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.5vw;
+}
+.blog_form_heading h2{
+    margin-bottom: 0;
+}
+.back_button{
+    position: absolute;
+    left: -4vw;
+    top: -4vw;
+    background-color: white;
+    width: 9vw;
+    height: 9vw;
+    outline: none;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    cursor: pointer;
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    transition: .4s all;
+}
+.back_button svg{
+    font-size: 2vw;
+    color: #1A1A1A;
+    position: absolute;
+    right: 2vw;
+    bottom: 2vw;
+}
+.back_button:hover{
+    background-color: transparent;
+    color: white;
+}
+.back_button:hover svg{
+    color: #fff;
+}
+.blog_form_container form{
+    display: flex;
+    flex-direction: column;
+    gap: 1.75vw;
+}
+.form_double{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1.5vw;
+}
+.form_third{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.5vw;
+}
+.form_single{
+    position: relative;
+}
+.form_single label{
+    font-size: 1vw;
+    margin-bottom: 1vw;
+    display: block;
+    color: white;
+}
+.blog_form_heading label{
+    margin-bottom: 0;
+}
+.form_single input{
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    border: .1vw solid #ACAAB1;
+    font-size: 1.1vw;
+    font-family: 'montserrat', sans-serif;
+    padding: .8vw 1vw;
+    border-radius: .37vw;
+    letter-spacing: .05vw;
+    color: #ACAAB1;
+}
+.form_single input::placeholder{
+    color: #ACAAB1;
+    text-transform: uppercase;
+}
+.dropzone {
+    width: 100%;
+    height: 20vw;
+    border: .1vw dashed #ccc;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    border-radius: .37vw;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+.dropzone_small {
+    width: 100%;
+    height: 3.05vw;
+    border: .1vw dashed #ccc;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    border-radius: .37vw;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .previewImage {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+  .dropzone svg{
+    font-size: 8vw;
+    color: #ACAAB1;
+    margin-bottom: 1vw;
+  }
+  
+  .dropzone p {
+    margin: 0;
+    font-size: 1.1vw;
+    text-transform: uppercase;
+    color: #ACAAB1;
+    letter-spacing: .05vw;
+  }
+  
+  .dropzone.active {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+  }
+  .dropzone_small svg{
+    font-size: 8vw;
+    color: #ACAAB1;
+    margin-bottom: 1vw;
+  }
+  
+  .dropzone_small p {
+    margin: 0;
+    font-size: 1.1vw;
+    text-transform: uppercase;
+    color: #ACAAB1;
+    letter-spacing: .05vw;
+  }
+  
+  .dropzone_small.active {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+  }
+  
+  .file_input {
+    display: none;
+  }
+.btn_primary{
+    font-size: 1vw;
+    padding: .75vw 1.7vw;
+    border: .1vw solid transparent;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background-color: white;
+    color: #1A1A1A;
+    font-weight: 500;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+    width: max-content;
+    margin: auto;
+    margin-top: 1.4vw;
+    margin-bottom: .6vw;
+}
+.btn_primary:hover{
+    background: #FFFFFF1A;
+    color: white;
+    border: .1vw solid white;
+}
+.btn_primary_full{
+    width: 100%;
+    margin-top: .6vw;
+    border-radius: .37vw;
+}
+.mediaLibraryButton{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: .1vw solid white;
+    display: flex;
+    align-items: center;
+    gap: .4vw;
+    font-size: .96vw;
+    cursor: pointer;
+}
+.mediaLibraryButton svg{
+    font-size: 1.4vw;
+}
+.notif_form{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    margin-top: 2vw;
+}
+.notif_form p{
+    text-transform: uppercase;
+    font-size: 1.1vw;
+    color: white;
+}
+
+.blog_table{
+    width: 100%;
+    border-collapse: collapse;
+    border: .1vw solid white;
+}
+.blog_table tr th{
+    border: .1vw solid white;
+    padding: 1vw;
+}
+.blog_table tr td{
+    border: .1vw solid white;
+    padding: 1vw;
+}
+.btn_action{
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+}
+.btn_action button{
+    background-color: transparent;
+    outline: none;
+    width: 1.9vw;
+    height: 1.9vw;
+    display: flex;
+    align-items: center;
+    border-radius: 100vw;
+    justify-content: center;
+    cursor: pointer;
+}
+.btn_delete{
+    border: .1vw solid #fff;
+}
+.btn_delete svg{
+    color: #FF4646;
+}
+.btn_edit{
+    border: .1vw solid #fff;
+}
+.btn_edit svg{
+    color: #007bff;
+}
+.btn_action button svg{
+    font-size: .9vw;
+}
+.flex_center{
+    display: flex;
+    justify-content: center;
+    width: max-content;
+    margin: auto;
+    gap: 2vw;
+}
+
+.popupOverlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(58, 58, 58, 0.767);
+    backdrop-filter: blur(.1vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.popup p{
+    font-size: 1.7vw;
+    color: white;
+    text-transform: uppercase;
+}
+
+.mediaLibraryPopup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(58, 58, 58, 0.767);
+    backdrop-filter: blur(.1vw);
+    overflow-y: scroll;
+    padding: 6vw 0;
+}
+.mediaLibraryContent{
+    width: 60%;
+    height: max-content;
+    background-color: rgba(255, 255, 255, 0.589);
+    margin: auto;
+    padding: 2vw;
+    border-radius: .7vw;
+    backdrop-filter: blur(.8vw);
+}
+.imageGrid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    width: 100%;
+    margin: auto;
+    grid-gap: 1vw;
+}
+.imageItem{
+    width: 100%;
+    height: 10vw;
+    position: relative;
+    overflow: hidden;
+    border-radius: .4vw;
+    z-index: 5;
+}
+.imageItem img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.imageActions{
+    z-index: 7;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: .3vw;
+    width: 100%;
+    padding: .3vw;
+}
+.imageActions button{
+    cursor: pointer;
+    padding: .23vw .8vw;
+    font-size: .58vw;
+    border-radius: .2vw;
+    border: none;
+    outline: none;
+    background-color: #1A1A1A;
+}
+.btnDeleteItem{
+    position: absolute;
+    top: .7vw;
+    right: .7vw;
+    background-color: #FF4646;
+    color: white;
+    width: 1.6vw;
+    height: 1.6vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    border-radius: 100vw;
+    cursor: pointer;
+}
+.btnDeleteItem svg{
+    color: white;
+    font-size: .8vw;
+}
+.uploadContainer{
+    background-color: white;
+    border-radius: .4vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+    height: 10vw;
+}
+.uploadButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1A1A1A;
+    gap: .7vw;
+    cursor: pointer;
+}
+.uploadButton p{
+    font-size: .9vw;
+}
+.uploadButton svg{
+    font-size: 3.5vw;
+}
+.closeButton{
+    position: absolute;
+    right: -2vw;
+    top: -2vw;
+    background-color: white;
+    color: #1A1A1A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2vw;
+    height: 2vw;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    border-radius: .3vw;
+}
+.closeButton svg{
+    font-size: 1.2vw;
+}
+.dropdown button svg{
+    font-size: 1.4vw;
+    transition: .3s all;
+    color: white;
+}
+.dropdown_active button svg{
+    transform: rotate(-180deg);
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .dropdown button {
+    font-size: 1.1vw;
+    padding: .8vw 1vw;
+    border-radius: .37vw;
+    border: .1vw solid #ACAAB1;
+    text-transform: uppercase;
+    background: transparent;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4vw;
+    width: 100%;
+    color: #ACAAB1;
+    justify-content: space-between;
+  }
+  
+  .dropdown_menu {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    bottom: 100%;
+    margin-bottom: .9vw;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    background-color: white;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    background: #FFFFFF1A;
+    border: .1vw solid white;
+    border-radius: .37vw;
+    z-index: 5;
+  }
+  .dropdown_menu_bottom{
+    bottom: inherit;
+    top: 100%;
+    margin-top: .9vw;
+    margin-bottom: inherit;
+  }
+  .dropdown_menu_show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .dropdown_menu button {
+    width: 100%;
+    font-size: 1.1vw;
+    padding: .8vw 1vw;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw ;
+    cursor: pointer;
+    display: block;
+    align-items: center;
+    text-align: start;
+    gap: .4vw;
+    justify-content: flex-start;
+    border-radius: 0;
+    border: none;
+    border-bottom: .1vw solid #fff;
+    color: #fff;
+    background-color: transparent;
+  }
+  .dropdown_menu button:last-child{
+    border-bottom: none;
+  }
+  .dropdown_menu button:hover{
+    text-decoration: underline;
+  }

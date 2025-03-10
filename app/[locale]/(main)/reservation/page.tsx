@@ -46,7 +46,7 @@ const Reservation = () => {
                                 <button type='button'>Gunawarman</button>
                                 <button type='button'>Kemang</button>
                                 <button type='button'>Sudirman</button>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                     <div className={style.form_single}>

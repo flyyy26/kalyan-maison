@@ -31,22 +31,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const video = formData.get("video") as File | null;
-
-    // Jika video tidak ada, abaikan proses penyimpanan video
-    let videourl = null;
-    if (video) {
-      const videoByteData = await video.arrayBuffer();
-      const bufferVideo = Buffer.from(videoByteData);
-    
-      // Tentukan path dan URL video
-      const pathVideo = `./public/${timestamp}_${video.name}`;
-      await writeFile(pathVideo, bufferVideo);
-      videourl = `/${timestamp}_${video.name}`;
-    } else {
-      console.log("Video tidak ditemukan, tetapi ini tidak wajib.");
-    }
-
 
     const imageByteData = await image.arrayBuffer();
     const buffer = Buffer.from(imageByteData);
@@ -56,14 +40,6 @@ export async function POST(request: Request) {
     await writeFile(path, buffer);
     const imgurl = `/${timestamp}_${image.name}`;
 
-    // const videoByteData = await video.arrayBuffer();
-    // const bufferVideo = Buffer.from(videoByteData);
-
-    // // Tentukan path dan URL gambar
-    // const pathVideo = `./public/${timestamp}_${video.name}`;
-    // await writeFile(pathVideo, bufferVideo);
-    // const videourl = `/${timestamp}_${video.name}`;
-
     // Siapkan data blog
     const blogData = {
       title: formData.get("title") as string,
@@ -71,14 +47,14 @@ export async function POST(request: Request) {
       titleEn: formData.get("titleEn") as string,
       slugEn: formData.get("slugEn") as string,
       description: formData.get("description") as string,
+      descriptionEn: formData.get("descriptionEn") as string,
       author: formData.get("author") as string,
       tags: JSON.parse(formData.get('tags') as string),
       image: imgurl,
-      video:videourl,
     };
 
     // Validasi data
-    if (!blogData.title || !blogData.slug || !blogData.titleEn || !blogData.slugEn || !blogData.description || !blogData.image || !blogData.author || blogData.tags.length === 0 ) {
+    if (!blogData.title || !blogData.slug || !blogData.titleEn || !blogData.slugEn || !blogData.description || !blogData.descriptionEn || !blogData.image || !blogData.author || blogData.tags.length === 0 ) {
       return NextResponse.json(
         { success: false, msg: "Semua field wajib diisi." },
         { status: 400 }
@@ -103,7 +79,6 @@ export async function DELETE(request: NextRequest){
   const id = await request.nextUrl.searchParams.get('id');
   const blog = await BlogModel.findById(id);
   fs.unlink(`./public${blog.image}`, ()=> {})
-  fs.unlink(`./public${blog.video}`, ()=> {})
   await BlogModel.findByIdAndDelete(id);
   return NextResponse.json({msg: "Blog terhapus"});
 }
