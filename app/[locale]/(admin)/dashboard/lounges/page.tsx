@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useBlog } from '@/hooks/useBlog';
+import { useLounge } from '@/hooks/useLounge';
 import styles from '@/app/[locale]/style/form.module.css'
 import { Link } from '@/i18n/routing';
 import { GoTrash } from "react-icons/go";
@@ -10,31 +10,33 @@ import { useState } from 'react';
 
 export default function LoungeForm() {
   const {
-    blogs,
-    deleteBlog,
-  } = useBlog();
+    lounges,
+    deleteLounge,
+  } = useLounge();
 
   const [showConfirm, setShowConfirm] = useState(false);
-  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
+  const [selectedLoungeId, setSelectedLoungeId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDeleteClick = (blogId: string) => {
-    setSelectedBlogId(blogId);
+  const handleDeleteClick = (loungeId: string) => {
+    setSelectedLoungeId(loungeId);
     setShowConfirm(true);
   };
 
   const confirmDelete = async () => {
-    if (selectedBlogId) {
+    if (selectedLoungeId) {
       setIsDeleting(true); // ✅ Aktifkan loading di tombol Yes
-      const success = await deleteBlog(selectedBlogId); // Pastikan fungsi ini mengembalikan status berhasil/tidak
+      const success = await deleteLounge(selectedLoungeId); // Pastikan fungsi ini mengembalikan status berhasil/tidak
 
       if (success) {
         setShowConfirm(false); // ✅ Tutup popup hanya jika sukses
-        setSelectedBlogId(null);
+        setSelectedLoungeId(null);
       }
       setIsDeleting(false); // ✅ Matikan loading setelah selesai
     }
   };
+
+  console.log('lounge', lounges)
 
   return (
     <>
@@ -42,7 +44,7 @@ export default function LoungeForm() {
    <div className={`
       ${styles.blog_form_container} 
       ${styles.blog_form_container_index} 
-      ${blogs.length > 2 ? styles.blog_form_container_index_active : ''}
+      ${lounges.length > 2 ? styles.blog_form_container_index_active : ''}
     `}>
         <div className={styles.blog_form_heading}>
           <h2>Lounge List</h2>
@@ -61,35 +63,35 @@ export default function LoungeForm() {
               <th>Name</th>
               <th>Address</th>
               <th>Phone</th>
-              <th>City</th>
+              <th>Banner</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {blogs.length > 0 ? (
-              blogs.map((blog, index) => (
-                <tr key={blog._id}>
-                  <td>{index + 1}</td>
-                  <td>{blog.title}</td>
-                  <td>{blog.titleEn}</td>
-                  <td style={{textAlign: 'center'}}>{blog.author}</td>
+            {lounges.length > 0 ? (
+              lounges.map((lounge, index) => (
+                <tr key={lounge._id}>
+                  <td style={{textAlign: 'center'}}>{index + 1}</td>
+                  <td>{lounge.name}</td>
+                  <td style={{textAlign: 'center'}}>{lounge.address || "kosong"}</td>
+                  <td style={{textAlign: 'center'}}>{lounge.phone || "kosong"}</td>
                   <td style={{textAlign: 'center'}}>
                     <Image
                       width="100"
                       height="100"
-                      src={`http://localhost:3000${blog.image}`}
-                      alt={blog.title}
-                      className="blog-image"
+                      src={`http://localhost:3000${lounge.banner}`}
+                      alt={lounge.name}
+                      className="lounge-image"
                     />
                   </td>
                   <td style={{padding: '0'}}>
                     <div className={styles.btn_action}>
-                      <Link href={`/dashboard/blog/edit/${blog._id}`}>
+                      <Link href={`/dashboard/lounges/edit/${lounge._id}`}>
                         <button className={styles.btn_edit}><FiEdit2/></button>
                       </Link>
                       <button
                         className={styles.btn_delete}
-                        onClick={() => handleDeleteClick(blog._id)}
+                        onClick={() => handleDeleteClick(lounge._id)}
                       >
                         <GoTrash/>
                       </button>
@@ -99,7 +101,7 @@ export default function LoungeForm() {
               ))
             ) : (
               <tr>
-                <td style={{textAlign: 'center'}} colSpan={6}>Tidak ada blog tersedia.</td>
+                <td style={{textAlign: 'center'}} colSpan={6}>Tidak ada lounge tersedia.</td>
               </tr>
             )}
           </tbody>
@@ -109,10 +111,10 @@ export default function LoungeForm() {
     {showConfirm && (
         <div className={styles.popupOverlay}>
           <div className={styles.popup}>
-            <p>Apakah anda yakin untuk menghapus blog?</p>
+            <p>Apakah anda yakin untuk menghapus lounge?</p>
             <div className={styles.flex_center}>
               <button className={styles.btn_primary} onClick={confirmDelete} disabled={isDeleting} >
-                {isDeleting ? 'Menghapus...' : 'Hapus Blog'}
+                {isDeleting ? 'Menghapus...' : 'Hapus Lounge'}
               </button>
               <button className={styles.btn_primary} onClick={() => setShowConfirm(false)}>
                 Batal

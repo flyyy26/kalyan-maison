@@ -79,8 +79,8 @@ export async function PUT(request: Request) {
       lounge.taglineId= formData.get("taglineId") as string;
       lounge.taglineEn= formData.get("taglineEn") as string;
       lounge.imageSlide= JSON.parse(formData.get('imageSlide') as string);
-      lounge.menu= JSON.parse(formData.get('imageSlide') as string);
-      lounge.spaces= JSON.parse(formData.get('imageSlide') as string);
+      lounge.menu= JSON.parse(formData.get('menu') as string);
+      lounge.spaces= JSON.parse(formData.get('spaces') as string);
       lounge.banner= bannerUrl;
       lounge.taglineBanner= taglineBannerUrl;
   

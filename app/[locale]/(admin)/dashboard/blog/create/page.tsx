@@ -212,7 +212,6 @@ export default function CreateBlog(){
       try {
           const success = await addBlog(formData);
           if (success) {
-              setSuccess('✅ Blog berhasil ditambahkan!');
               setTitle('');
               setSlug('');
               setTitleEn('');
@@ -312,7 +311,7 @@ export default function CreateBlog(){
               apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
               init={{
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                 relative_urls: false, // Pastikan URL tetap absolut
                 remove_script_host: false, // Jangan hapus bagian host (http://localhost:3000)
                 convert_urls: true, // Pastikan URL dikonversi dengan benar
@@ -329,7 +328,7 @@ export default function CreateBlog(){
               apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
               init={{
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                 relative_urls: false, // Pastikan URL tetap absolut
                 remove_script_host: false, // Jangan hapus bagian host (http://localhost:3000)
                 convert_urls: true, // Pastikan URL dikonversi dengan benar

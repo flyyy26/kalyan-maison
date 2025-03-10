@@ -5,6 +5,10 @@ const LoungeSchema  = new mongoose.Schema({
         type:String,
         required:true
     },
+    address:{
+        type:String,
+        required:true
+    },
     slug:{
         type:String,
         required:true,
@@ -37,18 +41,19 @@ const LoungeSchema  = new mongoose.Schema({
         type:String,
         required:false
     },
-    imageSlide: { 
-        type: [String], 
-        required: false 
-    },
-    menu: { 
-        type: [String], 
-        required: false 
-    },
-    spaces: { 
-        type: [String], 
-        required: false 
-    },
+    imageSlide: [{ 
+        name: { type: String, required: true }, 
+        image: { type: String, required: true } 
+    }],
+    menu:[{ 
+        name: { type: String, required: true }, 
+        description: { type: String, required: true }, 
+        image: { type: String, required: true } 
+    }],
+    spaces: [{ 
+        name: { type: String, required: true }, 
+        image: { type: String, required: true } 
+    }],
     date:{
         type:Date,
         default:Date.now()

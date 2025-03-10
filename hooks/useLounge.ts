@@ -4,19 +4,36 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useRouter } from "next/navigation";
 
+type ImageSlide = {
+  name: string;
+  image: string;
+};
+
+type ImageSpaces = {
+  name: string;
+  image: string;
+};
+
+type menu = {
+  name: string;
+  description:string;
+  image: string;
+};
+
 type Lounge = {
   _id: string;
   name: string;
   slug:string;
+  address:string;
   banner: string | File;
   phone:string;
   city: string;
   taglineId: string;
   taglineEn: string;
   taglineBanner: string | File;
-  imageSlide: string[];
-  menu: string[];
-  spaces: string[];
+  imageSlide: ImageSlide[]; 
+  menu: menu[];
+  spaces: ImageSpaces[];
   date: string;
 };
 
@@ -29,6 +46,7 @@ export const useLounge = () => {
     _id: "",
     name: "",
     slug:"",
+    address:"",
     banner: "" ,
     phone:"",
     city: "",
@@ -52,7 +70,7 @@ export const useLounge = () => {
     setError(null);
     try {
       const response = await axios.get('/api/lounge');
-      setLounges(response.data.lounges);
+      setLounges(response.data.data);
     } catch (err) {
       setError('Failed to fetch lounges.');
     } finally {

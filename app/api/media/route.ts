@@ -58,7 +58,7 @@ export async function POST(request: Request) {
 export async function DELETE(request: NextRequest){
   const id = await request.nextUrl.searchParams.get('id');
   const media = await MediaModel.findById(id);
-  fs.unlink(`./public${media.image}`, ()=> {})
+  fs.unlink(`./public/${media.image.split("/").pop()}`, ()=> {})
   await MediaModel.findByIdAndDelete(id);
   return NextResponse.json({msg: "Media terhapus"});
 }

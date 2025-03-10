@@ -525,3 +525,34 @@
   .dropdown_menu button:hover{
     text-decoration: underline;
   }
+  .inputAdd{
+    position: relative;
+  }
+  .inputAdd p{
+    position: absolute;
+    right: 1.2vw;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .9vw;
+    color: white;
+  }
+  .dropdown_menu input{
+    width: 100%;
+    font-size: 1.1vw;
+    padding: .8vw 1vw;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw ;
+    display: block;
+    align-items: center;
+    text-align: start;
+    gap: .4vw;
+    justify-content: flex-start;
+    border-radius: 0;
+    border: none;
+    border-bottom: .1vw solid #fff;
+    color: #fff;
+    background-color: transparent;
+  }
