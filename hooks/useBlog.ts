@@ -12,6 +12,7 @@ type Blog = {
   slugEn:string;
   description: string;
   descriptionEn: string;
+  visitCount: number;
   author: string;
   image: string | File;
   tags: string[];
@@ -32,6 +33,7 @@ export const useBlog = () => {
     description: "",
     descriptionEn: "",
     author: "",
+    visitCount: 0,
     image: "",
     tags: [],
     date: "",

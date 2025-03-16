@@ -62,6 +62,7 @@ export default function BlogForm() {
               <th>Heading En</th>
               <th>Author</th>
               <th>Image</th>
+              <th>Visitors</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -77,11 +78,12 @@ export default function BlogForm() {
                     <Image
                       width="100"
                       height="100"
-                      src={`http://localhost:3000/${blog.image}`}
+                      src={`${blog.image}`}
                       alt="Blog"
                       className="blog-image"
                     />
                   </td>
+                  <td style={{textAlign: 'center'}}>{blog.visitCount || 0}</td>
                   <td style={{padding: '0'}}>
                     <div className={styles.btn_action}>
                       <Link href={`/dashboard/blog/edit/${blog._id}`}>

@@ -39,6 +39,10 @@ const Schema = new mongoose.Schema({
         type:String,
         required:true
     },
+    visitCount:{
+        type:Number,
+        default:0
+    },
     tags: { 
         type: [String], 
         required: false 

@@ -1,64 +1,10 @@
-// 'use client';
+"use client"; // Pastikan ini ada di baris pertama!
 
-// import { useEffect, useState } from 'react';
-// import { useRouter } from 'next/navigation';
-
-// interface Admin {
-//   id: number;
-//   username: string;
-//   email: string;
-//   role: string;
-// }
-
-// export default function DashboardPage() {
-//   const [admin, setAdmin] = useState<Admin | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     const adminData = localStorage.getItem('adminAuthenticated');
-//     if (adminData) {
-//       try {
-//         const parsedAdmin = JSON.parse(adminData); // Parsing JSON
-//         setAdmin(parsedAdmin as Admin);
-//       } catch (error) {
-//         console.error('Error parsing admin data:', error);
-//         localStorage.removeItem('adminAuthenticated');
-//         router.push('/login');
-//       }
-//     } else {
-//       router.push('/login');
-//     }
-//     setLoading(false);
-//   }, [router]);
-
-//   const handleLogout = () => {
-//     localStorage.removeItem('adminAuthenticated');
-//     router.push('/login');
-//   };
-
-//   if (loading) {
-//     return <p>Loading...</p>;
-//   }
-
-//   if (!admin) {
-//     return null; // Render kosong jika admin data tidak ada
-//   }
-
-//   return (
-//     <div className="dashboard-container">
-//       <h2>Selamat Datang, {admin.username}</h2>
-//       <button onClick={handleLogout}>Logout</button>
-//     </div>
-//   );
-// } 
-
-'use client'
-
-import { useState, useEffect } from 'react';
-import { useBlog } from '@/hooks/useBlog';
-import styles from '@/app/[locale]/style/form.module.css'
-import { useRouter, useParams } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useBlog } from "@/hooks/useBlog";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import styles from "@/app/[locale]/style/form.module.css";
+import { useRouter, useParams } from "next/navigation";
 
 interface Admin {
   id: number;
@@ -67,142 +13,105 @@ interface Admin {
   role: string;
 }
 
-export default function DashboardPage(){
+export default function DashboardPage() {
   const params = useParams();
-  const locale = params?.locale || 'id'; 
-    const {
-        setLoading,
-      } = useBlog();
-    const [admin, setAdmin] = useState<Admin | null>(null);
-    const router = useRouter();
+  const locale = params?.locale || "id";
+  const { setLoading, blogs } = useBlog();
+  const { analytics } = useAnalytics();
+  const [admin, setAdmin] = useState<Admin | null>(null);
+  const router = useRouter();
 
-      useEffect(() => {
-        const adminData = localStorage.getItem('adminAuthenticated');
-        if (adminData) {
-          try {
-            const parsedAdmin = JSON.parse(adminData); // Parsing JSON
-            setAdmin(parsedAdmin as Admin);
-          } catch (error) {
-            console.error('Error parsing admin data:', error);
-            localStorage.removeItem('adminAuthenticated');
-            router.push(`/${locale}/login`);
-          }
-        } else {
-          router.push(`/${locale}/login`);
-        }
-        setLoading(false);
-      }, [router, locale, setLoading]);
-
-      const handleLogout = () => {
-        localStorage.removeItem('adminAuthenticated');
+  useEffect(() => {
+    const adminData = localStorage.getItem("adminAuthenticated");
+    if (adminData) {
+      try {
+        const parsedAdmin = JSON.parse(adminData);
+        setAdmin(parsedAdmin as Admin);
+      } catch (error) {
+        console.error("Error parsing admin data:", error);
+        localStorage.removeItem("adminAuthenticated");
         router.push(`/${locale}/login`);
-      };
-
-    if (!admin) {
-      return null; // Render kosong jika admin data tidak ada
+      }
+    } else {
+      router.push(`/${locale}/login`);
     }
-  
+    setLoading(false);
+  }, [router, locale, setLoading]);
 
-    return(
-        <div className={`${styles.blog_form_container}`} style={{height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <h2 style={{marginBottom: '1vw'}}>Selamat Datang, {admin.username}</h2>
-          <div className={styles.btn_center}>
-            <button className={styles.btn_primary} onClick={handleLogout}>Logout</button>
+  const handleLogout = () => {
+    localStorage.removeItem("adminAuthenticated");
+    router.push(`/${locale}/login`);
+  };
+
+  if (analytics.length === 0) return <p>Loading...</p>;
+
+  if (!admin) {
+    return null;
+  }
+
+  // Hitung total kunjungan
+  const totalVisits = analytics.reduce((acc, item) => acc + item.count, 0);
+
+  const totalBlogVisitors = blogs.reduce((acc, blog) => acc + blog.visitCount, 0);
+
+  const uniqueUserAgents = new Set(analytics.map(item => item.userAgent));
+  const totalUniqueVisitors = uniqueUserAgents.size;
+
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  // Urutkan analytics berdasarkan timestamp dalam urutan menurun
+  const sortedAnalytics = [...analytics].sort((a, b) => b.timestamp - a.timestamp);
+
+  return (
+    <div className={`${styles.dashboard_container}`}>
+      <h2 style={{ marginBottom: "1vw" }}>Welcome, {admin.username}</h2>
+      <div className={styles.btn_center}>
+        <button className={styles.btn_primary} onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
+      <div className={styles.card_container}>
+        <div className={styles.card_layout}>
+          <div className={styles.card}>
+            <h3>Total Visits Page</h3>
+            <p>{totalVisits}</p>
           </div>
-          {/* <div className={styles.form_container}>
-            <h3>Background Image Webpage :</h3>
-            <form onSubmit={handleSubmit} style={{marginTop: '2vw'}}>
-              <div className={`${styles.form_double} ${styles.form_third}`}>
-                <div className={styles.form_single}>
-                  <label
-                    htmlFor="image"
-                    className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                  >
-                    {image ? ( 
-                        <>
-                          <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-                        </>
-                    ) : (
-                      <>
-                        <p>Home Page Main Banner</p>
-                        <PiImageThin />
-                        <p style={{fontSize: '.8vw'}}>Drag & Drop file here or click to upload</p>
-                      </>
-                    )}
-                    <input
-                      type="file"
-                      id="image"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className={styles.file_input}
-                      required
-                    />
-                  </label>
+          <div className={styles.card}>
+            <h3>Total User Visits</h3>
+            <p>{totalUniqueVisitors}</p>
+          </div>
+          <div className={styles.card}>
+            <h3>Total Blog Visits</h3>
+            <p>{totalBlogVisitors}</p>
+          </div>
+        </div>
+        <div className={styles.card_browser_container}>
+          {sortedAnalytics.map((item) => (
+            <div key={item._id} className={styles.card_browser}>
+              <div className={styles.browser_page}>
+                <div className={styles.browser_page_box}>
+                  <h3>Page Access</h3>
+                  <h1>{baseUrl}{item.page} at {formatDate(item.timestamp)}</h1>
                 </div>
-                <div className={styles.form_single}>
-                  <label
-                    htmlFor="image"
-                    className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                  >
-                    {image ? (
-                        <>
-                          <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-                        </>
-                    ) : (
-                      <>
-                        <p>Section 2 Homepage Background</p>
-                        <PiImageThin />
-                        <p style={{fontSize: '.8vw'}}>Drag & Drop file here or click to upload</p>
-                      </>
-                    )}
-                    <input
-                      type="file"
-                      id="image"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className={styles.file_input}
-                      required
-                    />
-                  </label>
-                </div>
-                <div className={styles.form_single}>
-                  <label
-                    htmlFor="image"
-                    className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                  >
-                    {image ? (
-                        <>
-                          <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-                        </>
-                    ) : (
-                      <>
-                        <p>All Lounge Page Main Banner</p>
-                        <PiImageThin />
-                        <p style={{fontSize: '.8vw'}}>Drag & Drop file here or click to upload</p>
-                      </>
-                    )}
-                    <input
-                      type="file"
-                      id="image"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className={styles.file_input}
-                      required
-                    />
-                  </label>
+                <div className={styles.browser_page_box}>
+                  <h3>User Agent</h3>
+                  <h1>{item.userAgent}</h1>
                 </div>
               </div>
-            </form>
-          </div> */}
+            </div>
+          ))}
+        </div>
       </div>
-    );
+    </div>
+  );
 }

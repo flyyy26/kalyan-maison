@@ -1,4 +1,3 @@
-// import { ConnectDB } from "@/app/lib/config/db";
 import { ConnectDB } from "@/app/lib/config/db";
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
@@ -31,7 +30,6 @@ export async function POST(request: Request) {
       );
     }
 
-
     const imageByteData = await image.arrayBuffer();
     const buffer = Buffer.from(imageByteData);
 
@@ -51,6 +49,7 @@ export async function POST(request: Request) {
       author: formData.get("author") as string,
       tags: JSON.parse(formData.get('tags') as string),
       image: imgurl,
+      visitCount: 0, // Inisialisasi visitCount
     };
 
     // Validasi data
@@ -81,4 +80,26 @@ export async function DELETE(request: NextRequest){
   fs.unlink(`./public${blog.image}`, ()=> {})
   await BlogModel.findByIdAndDelete(id);
   return NextResponse.json({msg: "Blog terhapus"});
+}
+
+// Tambahkan endpoint untuk menginkrementasi visitCount
+export async function PATCH(request: NextRequest) {
+  try {
+    const { id } = await request.json();
+    const blog = await BlogModel.findById(id);
+    if (!blog) {
+      return NextResponse.json({ success: false, msg: "Blog tidak ditemukan." }, { status: 404 });
+    }
+
+    blog.visitCount += 1;
+    await blog.save();
+
+    return NextResponse.json({ success: true, msg: "Visit count updated." });
+  } catch (error) {
+    console.error("Error updating visit count:", error);
+    return NextResponse.json(
+      { success: false, msg: "Terjadi kesalahan saat mengupdate visit count." },
+      { status: 500 }
+    );
+  }
 }
