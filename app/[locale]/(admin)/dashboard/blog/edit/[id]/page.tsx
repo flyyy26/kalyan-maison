@@ -66,13 +66,13 @@ export default function EditBlogForm(){
     };
 
     useEffect(() => {
-      if (blogDetail?.title) {
-          setBlogDetail((prevState) => ({
-              ...prevState!,
-              slug: blogDetail.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
-          }));
-      }
-  }, [blogDetail?.title, setBlogDetail]);
+        if (blogDetail?.title) {
+            setBlogDetail((prevState) => ({
+                ...prevState!,
+                slug: blogDetail.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
+            }));
+        }
+    }, [blogDetail?.title, setBlogDetail]);
     
     useEffect(() => {
         if (blogDetail?.titleEn) {
@@ -369,7 +369,7 @@ export default function EditBlogForm(){
               />
             </div>
           </div>
-          <button type="submit"  onClick={handleSubmit} disabled={loading} className={styles.btn_primary}>
+          <button type="submit" onClick={handleSubmit} disabled={loading} className={styles.btn_primary}>
             {loading ? 'Saving...' : 'Save Changes'}
           </button>
           <input

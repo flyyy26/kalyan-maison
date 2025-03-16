@@ -95,7 +95,8 @@
     padding: 2.5vw 4.3vw;
     padding-right: 2.2vw;
     z-index: 2;
-    margin-top: -5.7vw;
+    margin-top: 0;
+    background-color: white;
 }
 .heading_slide button{
     font-size: 1vw;
@@ -103,13 +104,13 @@
     border: .12vw solid transparent;
     border-radius: 100vw;
     text-transform: uppercase;
-    background: #1A1A1A;
-    font-weight: 600;
-    font-family: 'montserrat';
+    background: #1A1A1A !important;
+    font-weight: 600 !important;
+    font-family: 'montserrat' !important;
     letter-spacing: .05vw !important;
-    cursor: pointer;
+    cursor: pointer !important;
     transition: .3s all;
-    color: white;
+    color: white !important;
     margin-bottom: .8vw;
 }
 .heading_slide button:hover{
@@ -216,12 +217,12 @@
     }
     .heading_slide{
         width: 100%;
-        background-color: transparent;
+        background-color: white;
         padding: 4.5vw 4.3vw;
         padding-bottom: 17vw;
         padding-right: 4.3vw;
         z-index: 2;
-        margin-top: -31vw;
+        margin-top: 0;
         text-align: center;
     }
     .heading_slide button{

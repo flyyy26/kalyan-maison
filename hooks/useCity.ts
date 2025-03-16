@@ -71,7 +71,7 @@ export const useCity = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.delete('/api/lounge', {
+      const response = await axios.delete('/api/city', {
         params: { id },
       });
 

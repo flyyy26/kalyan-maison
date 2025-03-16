@@ -1,5 +1,6 @@
 import BlogDetailContent from '@/components/blog_detail_component/page';
 import { getTranslations } from 'next-intl/server';
+import LoadingPopup from '@/components/loading_popup/page';
 
 export default async function BlogDetailPage({
   params,
@@ -15,5 +16,10 @@ export default async function BlogDetailPage({
   // Await params to get the slug
   const { slug } = await params;
 
-  return <BlogDetailContent slug={slug} translations={translations} />;
+  return (
+    <>
+    <LoadingPopup duration={700} />
+    <BlogDetailContent slug={slug} translations={translations} />
+    </>
+  );
 }

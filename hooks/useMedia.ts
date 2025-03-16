@@ -65,7 +65,7 @@ export const useMedia = () => {
   
 
   // Delete a media
-  const deleteMedia = async (id: string) => {
+  const deleteMedia = async (id: string) => { 
     setLoading(true);
     setError(null);
     try {

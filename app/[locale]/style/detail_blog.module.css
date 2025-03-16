@@ -102,3 +102,71 @@
     background-color: #fff;
     color: #1A1A1A;
 }
+
+@media (max-width:768px) {
+    .banner_blog{
+        height: 70vw;
+    }
+    .blog_content{
+        padding: 6vw 5vw;
+    }
+    .blog_heading{
+        margin-bottom: 4.5vw;
+    }
+    .blog_heading h1{
+        font-size: 5vw;
+        letter-spacing: .07vw;
+        margin-bottom: 2vw;
+    }
+    .blog_heading span{
+        font-size: 3.4vw;
+        letter-spacing: .1vw;
+    }
+    .blog_desc p{
+        font-size: 3.4vw;
+        letter-spacing: .1vw;
+        margin-bottom: 1.3vw;
+        line-height: 1.5;
+        color: white;
+    }
+
+    .other_post{
+        padding: 6vw 5vw;
+    }
+    .other_post_heading{
+        margin-bottom: 5vw;
+    }
+    .other_post_heading h1{
+        font-size: 5vw;
+        letter-spacing: .08vw;
+    }
+    .list_blog_layout{
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 2.4vw;
+    }
+    .list_box_blog{
+        margin-bottom: 2.8vw;
+    }
+    .list_img_blog{
+        height: 45vw;
+        margin-bottom: 5vw;
+    }
+    .list_content_blog{
+        padding: 0 1.6vw;
+    }
+    .list_content_blog h3{
+        font-size: 4vw;
+        letter-spacing: .09vw;
+        margin-bottom: 2vw;
+    }
+    .list_content_blog span{
+        font-size: 3.4vw;
+        letter-spacing: .08vw;
+    }
+    .list_btn_blog button{
+        font-size: 3vw;
+        padding: 1.83vw 3.8vw;
+        letter-spacing: .08vw !important;
+        margin-top: 7vw;
+    }
+}

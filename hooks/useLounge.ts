@@ -10,6 +10,7 @@ type ImageSlide = {
 };
 
 type ImageSpaces = {
+  _id: string
   name: string;
   image: string;
 };
@@ -27,6 +28,8 @@ type Lounge = {
   address:string;
   banner: string | File;
   phone:string;
+  day:string;
+  time:string;
   city: string;
   taglineId: string;
   taglineEn: string;
@@ -37,11 +40,38 @@ type Lounge = {
   date: string;
 };
 
+type LoungeFe = {
+  _id: number;
+  name: string;
+  slug:string;
+  address:string;
+  banner: string | File;
+  phone:string;
+  city: string;
+  day:string;
+  time:string;
+  taglineId: string;
+  taglineEn: string;
+  taglineBanner: string | File;
+  imageSlide: ImageSlide[]; 
+  menu: menu[];
+  spaces: ImageSpaces[];
+  date: string;
+  className: 'btn_tab_left' | 'btn_tab_right' | 'btn_tab_bottom'; 
+};
+
+type City = {
+  _id: string;
+  name: string;
+};
+
 export const useLounge = () => {
   const { id } = useParams();
   const router = useRouter();
 
   const [lounges, setLounges] = useState<Lounge[]>([]);
+  const [citiesLounge, setCitiesLounge] = useState<City[]>([]);
+  const [loungesFe, setLoungesFe] = useState<LoungeFe[]>([]);
   const [loungesDetail, setLoungesDetail] = useState<Lounge>({
     _id: "",
     name: "",
@@ -57,12 +87,15 @@ export const useLounge = () => {
     menu: [],
     spaces: [],
     date: "",
+    day: "",
+    time: ""
   });
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewBanner, setPreviewBanner] = useState<string | null>(null);
+  const [previewTaglineBanner, setPreviewTaglineBanner] = useState<string | null>(null);
 
   // Fetch lounges from API
   const fetchLounges = async () => {
@@ -71,12 +104,40 @@ export const useLounge = () => {
     try {
       const response = await axios.get('/api/lounge');
       setLounges(response.data.data);
+      setLoungesFe(response.data.data);
     } catch (err) {
       setError('Failed to fetch lounges.');
     } finally {
       setLoading(false);
     }
   };
+
+  const fetchLoungesCity = async (cityName: string) => {
+    if (!cityName) {
+        setError("City name is required.");
+        return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+        const response = await axios.get(`/api/lounge?city=${encodeURIComponent(cityName)}`);
+        
+        if (response.data.success) {
+            setCitiesLounge(response.data.data);
+        } else {
+            setError("No lounges found.");
+            setCitiesLounge([]);
+        }
+    } catch (err) {
+        console.error("Error fetching lounges:", err);
+        setError("Failed to fetch lounges.");
+    } finally {
+        setLoading(false);
+    }
+};
+
 
   const addLounge = async (formData: FormData) => {
     setLoading(true);
@@ -169,27 +230,6 @@ export const useLounge = () => {
     setLoungesDetail((prev) => ({ ...prev, ...updatedFields }));
   };  
 
-  const fetchLoungeDetail = async (id: string) => {
-    if (!id) return;
-    
-    try {
-        const res = await fetch(`/api/lounge/${id}`);
-        if (!res.ok) throw new Error("Gagal mengambil data lounge");
-
-        const responseData: Lounge = await res.json();
-
-        setLoungesDetail(responseData);
-        if (responseData.banner instanceof File) {
-          setPreviewImage(URL.createObjectURL(responseData.banner)); // Jika File, buat URL sementara
-        } else {
-          setPreviewImage(responseData.banner || ""); // Jika string (URL gambar), langsung gunakan
-        } // Pastikan tidak `undefined`
-    } catch (error) {
-        console.error("Fetch error:");
-    } finally {
-        setLoading(false);
-    }
-  };
   
   useEffect(() => {
       if (!id) return;
@@ -199,14 +239,19 @@ export const useLounge = () => {
           const res = await fetch(`/api/lounge/${id}`, {
             method: "GET",
           });
-          if (!res.ok) throw new Error("Gagal mengambil data lounge");
     
           const responseData: Lounge = await res.json();
           setLoungesDetail(responseData);
           if (responseData.banner instanceof File) {
-            setPreviewImage(URL.createObjectURL(responseData.banner)); // Jika File, buat URL sementara
+            setPreviewBanner(URL.createObjectURL(responseData.banner)); // Jika File, buat URL sementara
           } else {
-            setPreviewImage(responseData.banner || ""); // Jika string (URL gambar), langsung gunakan
+            setPreviewBanner(responseData.banner || ""); // Jika string (URL gambar), langsung gunakan
+          }
+
+          if (responseData.taglineBanner instanceof File) {
+            setPreviewTaglineBanner(URL.createObjectURL(responseData.taglineBanner)); // Jika File, buat URL sementara
+          } else {
+            setPreviewTaglineBanner(responseData.taglineBanner || ""); // Jika string (URL gambar), langsung gunakan
           }
         } catch (error) {
           console.error("Fetch error:", error);
@@ -224,21 +269,26 @@ export const useLounge = () => {
 
   return {
     lounges,
+    loungesFe,
     loading,
     error,
     success,
     loungesDetail,
-    previewImage,
+    previewBanner,
+    previewTaglineBanner,
+    citiesLounge,
+    setCitiesLounge,
+    setLoungesFe,
     setError,
     setSuccess,
     updateLoungeDetail,
     setLoungesDetail,
     setLoading,
     fetchLounges,
-    fetchLoungeDetail,
     addLounge,
     deleteLounge,
     updateLounge,
+    setLounges,
   };
 }
 

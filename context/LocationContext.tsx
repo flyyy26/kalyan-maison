@@ -1,35 +1,52 @@
 'use client'
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { useLounge } from '@/hooks/useLounge';
+import useCity from '@/hooks/useCity';
 
-// Tipe untuk data lokasi
-interface Location {
-  id: number;
-  slug:string;
+type ImageSlide = {
   name: string;
-  banner: string;
-  gallery: string[];
-  section_image: string[];
-  images_circle: string[];
-  address: string;
-  phone: string;
-  day: string;
-  time: string;
-  className: 'btn_tab_left' | 'btn_tab_right' | 'btn_tab_bottom';  // Mendefinisikan nilai className yang valid
-}
+  image: string;
+};
 
-// Tipe untuk context value
+type ImageSpaces = {
+  _id: string
+  name: string;
+  image: string;
+};
+
+type menu = {
+  name: string;
+  description:string;
+  image: string;
+};
+
+type LoungeFe = {
+  _id: number;
+  name: string;
+  slug:string;
+  address:string;
+  banner: string | File;
+  phone:string;
+  day:string;
+  time:string;
+  city: string;
+  taglineId: string;
+  taglineEn: string;
+  taglineBanner: string | File;
+  imageSlide: ImageSlide[]; 
+  menu: menu[];
+  spaces: ImageSpaces[];
+  date: string;
+  className: 'btn_tab_left' | 'btn_tab_right' | 'btn_tab_bottom'; 
+};
+
+// Tipe untuk context value 
 interface LocationContextType {
-  locations: Location[];
-  setLocations: React.Dispatch<React.SetStateAction<Location[]>>;
+  loungesFe: LoungeFe[];
+  setLoungesFe: React.Dispatch<React.SetStateAction<LoungeFe[]>>;
 }
 
-// Data lokasi 
-const initialLocations: Location[] = [
-  { id: 1, slug: 'gunawarman', name: 'Gunawarman', gallery: ['/images/galeri_1.png', '/images/galeri_2.png', '/images/galeri_4.png'], banner: '/images/gunawarman_cover.png', section_image: ['/images/gunawarman_banner.png', '/images/sudirman_banner.png', '/images/kemang_banner.png'], images_circle: ['/images/gunawarman_1.png', '/images/gunawarman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_bottom' },
-  { id: 2, slug: 'sudirman', name: 'Sudirman', gallery: ['/images/galeri_3.png', '/images/galeri_2.png', '/images/galeri_1.png'], banner: '/images/sudirman_cover.png', section_image: ['/images/sudirman_banner.png', '/images/kemang_banner.png', '/images/gunawarman_banner.png'], images_circle: ['/images/sudirman_1.png', '/images/sudirman_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_right' },
-  { id: 3, slug: 'kemang', name: 'Kemang', gallery: ['/images/galeri_4.png', '/images/galeri_2.png', '/images/galeri_3.png'], banner: '/images/kemang_cover.png', section_image: ['/images/kemang_banner.png', '/images/sudirman_banner.png', '/images/gunawarman_banner.png'], images_circle: ['/images/kemang_image_1.png', '/images/kemang_image_2.png'], address: 'Jl. Gunawarman No.16, Selong, Kec. Kby. Baru, Jakarta, Daerah Khusus Ibukota Jakarta 12110, Indonesia', phone: '852-8146-6683', day: 'MON - SUN', time :'03.00-21.00', className: 'btn_tab_left' },
-];
 
 // Membuat context dengan tipe LocationContextType
 const LocationContext = createContext<LocationContextType | undefined>(undefined);
@@ -40,10 +57,19 @@ interface LocationProviderProps {
 }
 
 export const LocationProvider = ({ children }: LocationProviderProps) => {
-  const [locations, setLocations] = useState<Location[]>(initialLocations);
+  const {
+      loungesFe,
+      setLoungesFe,
+    } = useLounge();
+  
+  const {
+    cities,
+    setCities,
+  } = useCity();
+  
 
   return (
-    <LocationContext.Provider value={{ locations, setLocations, }}>
+    <LocationContext.Provider value={{ loungesFe, setLoungesFe }}>
       {children}
     </LocationContext.Provider>
   );

@@ -7,10 +7,12 @@ import line from "@/public/images/line_banner.png"
 import { HiChevronDown } from "react-icons/hi2";
 import { useMenu } from '@/context/MenuContext';
 import { useLocationContext } from '@/context/LocationContext'; 
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa";
-// import ContactSection from "@/components/Contact_section/page"
 import {useTranslations} from 'next-intl';
+import { useEffect, useState } from 'react';
+import {useContact} from '@/hooks/useContact'
+import { useCity } from '@/hooks/useCity';
 
 export default function Banner() {
     const t =  useTranslations();
@@ -20,46 +22,103 @@ export default function Banner() {
     setHoveredImageId,
     hoveredTab,
     setHoveredTab,
-    openSelect,
-    toggleDropdown,
     activeBannerImage,
     updateActiveBannerImage
   } = useMenu();
-  const { locations } = useLocationContext();
+  const { loungesFe } = useLocationContext();
 
-  const handleHoverImage = (id: number) => {
-    setHoveredImageId(id); // Update the hovered image ID
+  const { ContactDetail } = useContact();
+
+  const { cities } = useCity();
+  
+      const [selectedCity, setSelectedCity] = useState<string | null>(null);
+      const [selectedCityId, setSelectedCityId] = useState<string | null>(null);
+      const [openSelect, setOpenSelect] = useState(false);
+  
+      useEffect(() => {
+          if (cities.length > 0 && !selectedCity) {
+              setSelectedCity(cities[0].name); 
+              setSelectedCityId(cities[0]._id); // Simpan ID kota yang dipilih
+          }
+      }, [cities, selectedCity]);
+  
+      const toggleDropdown = () => setOpenSelect(!openSelect);
+  
+      const handleCityChange = (cityName: string, cityId: string) => {
+          setSelectedCity(cityName);
+          setSelectedCityId(cityId);
+          setOpenSelect(false);
+      };
+
+      const filteredLounges = loungesFe.filter((location) => location.city === selectedCityId);
+      
+          useEffect(() => {
+              if (cities.length > 0) {
+                  // Cari kota pertama yang memiliki lounge
+                  const cityWithLounge = cities.find(city => 
+                      loungesFe.some(lounge => lounge.city === city._id)
+                  );
+          
+                  if (cityWithLounge) {
+                      setSelectedCity(cityWithLounge.name);
+                      setSelectedCityId(cityWithLounge._id);
+                  } else {
+                      // Jika tidak ada kota dengan lounge, pilih kota pertama secara default
+                      setSelectedCity(cities[0].name);
+                      setSelectedCityId(cities[0]._id);
+                  }
+              }
+          }, [cities, loungesFe]);
+
+  const handleHoverImage = (tabId: number) => {
+    setHoveredImageId(tabId); // Update the hovered image ID
   };
 
   const handleHoverTab = (tabId: number) => {
     setHoveredTab(tabId); // Update the hovered tab
-    updateActiveBannerImage(tabId, locations); 
+    updateActiveBannerImage(tabId, loungesFe); 
   };
+
+  useEffect(() => {
+    updateActiveBannerImage(hoveredTab, loungesFe);
+}, [hoveredTab, loungesFe, updateActiveBannerImage]);
+
 
   return (
     <div>
       <div className={home.banner} style={{ backgroundImage: `url(${activeBannerImage})` }}> 
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
-        {locations.map((location) => (
+        {filteredLounges.map((lounge, index) => (
           <div
-            key={location.id}
-            className={`${home.btn_tab} ${home[location.className]}`}// Tambahkan class posisi
+            key={lounge._id}
+            className={`${home.btn_tab} ${
+              filteredLounges.length === 1
+                ? home.btn_tab_center
+                : index === 0
+                ? home.btn_tab_left
+                : index === 1
+                ? home.btn_tab_right
+                : index === 2
+                ? home.btn_tab_bottom
+                : ''
+            }`}
           >
-            <Link href={`/our-lounges/${location.slug}`}
+            <Link
+              href={`/our-lounges/${lounge.slug}`}
               className={`${home.circle} ${
-                hoveredTab === location.id ? home.active : ''
-              }`} // Tambahkan class jika dihover
-              onMouseEnter={() => handleHoverTab(location.id)}
+                hoveredTab === lounge._id ? home.active : ''
+              }`}
+              onMouseEnter={() => handleHoverTab(lounge._id)}
               onMouseLeave={() => setHoveredTab(null)}
             >
-              {hoveredTab === location.id && <span>Visit Branch</span>} {/* Munculkan tulisan */}
+              {hoveredTab === lounge._id && <span>Visit Branch</span>}
             </Link>
             <span
               className={`${home.tab_name} ${
-                hoveredTab === location.id ? home.hidden : ''
-              }`} // Sembunyikan span jika dihover
+                hoveredTab === lounge._id ? home.hidden : ''
+              }`}
             >
-              {location.name}
+              {lounge.name}
             </span>
           </div>
         ))}
@@ -67,22 +126,22 @@ export default function Banner() {
           <span>{t('welcome')}</span>
           <h1 translate="no">Kalyan Maison</h1>
         </div>
-        {locations.map((branch) => (
+        {loungesFe.map((lounge) => (
           <div
-            key={branch.id}
+            key={lounge._id}
             className={`${home.detail_branch_banner} ${
-              hoveredTab === branch.id ? home.active : ''
-            }`} 
+              hoveredTab === (lounge._id) ? home.active : ''
+            }`}  
           >
             <div className={home.heading_banner_dynamic}>
-              <h1>Kalyan Maison {branch.name}</h1>
-              <p>{branch.address}</p> 
-              <p>+62 {branch.phone}</p>
+              <h1>Kalyan Maison {lounge.name}</h1>
+              <p>{lounge.address}</p> 
+              <p> {lounge.phone}</p>
             </div>
             <div className={home.galeri_banner_dynamic}>
-              {branch?.images_circle.slice(0, 2).map((image, index) => (
+              {lounge.spaces.slice(0, 2).map((image: { image: string }, index: number) => (
                 <div key={index} className={home.galeri_banner_dynamic_box}>
-                  <Image src={image} fill alt={`Banner Image ${branch.name}`} />
+                  <Image src={image.image} fill alt={`Banner Image ${lounge.name}`} style={{objectFit: 'cover'}} />
                 </div>
               ))}
             </div>
@@ -92,42 +151,48 @@ export default function Banner() {
           <div className={home.banner_branch}>
             <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
               <button onClick={toggleDropdown}>
-                Jakarta <HiChevronDown />
+                {selectedCity || "Pilih Kota"}  <HiChevronDown /> 
               </button>
               <div className={`${home.dropdown_menu} ${openSelect ? home.dropdown_menu_show : ''}`}>
-                <button>Bali</button>
+                  {cities
+                  .filter((city) => city.name !== selectedCity) 
+                  .map((city) => (
+                      <button key={city._id} onClick={() => handleCityChange(city.name, city._id)}>
+                          {city.name}
+                      </button>
+                  ))}
               </div>
             </div>
             <div className={`${home.branch_list} ${isOpen ? home.branch_list_active : ''}`}>
-              {locations.map((location) => (
+              {loungesFe.map((lounge) => (
                 <Link
-                  key={location.id}
+                  key={lounge._id}
                   href="/"
-                  onMouseEnter={() => handleHoverImage(location.id)} // Set ID saat di-hover
+                  onMouseEnter={() => handleHoverImage((lounge._id))} // Set ID saat di-hover
                   onMouseLeave={() => setHoveredImageId(null)}
                 >
-                  {location.name}
+                  {lounge.name}
                 </Link>
               ))}
             </div>
           </div>
           <div className={home.banner_social_media}>
-            <Link href="/">
+            <Link href={`${ContactDetail.instagram}`} target='blank_'>
               <button className={home.banner_social_media_box}>
                 <FaInstagram />
               </button>
             </Link>
-            <Link href="/">
+            <Link href={`${ContactDetail.facebook}`} target='blank_'>
               <button className={home.banner_social_media_box}>
                 <FaFacebook />
               </button>
             </Link>
-            <Link href="/">
+            <Link href={`${ContactDetail.tiktok}`} target='blank_'>
               <button className={home.banner_social_media_box}>
                 <FaTiktok />
               </button>
             </Link>
-            <Link href="/">
+            <Link href={`https://api.whatsapp.com/send?phone=${ContactDetail.whatsapp}`} target='blank_'>
               <button className={home.banner_social_media_box}>
                 <FaWhatsapp />
               </button>
@@ -136,16 +201,17 @@ export default function Banner() {
           <div className={`${home.image_hover} ${hoveredImageId ? home.image_hover_active : ''}`}>
             {hoveredImageId !== null && (
               <>
-                {locations
-                  .find(loc => loc.id === hoveredImageId)
-                  ?.images_circle.slice(0, 2) // Batasi hanya dua gambar
+                {loungesFe
+                  .find(loc => (loc._id) === hoveredImageId)
+                  ?.spaces.slice(0, 2) // Batasi hanya dua gambar
                   .map((image, index) => (
                     <div key={index} className={home.image_hover_box}>
                       <Image
-                        src={image}
+                        src={image.image}
                         fill
-                        alt={`Image ${index + 1}`}
+                        alt={`Image ${image.name}`}
                       />
+                      haiiii
                     </div>
                   ))}
               </>

@@ -8,6 +8,7 @@ import {Locale, routing} from '@/i18n/routing';
 
 import { MenuProvider } from '@/context/MenuContext';
 import { LocationProvider } from '@/context/LocationContext'; 
+import Script from "next/script";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -29,6 +30,11 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
   const messages = await getMessages();
   return (
     <html lang={locale}>
+       <Script
+        strategy="lazyOnload"
+        src="http://localhost:3000/script.js"
+        data-website-id="58dde6a3-8cc2-4dad-93fc-d42e79d53c30"
+      />
       <body className={`${montserrat.variable}`}>
         <NextIntlClientProvider messages={messages}>
           <MenuProvider>

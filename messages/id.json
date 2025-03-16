@@ -32,7 +32,19 @@
     },
     "reservation" : {
         "heading" : "Reservasi",
-        "button" : "Reservasi Sekarang"
+        "button" : "Reservasi Sekarang",
+        "person" : "Orang",
+        "hour" : "Jam",
+        "name" : "Nama*",
+        "number" : "Nomor Telepon*",
+        "space" : "Ruangan*",
+        "lounge" : "Ruangan*",
+        "duration" : "Durasi*",
+        "number_person" : "Jumlah Orang*",
+        "reservation_error" : "Reservasi Gagal",
+        "reservation_success" : "Reservasi Berhasil",
+        "select_first" : "Pilih lounge terlebih dahulu",
+        "description" : "Selamat datang di halaman reservasi kami! Nikmati pengalaman terbaik dengan melakukan pemesanan terlebih dahulu untuk memastikan kenyamanan Anda. Pilih tanggal, waktu, dan layanan yang Anda inginkan dengan mudah melalui sistem reservasi kami."
     },
     "blog" : {
         "title": "judul id",
@@ -43,6 +55,11 @@
         "locale": "locale"
     },
     "about" : {
-        "smallHeading" : "Tentang"
+        "smallHeading" : "Tentang",
+        "desc_one" : "Selamat datang di Kalyan Maison Gunawarman, destinasi kuliner eksklusif yang menghadirkan pengalaman bersantap premium dengan sentuhan keanggunan dan cita rasa autentik.",
+        "desc_two" : "Kami menyajikan hidangan khas Western cuisine dengan standar kualitas tertinggi, menghadirkan keseimbangan sempurna antara rasa, tekstur, dan presentasi yang memukau. Dengan rating 5 bintang, Kalyan Maison Gunawarman telah menjadi pilihan utama para pecinta kuliner yang mengutamakan pengalaman makan yang istimewa.",
+        "desc_three" : "Setiap hidangan yang kami sajikan dibuat dengan bahan-bahan terbaik dan melalui proses yang teliti untuk menjaga kelezatan serta konsistensi rasa. Kami percaya bahwa makanan bukan hanya sekadar santapan, tetapi juga seni yang menghadirkan kebahagiaan di setiap suapan.",
+        "desc_four" : "Di Kalyan Maison, kami tidak hanya menyajikan makanan, tetapi juga menciptakan momen berharga. Nikmati suasana elegan dan layanan penuh keramahan yang akan membuat setiap kunjungan Anda menjadi pengalaman tak terlupakan.",
+        "desc_five" : "Temukan keistimewaan rasa di Kalyan Maison Gunawarman dan biarkan setiap hidangan membawa Anda ke perjalanan kuliner yang luar biasa."
     }
 } 

@@ -32,7 +32,19 @@
     },
     "reservation" : {
         "heading" : "Reservation",
-        "button" : "Reserve"
+        "button" : "Reserve",
+        "person" : "Person",
+        "hour" : "Hour",
+        "number" : "Phone Number*",
+        "space" : "Space*",
+        "lounge" : "Lounge*",
+        "duration" : "Duration*",
+        "name" : "Name*",
+        "number_person" : "Number Of Persons*",
+        "reservation_error" : "Reservation Failed",
+        "reservation_success" : "Reservation Success",
+        "select_first" : "Select lounge first",
+        "description" : "Welcome to our reservation page! Enjoy the best experience by making a reservation in advance to ensure your comfort. Choose your desired date, time, and service easily through our reservation system."
     },
     "blog" : {
         "title" : "judul",
@@ -42,7 +54,13 @@
         "other" : "Other Posts",
         "locale": "locale"
     },
-    "about" : {
-        "smallHeading" : "About"
+   "about": {
+    "smallHeading": "About",
+    "desc_one": "Welcome to Kalyan Maison Gunawarman, an exclusive culinary destination that offers a premium dining experience with elegance and authentic flavors.",
+    "desc_two": "We serve signature Western cuisine with the highest quality standards, delivering the perfect balance of taste, texture, and stunning presentation. With a 5-star rating, Kalyan Maison Gunawarman has become the top choice for culinary enthusiasts who seek an exceptional dining experience.",
+    "desc_three": "Every dish we serve is crafted with the finest ingredients and a meticulous process to maintain its deliciousness and consistency. We believe that food is not just a meal, but an art that brings joy in every bite.",
+    "desc_four": "At Kalyan Maison, we don’t just serve food, we create precious moments. Enjoy an elegant atmosphere and warm hospitality that will make every visit an unforgettable experience.",
+    "desc_five": "Discover the excellence of flavors at Kalyan Maison Gunawarman and let every dish take you on an extraordinary culinary journey."
     }
+
 } 

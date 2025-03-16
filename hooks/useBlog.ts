@@ -158,7 +158,7 @@ export const useBlog = () => {
           if (!res.ok) throw new Error("Gagal mengambil data blog");
 
           const responseData: Blog = await res.json();
-
+ 
           setBlogDetail(responseData);
           if (responseData.image instanceof File) {
             setPreviewImage(URL.createObjectURL(responseData.image)); // Jika File, buat URL sementara

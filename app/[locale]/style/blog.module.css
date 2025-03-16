@@ -29,6 +29,12 @@
     flex-direction: column;
     gap: 2vw;
 }
+.list_blog p{
+    font-size: 1vw;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .1vw;
+}
 .list_box_blog{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -124,5 +130,11 @@
         padding: 2vw 4.3vw;
         letter-spacing: .15vw !important;
         margin-top: 5vw;
+    }
+    .list_blog p{
+        font-size: 3vw;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: .1vw;
     }
 }

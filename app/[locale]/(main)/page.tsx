@@ -12,18 +12,20 @@ import { getTranslations } from 'next-intl/server';
 import Banner from "@/components/banner/page"
 import ListLounge from '@/components/listLounge/page';
 import { Link } from '@/i18n/routing';
+import LoadingPopup from '@/components/loading_popup/page';
 
 export default async function Home() {
   const t = await getTranslations();
 
   return (
     <>
+    <LoadingPopup duration={700} />
       <Banner/>
       <ListLounge/>
       <div className={home.button_layout}>
         <Link href="/our-lounges"><button>{t('allLounges')}</button></Link>
       </div>
-      <ContactSection/>
+      <ContactSection/>  
     </>
   );
 }

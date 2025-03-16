@@ -36,8 +36,6 @@ export default function LoungeForm() {
     }
   };
 
-  console.log('lounge', lounges)
-
   return (
     <>
    
@@ -72,8 +70,8 @@ export default function LoungeForm() {
               lounges.map((lounge, index) => (
                 <tr key={lounge._id}>
                   <td style={{textAlign: 'center'}}>{index + 1}</td>
-                  <td>{lounge.name}</td>
-                  <td style={{textAlign: 'center'}}>{lounge.address || "kosong"}</td>
+                  <td style={{textAlign: 'center'}}>{lounge.name}</td>
+                  <td style={{textAlign: 'center', width:'30%'}}>{lounge.address || "kosong"}</td>
                   <td style={{textAlign: 'center'}}>{lounge.phone || "kosong"}</td>
                   <td style={{textAlign: 'center'}}>
                     <Image

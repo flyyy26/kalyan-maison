@@ -9,6 +9,7 @@ import { Link } from '@/i18n/routing';
 import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { HiChevronDown } from "react-icons/hi2";
+import { GoTrash } from "react-icons/go";
 
 export default function CreateLounge(){
     const router = useRouter();
@@ -36,6 +37,8 @@ export default function CreateLounge(){
     const [slug, setSlug] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+    const [day, setDay] = useState('');
+    const [time, setTime] = useState('');
     const [taglineId, setTaglineId] = useState('');
     const [taglineEn, setTaglineEn] = useState('');
     const [banner, setBanner] = useState<File | null>(null);
@@ -50,6 +53,7 @@ export default function CreateLounge(){
     const [showInput, setShowInput] = useState(false); 
     const [selectedCity, setSelectedCity] = useState<string | null>(null); // Simpan _id, bukan nama
     const [selectedCityName, setSelectedCityName] = useState<string>("");
+    const [, setDeletingCityId] = useState<string | null>(null);
     const [imageSlide, setImageSlide] = useState<{ imageItem: File | null; titleItem: string }[]>([
       { imageItem: null, titleItem: "" }
     ]);
@@ -229,7 +233,7 @@ export default function CreateLounge(){
       setError(null);
       setSuccess(null);
     
-      if (!name || !slug || !phone || !address || !selectedCity || !taglineId || !taglineEn || !banner || !taglineBanner) {
+      if (!name || !slug || !phone || !address || !day || !time || !selectedCity || !taglineId || !taglineEn || !banner || !taglineBanner) {
         setError("⚠️ Semua kolom harus diisi!");
         return;
       }
@@ -238,6 +242,8 @@ export default function CreateLounge(){
       formData.append("name", name);
       formData.append("slug", slug);
       formData.append("address", address);
+      formData.append("day", day);
+      formData.append("time", time);
       formData.append("phone", phone);
       formData.append("city", selectedCity);
       formData.append("banner", banner);
@@ -301,6 +307,8 @@ export default function CreateLounge(){
           setSlug("");
           setPhone("");
           setAddress("");
+          setDay("");
+          setTime("");
           setSelectedCity(null);
           setTaglineId("");
           setTaglineEn("");
@@ -326,6 +334,17 @@ export default function CreateLounge(){
         ...prev,
         [id]: !prev[id], // Toggle visibility for the specific dropdown
         }));
+    };
+
+    const deleteCities = async (cityId: string) => {
+      setDeletingCityId(cityId);
+      try {
+        await deleteCity(cityId);
+      } catch (error) {
+        console.error("Failed to delete image:", error);
+      } finally {
+        setDeletingCityId(null);
+      }
     };
 
     useEffect(() => {
@@ -420,13 +439,22 @@ export default function CreateLounge(){
                     >
                       {/* Daftar kota yang bisa dipilih */}
                       {cities.map((city) => (
-                        <button type="button" key={city._id} onClick={() => handleSelectCity(city._id, city.name)}>
-                          {city.name}
-                        </button>
+                        <div key={city._id} className={styles.cityContainer}>
+                          <button type="button" onClick={() => handleSelectCity(city._id, city.name)}>
+                            {city.name}
+                          </button>
+                          <span className={styles.btnDeleteItem} onClick={(e) => { 
+                            e.stopPropagation(); // Mencegah onClick button ikut terpanggil
+                            deleteCities(city._id);
+                          }}>
+                            <GoTrash/>
+                          </span>
+                        </div>
                       ))}
 
                       <div className={styles.inputAdd}>
                         {showInput && (
+                          <>
                           <input
                             type="text"
                             value={newCity}
@@ -436,8 +464,10 @@ export default function CreateLounge(){
                             className={styles.input}
                             disabled={loading}
                           />
+                          <p>Click Enter to Add</p>
+                          </>
                         )}
-                        <p>Click Enter to Add</p>
+                        
                       </div>
 
                       <button type="button" onClick={() => setShowInput(true)} disabled={loading}>
@@ -469,6 +499,30 @@ export default function CreateLounge(){
                 onChange={(e) => setAddress(e.target.value)}
                 required
                 placeholder="Enter lounge address"
+              />
+            </div>
+          </div>
+          <div className={styles.form_double}>
+            <div className={styles.form_single}>
+              <label htmlFor="day">Day Open</label>
+              <input
+                type="text"
+                id="day"
+                value={day}
+                onChange={(e) => setDay(e.target.value)}
+                required
+                placeholder="Ex: Monday - Sunday"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="time">Time Open</label>
+              <input
+                type="text"
+                id="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                required
+                placeholder="Ex: 03.00-21.00"
               />
             </div>
           </div>

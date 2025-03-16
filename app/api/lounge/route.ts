@@ -1,10 +1,11 @@
 import { ConnectDB } from "@/app/lib/config/db";
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { unlink, writeFile } from "fs/promises";
 import LoungeModel from "@/app/lib/models/loungeModel";
 import CityModel from "@/app/lib/models/cityModel"
 import fs from 'fs';
 import { promisify } from "util";
+import path from "path";
 const unlinkAsync = promisify(fs.unlink);
 
 const LoadDB = async () => {
@@ -14,32 +15,39 @@ const LoadDB = async () => {
 LoadDB();
 
 export async function GET(request: Request) {
-    try {
-      const { searchParams } = new URL(request.url);
-      const cityName = searchParams.get("city");
-  
-      let lounges;
-  
-      if (cityName) {
-        // Jika cityName ada, ambil lounge berdasarkan city
-        const city = await CityModel.findOne({ name: cityName });
-        if (!city) {
-          return NextResponse.json({ success: false, msg: "City not found" }, { status: 404 });
-        }
-  
-        lounges = await LoungeModel.find({ city: city._id }).populate("city");
-      } else {
-        // Jika tidak ada cityName, ambil semua lounge
-        lounges = await LoungeModel.find({});
+  try {
+    const { searchParams } = new URL(request.url);
+    const cityName = searchParams.get("city");
+
+    console.log("City Name:", cityName);
+
+    let lounges;
+
+    if (cityName) {
+      // Jika ada cityName, cari kota di database
+      const city = await CityModel.findOne({ name: new RegExp(`^${cityName}$`, "i") });
+
+      console.log("Found City:", city);
+
+      if (!city) {
+        return NextResponse.json({ success: false, msg: "City not found" }, { status: 404 });
       }
-  
-      console.log("Lounge GET Hit");
-      return NextResponse.json({ success: true, data: lounges });
-    } catch (error) {
-      console.error("Error fetching lounges:", error);
-      return NextResponse.json({ success: false, msg: "Internal Server Error" }, { status: 500 });
+
+      lounges = await LoungeModel.find({ city: city._id });
+    } else {
+      // Jika tidak ada cityName, ambil semua lounge
+      lounges = await LoungeModel.find({});
     }
+
+    console.log("Found Lounges:", lounges);
+
+    return NextResponse.json({ success: true, data: lounges });
+  } catch (error) {
+    console.error("Error fetching lounges:", error);
+    return NextResponse.json({ success: false, msg: "Internal Server Error" }, { status: 500 });
   }
+}
+
 
   export async function POST(request: Request) {
     try {
@@ -84,7 +92,7 @@ export async function GET(request: Request) {
       // 🔹 Proses gambar imageSlide
       const imageSlideFiles = formData.getAll("imageSlides") as File[];
   
-      imageSlide = imageSlide.map((slide: any, index: number) => {
+      imageSlide = imageSlide.map((slide: { name: string; image: string }, index: number) => {
         if (imageSlideFiles[index]) {
           const file = imageSlideFiles[index];
           const filePath = `./public/${timestamp}_${file.name}`;
@@ -107,7 +115,7 @@ export async function GET(request: Request) {
 
       const imageSpaceFiles = formData.getAll("imageSpaces") as File[];
   
-      spaces = spaces.map((space: any, index: number) => {
+      spaces = spaces.map((space: { name: string; image: string }, index: number) => {
         if (imageSpaceFiles[index]) {
           const fileSpace = imageSpaceFiles[index];
           const filePathSpace = `./public/${timestamp}_${fileSpace.name}`;
@@ -130,7 +138,7 @@ export async function GET(request: Request) {
 
       const imageMenuFiles = formData.getAll("imageMenu") as File[];
   
-      menu = menu.map((menu: any, index: number) => {
+      menu = menu.map((menu: { name: string; image: string; description: string }, index: number) => {
         if (imageMenuFiles[index]) {
           const fileMenu = imageMenuFiles[index];
           const filePathMenu = `./public/${timestamp}_${fileMenu.name}`;
@@ -158,6 +166,8 @@ export async function GET(request: Request) {
         slug: formData.get("slug") as string,
         phone: formData.get("phone") as string,
         address: formData.get("address") as string,
+        day: formData.get("day") as string,
+        time: formData.get("time") as string,
         city: formData.get("city") as string,
         taglineId: formData.get("taglineId") as string,
         taglineEn: formData.get("taglineEn") as string,
@@ -169,7 +179,7 @@ export async function GET(request: Request) {
       };
   
       // Validasi data
-      if (!loungeData.name || !loungeData.slug || !loungeData.address || !loungeData.phone || !loungeData.city || !loungeData.taglineId || !loungeData.taglineEn || !loungeData.banner || !loungeData.taglineBanner) {
+      if (!loungeData.name || !loungeData.slug || !loungeData.address || !loungeData.phone || !loungeData.city || !loungeData.taglineId || !loungeData.taglineEn || !loungeData.banner || !loungeData.day || !loungeData.time || !loungeData.taglineBanner) {
         return NextResponse.json(
           { success: false, msg: "Semua field wajib diisi." },
           { status: 400 }
@@ -209,7 +219,7 @@ export async function GET(request: Request) {
     // Hapus semua gambar dalam imageSlideFiles
     if (Array.isArray(lounge.imageSlide)) {
       await Promise.all(
-        lounge.imageSlide.map((slide: any) =>
+        lounge.imageSlide.map((slide: { name: string; image: string }) =>
           slide.image ? unlinkAsync(`./public${slide.image}`).catch(() => {}) : null
         )
       );
@@ -218,7 +228,7 @@ export async function GET(request: Request) {
     // Hapus semua gambar dalam imageSlideFiles
     if (Array.isArray(lounge.spaces)) {
       await Promise.all(
-        lounge.spaces.map((space: any) =>
+        lounge.spaces.map((space: { name: string; image: string }) =>
           space.image ? unlinkAsync(`./public${space.image}`).catch(() => {}) : null
         )
       );
@@ -226,13 +236,34 @@ export async function GET(request: Request) {
 
     if (Array.isArray(lounge.menu)) {
       await Promise.all(
-        lounge.menu.map((menu: any) =>
+        lounge.menu.map((menu: { name: string; image: string; description: string }) =>
           menu.image ? unlinkAsync(`./public${menu.image}`).catch(() => {}) : null
         )
+      );
+    }
+
+    if (Array.isArray(lounge.imageSlide)) {
+      console.log("🔎 lounge.imageSlide:", lounge.imageSlide);
+    
+      await Promise.all(
+        lounge.imageSlide.map(async (slide: { name: string; image: string }) => {
+          if (slide.image) {
+            const filePath = path.resolve(`./public${slide.image}`);
+            try {
+              await unlink(filePath);
+              console.log(`✅ File terhapus: ${filePath}`);
+            } catch (err) {
+              if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
+                console.error(`❌ Gagal menghapus file: ${filePath}`, err);
+              }
+            }
+          }
+        })
       );
     }
   
     await LoungeModel.findByIdAndDelete(id);
     return NextResponse.json({ msg: "Lounge terhapus" });
   }
+
   

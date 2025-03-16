@@ -8,6 +8,7 @@ import ContactSection from "@/components/Contact_section/page"
 import { useTranslations } from 'next-intl'
 import { useBlog } from '@/hooks/useBlog'; 
 import { useParams } from 'next/navigation';
+import LoadingPopup from '@/components/loading_popup/page';
 
 export default function Blog(){
     const t =  useTranslations();
@@ -27,31 +28,36 @@ export default function Blog(){
         year: 'numeric',
         })
         .replace(/(\d+) (\w+) (\d+)/, '$1 $2, $3'); // Menambahkan koma setelah bulan
-    };  
+    }; 
  
   return (
     <>
+    <LoadingPopup duration={700} />
         <div className={blog.heading_blog}>
             <span>{t('blog.smallHeading')}</span>
             <h1>{t('blog.heading')}</h1>
         </div>
         <div className={blog.list_blog}>
-            {blogs.map((blog_item) => (
+            {blogs.length > 0 ? (
+            blogs.map((blog_item) => (
                 <div className={blog.list_box_blog} key={blog_item._id}>
-                    <div className={blog.list_img_blog}>
-                        <Image src={blog_item.image instanceof File ? URL.createObjectURL(blog_item.image) : blog_item.image}  fill alt={blog_item.title} objectFit='cover'/>
+                <div className={blog.list_img_blog}>
+                    <Image src={blog_item.image instanceof File ? URL.createObjectURL(blog_item.image) : blog_item.image} fill alt={blog_item.title} objectFit='cover'/>
+                </div>
+                <div className={blog.list_content_blog}>
+                    <div className={blog.list_heading_blog}>
+                    <h3>{blog_item.title}</h3>
+                    <span>{formatDate(blog_item.date)}</span>
                     </div>
-                    <div className={blog.list_content_blog}>
-                        <div className={blog.list_heading_blog}>
-                            <h3>{blog_item.title}</h3>
-                            <span>{formatDate(blog_item.date)}</span>
-                        </div>
-                        <div className={blog.list_btn_blog}>
-                            <Link href={`/blog/${blog_item.slug}`}><button>{t('blog.view')}</button></Link>
-                        </div>
+                    <div className={blog.list_btn_blog}>
+                    <Link href={`/blog/${blog_item.slug}`}><button>{t('blog.view')}</button></Link>
                     </div>
                 </div>
-            ))}
+                </div>
+            ))
+            ) : (
+            <p>Blog Kosong</p>
+            )}
         </div>
         <ContactSection/>
     </>
