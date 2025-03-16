@@ -4,6 +4,7 @@ import React from 'react'
 import Image from 'next/image';
 import home from "@/app/[locale]/style/home.module.css"
 import line from "@/public/images/line_banner.png"
+import lineDekstop from "@/public/images/circle_dekstop.png"
 import { HiChevronDown } from "react-icons/hi2";
 import { useMenu } from '@/context/MenuContext';
 import { useLocationContext } from '@/context/LocationContext'; 
@@ -88,6 +89,7 @@ export default function Banner() {
     <div>
       <div className={home.banner} style={{ backgroundImage: `url(${activeBannerImage})` }}> 
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
+        <Image src={lineDekstop} width={800} height={800} alt="Banner Kalyan Maison" className={home.line_dekstop}/>
         {filteredLounges.map((lounge, index) => (
           <div
             key={lounge._id}
@@ -164,16 +166,16 @@ export default function Banner() {
               </div>
             </div>
             <div className={`${home.branch_list} ${isOpen ? home.branch_list_active : ''}`}>
-              {loungesFe.map((lounge) => (
+                {filteredLounges.map((lounge) => (
                 <Link
                   key={lounge._id}
                   href="/"
-                  onMouseEnter={() => handleHoverImage((lounge._id))} // Set ID saat di-hover
+                  onMouseEnter={() => handleHoverImage(lounge._id)} // Set ID saat di-hover
                   onMouseLeave={() => setHoveredImageId(null)}
                 >
                   {lounge.name}
                 </Link>
-              ))}
+                ))}
             </div>
           </div>
           <div className={home.banner_social_media}>

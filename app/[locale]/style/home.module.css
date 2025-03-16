@@ -9,6 +9,10 @@
 }
 .line{
     z-index:1;
+    display: block;
+}
+.line_dekstop{
+    display: none;
 }
 .btn_tab{
     display: flex;
@@ -608,6 +612,62 @@
 }
 
 @media (max-width:768px) {
+    .btn_tab{
+        gap: 3vw;
+    }
+    .btn_tab span{
+        text-transform: uppercase;
+        font-size: 4vw;
+        color: white;
+        font-weight: 300;
+        letter-spacing: .05vw;
+        display: block;
+    }
+    .btn_tab_bottom{
+        bottom: 32.5vw;
+        gap: 3vw;
+    }
+    .circle{
+        width: 3.1vw;
+        height: 3.1vw;
+    }
+
+    .line_dekstop{
+        display: block;
+        width: 150vw;
+        height: 150vw;
+        position: absolute;
+        top: 36%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .line{
+        z-index:1;
+        display: none;
+    }
+    .banner{
+        width: 100%;
+        height: 170vw;
+        background-image: url(../../../public/images/bg_banner.png);
+        background-position: bottom center;
+        background-size: cover;
+        position: relative;
+        transition: .3s all;
+    }
+    .heading_banner{
+        width: 100%;
+        top: 40%;
+    }
+    .heading_banner span{
+        font-size: 3.8vw;
+        letter-spacing: .3vw;
+    }
+    .heading_banner h1{
+        font-size: 8vw;
+        width: 100%;
+        letter-spacing: .08vw;
+        margin-top: 1.8vw;
+    }
     .section_2{
         
         padding: 70vw 5vw;
@@ -779,7 +839,7 @@
     }
     .banner_bottom_content_active{
         position: absolute;
-        bottom: -290%;
+        bottom: -24vw;
         left: 0;
         width: 100%;
         z-index: 100;
@@ -812,12 +872,29 @@
     .dropdown {
         margin-bottom: 4vw;
     }
+    .dropdown_menu button{
+        margin-top: 2.8vw;
+    }
     .branch_list{
         gap: 3vw;
         margin-bottom: 6vw;
+        display: none;
     }
     .branch_list a{
         letter-spacing: .14vw !important;
         font-size: 3vw;
+    }
+    .branch_list_active{
+        display: flex;
+    }
+    .btn_tab_left{
+        flex-direction: row;
+        top: 31.6vw;
+        left: -1vw;
+    }
+    .btn_tab_right{
+        flex-direction: row-reverse;
+        right: -1vw;
+        top: 31.6vw;
     }
 }

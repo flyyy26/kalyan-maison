@@ -117,8 +117,8 @@ export default function OurLounges() {
                             <div className={home.branch_detail_layout}>
                                 <p className={home.address_content}>{location.address}</p>
                                 <div className={home.branch_time}>
-                                    <span>Senin - Kamis</span>
-                                    <p>20:00</p>
+                                    <span>{location.day}</span>
+                                    <p>{location.time}</p>
                                 </div>
                             </div>
                             <div className={home.branch_phone}>
