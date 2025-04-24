@@ -92,11 +92,17 @@ export default function Banner() {
           style={{
             backgroundImage: `url(${
               hoveredTab === 100
-                ? '/images/Shop.webp' // Ganti dengan image khusus Kalyan Shop
+                ? 'https://res.cloudinary.com/dlhaohgff/image/upload/v1745480978/slfmpxyrbdoiwuoxgayu.webp' // Ganti dengan image khusus Kalyan Shop
                 : activeBannerImage
             })`,
           }}
         >
+          <div
+  className={`${home.banner} ${hoveredTab === 100 ? 'shopBackground' : ''}`}
+  style={{
+    backgroundImage: hoveredTab !== 100 ? `url(${activeBannerImage})` : undefined
+  }}
+></div>
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
         <Image src={lineDekstop} width={800} height={800} alt="Banner Kalyan Maison" className={home.line_dekstop}/>
         {filteredLounges.map((lounge, index) => {

@@ -383,3 +383,8 @@ a {
     text-align: center;
   }
 }
+.shopBackground {
+  background-image: url(/public/images/shop.webp) !important;
+  background-size: cover;
+  background-position: center;
+}
