@@ -11,4 +11,3 @@ export default function MainPageLayout({ children }: { children: React.ReactNode
       </>
     );
   }
-  

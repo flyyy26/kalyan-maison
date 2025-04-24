@@ -67,12 +67,27 @@ export async function GET(request: Request) {
           { status: 400 }
         );
       }
-  
-      const bannerByteData = await banner.arrayBuffer();
-      const buffer = Buffer.from(bannerByteData);
-      const path = `./public/${timestamp}_${banner.name}`;
-      await writeFile(path, buffer);
-      const bannerUrl = `/${timestamp}_${banner.name}`;
+
+      const bannerBuffer = Buffer.from(await banner.arrayBuffer());
+      const bannerFilename = `${timestamp}_${banner.name}`;
+      const bannerPath = path.join("./public", bannerFilename);
+      await writeFile(bannerPath, bannerBuffer);
+      const bannerUrl = `/${bannerFilename}`;
+
+      // === Handle Logo Upload ===
+      const logo = formData.get("logo") as File | null;
+      if (!logo) {
+        return NextResponse.json(
+          { success: false, msg: "Gambar logo tidak ditemukan." },
+          { status: 400 }
+        );
+      }
+
+      const logoBuffer = Buffer.from(await logo.arrayBuffer());
+      const logoFilename = `${timestamp}_${logo.name}`;
+      const logoPath = path.join("./public", logoFilename);
+      await writeFile(logoPath, logoBuffer);
+      const logoUrl = `/${logoFilename}`;
   
       // 🔹 Proses taglineBanner
       const taglineBanner = formData.get("taglineBanner") as File | null;
@@ -175,11 +190,12 @@ export async function GET(request: Request) {
         menu,
         spaces,
         banner: bannerUrl,
+        logo: logoUrl,
         taglineBanner: taglineBannerUrl,
       };
   
       // Validasi data
-      if (!loungeData.name || !loungeData.slug || !loungeData.address || !loungeData.phone || !loungeData.city || !loungeData.taglineId || !loungeData.taglineEn || !loungeData.banner || !loungeData.day || !loungeData.time || !loungeData.taglineBanner) {
+      if (!loungeData.name || !loungeData.slug || !loungeData.address || !loungeData.phone || !loungeData.city || !loungeData.taglineId || !loungeData.taglineEn || !loungeData.banner || !loungeData.logo || !loungeData.day || !loungeData.time || !loungeData.taglineBanner) {
         return NextResponse.json(
           { success: false, msg: "Semua field wajib diisi." },
           { status: 400 }
@@ -209,10 +225,12 @@ export async function GET(request: Request) {
     }
   
     fs.unlink(`./public${lounge.banner}`, () => {});
+    fs.unlink(`./public${lounge.logo}`, () => {});
     fs.unlink(`./public${lounge.taglineBanner}`, () => {});
   
     await Promise.all([
       lounge.banner && unlinkAsync(`./public${lounge.banner}`).catch(() => {}),
+      lounge.logo && unlinkAsync(`./public${lounge.logo}`).catch(() => {}),
       lounge.taglineBanner && unlinkAsync(`./public${lounge.taglineBanner}`).catch(() => {}),
     ]);
   

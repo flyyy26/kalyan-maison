@@ -22,6 +22,7 @@ type menu = {
 };
 
 type LoungeFe = {
+  logo: string | File;
   _id: number;
   name: string;
   slug:string;

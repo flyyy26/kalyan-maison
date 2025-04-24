@@ -27,6 +27,7 @@ type Lounge = {
   slug:string;
   address:string;
   banner: string | File;
+  logo: string | File;
   phone:string;
   day:string;
   time:string;
@@ -46,6 +47,7 @@ type LoungeFe = {
   slug:string;
   address:string;
   banner: string | File;
+  logo: string | File;
   phone:string;
   city: string;
   day:string;
@@ -78,6 +80,7 @@ export const useLounge = () => {
     slug:"",
     address:"",
     banner: "" ,
+    logo: "" ,
     phone:"",
     city: "",
     taglineId: "",
@@ -95,6 +98,7 @@ export const useLounge = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
+  const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [previewTaglineBanner, setPreviewTaglineBanner] = useState<string | null>(null);
 
   // Fetch lounges from API
@@ -248,6 +252,12 @@ export const useLounge = () => {
             setPreviewBanner(responseData.banner || ""); // Jika string (URL gambar), langsung gunakan
           }
 
+          if (responseData.logo instanceof File) {
+            setPreviewLogo(URL.createObjectURL(responseData.logo)); // Jika File, buat URL sementara
+          } else {
+            setPreviewLogo(responseData.logo || ""); // Jika string (URL gambar), langsung gunakan
+          }
+
           if (responseData.taglineBanner instanceof File) {
             setPreviewTaglineBanner(URL.createObjectURL(responseData.taglineBanner)); // Jika File, buat URL sementara
           } else {
@@ -275,6 +285,7 @@ export const useLounge = () => {
     success,
     loungesDetail,
     previewBanner,
+    previewLogo,
     previewTaglineBanner,
     citiesLounge,
     setCitiesLounge,

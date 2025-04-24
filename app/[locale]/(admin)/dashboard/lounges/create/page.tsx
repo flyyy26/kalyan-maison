@@ -42,9 +42,11 @@ export default function CreateLounge(){
     const [taglineId, setTaglineId] = useState('');
     const [taglineEn, setTaglineEn] = useState('');
     const [banner, setBanner] = useState<File | null>(null);
+    const [logo, setLogo] = useState<File | null>(null);
     const [taglineBanner, setTaglineBanner] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
+    const [previewLogo, setPreviewLogo] = useState<string | null>(null);
     const [previewTagline, setPreviewTagline] = useState<string | null>(null);
     const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
     const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -178,6 +180,14 @@ export default function CreateLounge(){
         }
     };
 
+    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFileLogo = e.target.files?.[0];
+        if (selectedFileLogo) {
+        setLogo(selectedFileLogo);
+        setPreviewLogo(URL.createObjectURL(selectedFileLogo)); // Buat preview gambar
+        }
+    };
+
     const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
         e.preventDefault();
         setDragActive(true);
@@ -233,7 +243,7 @@ export default function CreateLounge(){
       setError(null);
       setSuccess(null);
     
-      if (!name || !slug || !phone || !address || !day || !time || !selectedCity || !taglineId || !taglineEn || !banner || !taglineBanner) {
+      if (!name || !logo || !slug || !phone || !address || !day || !time || !selectedCity || !taglineId || !taglineEn || !banner || !taglineBanner) {
         setError("⚠️ Semua kolom harus diisi!");
         return;
       }
@@ -247,6 +257,7 @@ export default function CreateLounge(){
       formData.append("phone", phone);
       formData.append("city", selectedCity);
       formData.append("banner", banner);
+      formData.append("logo", logo);
       formData.append("taglineBanner", taglineBanner);
       formData.append("taglineId", taglineId);
       formData.append("taglineEn", taglineEn);
@@ -313,6 +324,7 @@ export default function CreateLounge(){
           setTaglineId("");
           setTaglineEn("");
           setBanner(null);
+          setLogo(null);
           setTaglineBanner(null);
           setImageSlide([{ imageItem: null, titleItem: "" }]);
           setSpaces([{ imageItemSpaces: null, titleItemSpaces: "" }]);
@@ -386,32 +398,61 @@ export default function CreateLounge(){
         </Link>
         <h2>Add Lounge</h2>
         <form onSubmit={handleSubmit}>
-          <div className={styles.form_single}>
-            <label
-              htmlFor="banner"
-              className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              {banner ? (
-                <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-              ) : (
-                <>
-                  <p>Lounge Banner</p>
-                  <PiImageThin />
-                  <p>Drag & Drop file here or click to upload</p>
-                </>
-              )}
-              <input
-                type="file"
-                id="banner"
-                accept="image/*"
-                onChange={handleImageChange}
-                className={styles.file_input}
-                required
-              />
-            </label>
+          <div className={styles.form_double}>
+            <div className={styles.form_single}>
+              <label
+                htmlFor="banner"
+                className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {banner ? (
+                  <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
+                ) : (
+                  <>
+                    <p>Lounge Banner</p>
+                    <PiImageThin />
+                    <p>Drag & Drop file here or click to upload</p>
+                  </>
+                )}
+                <input
+                  type="file"
+                  id="banner"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className={styles.file_input}
+                  required
+                />
+              </label>
+            </div>
+            <div className={styles.form_single}>
+              <label
+                htmlFor="logo"
+                className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {banner ? (
+                  <Image width={800} height={800} src={previewLogo || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
+                ) : (
+                  <>
+                    <p>Lounge Logo</p>
+                    <PiImageThin />
+                    <p>Drag & Drop file here or click to upload</p>
+                  </>
+                )}
+                <input
+                  type="file"
+                  id="logo"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                  className={styles.file_input}
+                  required
+                />
+              </label>
+            </div>
           </div>
           <div className={styles.form_double}>
             <div className={styles.form_single}>

@@ -39,6 +39,7 @@ export default function EditLounge(){
         error,
         success,
         previewBanner,
+        previewLogo,
         previewTaglineBanner,
         loungesDetail,
         setError,
@@ -57,9 +58,11 @@ export default function EditLounge(){
       } = useCity();
 
     const [banner, setBanner] = useState<File | null>(null);
+    const [logo, setLogo] = useState<File | null>(null);
     const [taglineBanner, setTaglineBanner] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
+    const [previewLogoEdit, setPreviewLogo] = useState<string | null>(null);
     const [previewTagline, setPreviewTagline] = useState<string | null>(null);
     const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
     const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -269,6 +272,28 @@ export default function EditLounge(){
         }
     };
 
+    // const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    //     if (e.target.files && e.target.files[0]) {
+    //       const selectedFileLogo = e.target.files[0];
+    //       setLogo(selectedFileLogo);
+    //       setPreviewLogo(URL.createObjectURL(selectedFileLogo));
+      
+    //       setLoungesDetail((prev) => ({
+    //         ...prev,
+    //         image: selectedFileLogo, // ✅ Sekarang bisa menyimpan File
+    //       }));
+    //     }
+    // };
+
+    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFileLogo = e.target.files?.[0];
+        if (selectedFileLogo) {
+        setLogo(selectedFileLogo);
+        setPreviewLogo(URL.createObjectURL(selectedFileLogo)); // Buat preview gambar
+        }
+    };
+
     const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
         e.preventDefault();
         setDragActive(true);
@@ -337,6 +362,7 @@ export default function EditLounge(){
         formData.append("phone", loungesDetail.phone);
         formData.append("city", selectedCity ?? loungesDetail.city ?? "");
         formData.append("banner", loungesDetail.banner);
+        formData.append("logo", loungesDetail.logo);
         formData.append("taglineBanner", loungesDetail.taglineBanner); // Correctly append taglineBanner
         formData.append("taglineId", loungesDetail.taglineId);
         formData.append("taglineEn", loungesDetail.taglineEn);
@@ -470,30 +496,57 @@ export default function EditLounge(){
         </Link>
         <h2>Edit Lounge {loungesDetail.name}</h2>
         <form onSubmit={handleSubmit}>
-          <div className={styles.form_single}>
-            <label
-              htmlFor="banner"
-              className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              {banner ? (
-                <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-              ) : (
-                <>
-                  <Image width={800} height={800} src={previewBanner || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-                </>
-              )}
-              <input
-                type="file"
-                id="banner"
-                accept="image/*"
-                onChange={handleImageChange}
-                className={styles.file_input}
-                required
-              />
-            </label>
+          <div className={styles.form_double}>
+            <div className={styles.form_single}>
+              <label
+                htmlFor="banner"
+                className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {banner ? (
+                  <Image width={800} height={800} src={preview || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
+                ) : (
+                  <>
+                    <Image width={800} height={800} src={previewBanner || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
+                  </>
+                )}
+                <input
+                  type="file"
+                  id="banner"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className={styles.file_input}
+                  required
+                />
+              </label>
+            </div>
+            <div className={styles.form_single}>
+              <label
+                htmlFor="logo"
+                className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {logo ? (
+                  <Image width={800} height={800} src={previewLogoEdit || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
+                ) : (
+                  <>
+                    <Image width={800} height={800} src={previewLogo || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
+                  </>
+                )}
+                <input
+                  type="file"
+                  id="logo"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                  className={styles.file_input}
+                  required
+                />
+              </label>
+            </div>
           </div>
           <div className={styles.form_double}>
             <div className={styles.form_single}>

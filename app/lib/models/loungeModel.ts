@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
 const LoungeSchema  = new mongoose.Schema({
+    logo:{
+        type:String,
+        required:true
+    },
     name:{
         type:String,
         required:true

@@ -69,6 +69,24 @@ export async function PUT(request: Request) {
       }
     }
 
+    const logo = formData.get("logo");
+    let logoUrl = lounge.logo;
+
+    // Cek apakah logo adalah file sebelum diproses
+    if (logo instanceof File) {
+      const logoByteData = await logo.arrayBuffer();
+      const buffer = Buffer.from(logoByteData);
+      const newPath = `./public/${timestamp}_${logo.name}`;
+      await writeFile(newPath, buffer);
+      logoUrl = `/${timestamp}_${logo.name}`;
+
+      // Hapus gambar lama jika ada
+      if (lounge.logo) {
+        const oldLoungePath = `./public${lounge.logo}`;
+        await unlink(oldLoungePath).catch(() => {});
+      }
+    }
+
     const taglineBanner = formData.get("taglineBanner");
     let taglineBannerUrl = lounge.taglineBanner;
 
@@ -275,6 +293,7 @@ export async function PUT(request: Request) {
     lounge.spaces = newSpaces;
     lounge.menu = newMenu;
     lounge.banner = bannerUrl;
+    lounge.logo = logoUrl;
     lounge.taglineBanner = taglineBannerUrl;
 
     await lounge.save();

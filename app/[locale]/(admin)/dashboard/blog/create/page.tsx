@@ -140,8 +140,6 @@ export default function CreateBlog(){
         return;
       }
     
-      console.log("✅ selectedFile dipilih:", selectedFile.name);
-    
       setSelectedFile(selectedFile);
       handleUpload(selectedFile); // Langsung upload saat memilih file
     };

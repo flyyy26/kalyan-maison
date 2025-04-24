@@ -87,43 +87,78 @@ export default function Banner() {
 
   return (
     <div>
-      <div className={home.banner} style={{ backgroundImage: `url(${activeBannerImage})` }}> 
+      <div
+          className={home.banner}
+          style={{
+            backgroundImage: `url(${
+              hoveredTab === 100
+                ? '/images/Shop.webp' // Ganti dengan image khusus Kalyan Shop
+                : activeBannerImage
+            })`,
+          }}
+        >
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
         <Image src={lineDekstop} width={800} height={800} alt="Banner Kalyan Maison" className={home.line_dekstop}/>
-        {filteredLounges.map((lounge, index) => (
-          <div
-            key={lounge._id}
-            className={`${home.btn_tab} ${
-              filteredLounges.length === 1
-                ? home.btn_tab_center
-                : index === 0
-                ? home.btn_tab_left
-                : index === 1
-                ? home.btn_tab_right
-                : index === 2
-                ? home.btn_tab_bottom
-                : ''
+        {filteredLounges.map((lounge, index) => {
+          if (index > 1) return null; // hanya render 2 lounge pertama (kiri & kanan)
+
+          return (
+            <div
+              key={lounge._id}
+              className={`${home.btn_tab} ${
+                index === 0
+                  ? home.btn_tab_left
+                  : home.btn_tab_right
+              }`}
+            >
+              <Link
+                href={`/our-lounges/${lounge.slug}`}
+                className={`${home.circle} ${
+                  hoveredTab === lounge._id ? home.active : ''
+                }`}
+                onMouseEnter={() => handleHoverTab(lounge._id)}
+                onMouseLeave={() => setHoveredTab(null)}
+              >
+                {hoveredTab === lounge._id && typeof lounge.logo === "string" && (
+                    <Image
+                      src={lounge.logo}
+                      width={800}
+                      height={800}
+                      alt={`Banner Image ${lounge.name}`}
+                      style={{ objectFit: 'cover', height: 'auto' }}
+                    />
+                )}
+
+              </Link>
+              <span
+                className={`${home.tab_name} ${
+                  hoveredTab === lounge._id ? home.hidden : ''
+                }`}
+              >
+                {lounge.name}
+              </span>
+            </div>
+          );
+        })}
+        <div className={`${home.btn_tab} ${home.btn_tab_bottom}`}>
+          <Link
+            href={`https://www.tokopedia.com/kalyanmaison`}
+            className={`${home.circle} ${
+              hoveredTab === 100 ? home.active : ''
+            }`}
+            onMouseEnter={() => handleHoverTab(100)}
+            onMouseLeave={() => setHoveredTab(null)}
+          >
+            {hoveredTab === 100 && <span>Kalyan Shop</span>}
+          </Link>
+          <span
+            className={`${home.tab_name} ${
+              hoveredTab === 100 ? home.hidden : ''
             }`}
           >
-            <Link
-              href={`/our-lounges/${lounge.slug}`}
-              className={`${home.circle} ${
-                hoveredTab === lounge._id ? home.active : ''
-              }`}
-              onMouseEnter={() => handleHoverTab(lounge._id)}
-              onMouseLeave={() => setHoveredTab(null)}
-            >
-              {hoveredTab === lounge._id && <span>Visit Branch</span>}
-            </Link>
-            <span
-              className={`${home.tab_name} ${
-                hoveredTab === lounge._id ? home.hidden : ''
-              }`}
-            >
-              {lounge.name}
-            </span>
-          </div>
-        ))}
+            Kalyan Shop
+          </span>
+        </div>
         <div className={`${home.heading_banner} ${hoveredTab ? home.active : ''}`}>
           <span>{t('welcome')}</span>
           <h1 translate="no">Kalyan Maison</h1>
@@ -149,6 +184,18 @@ export default function Banner() {
             </div>
           </div>
         ))}
+        <div
+          key={100}
+          className={`${home.detail_branch_banner} ${
+            hoveredTab === (100) ? home.active : ''
+          }`}  
+        >
+          <div className={home.heading_banner_dynamic}>
+            <h1>Kalyan Shop</h1>
+            <p>Temukan Koleksi Eksklusif Kalyan</p> 
+            <p>Jelajahi ragam produk pilihan dari Kalyan Maison—mulai dari perasa shisha dengan cita rasa khas, bowl shisha premium berdesain elegan, hingga merchandise eksklusif yang dirancang untuk para penikmat gaya hidup modern.</p>
+          </div>
+        </div>
         <div className={`${home.banner_bottom_content} ${isOpen ? home.banner_bottom_content_active : ''}`}>
           <div className={home.banner_branch}>
             <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
@@ -213,7 +260,6 @@ export default function Banner() {
                         fill
                         alt={`Image ${image.name}`}
                       />
-                      haiiii
                     </div>
                   ))}
               </>
