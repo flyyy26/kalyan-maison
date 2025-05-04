@@ -26,7 +26,7 @@ import menu_five from "@/public/images/menu_5.png"
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import { Pagination } from 'swiper/modules';
+import { Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 
 export default function LoungeDetailPage({ loungeDetail }: { loungeDetail: string; translations: { sectionHeading: string; spaces: string } }) {
     const { lounges } = useLounge();
@@ -122,10 +122,13 @@ export default function LoungeDetailPage({ loungeDetail }: { loungeDetail: strin
                     <Swiper
                         slidesPerView={3}
                         spaceBetween={30}
+                        mousewheel={true}
+                        keyboard={true}
+                        cssMode={true}
                         pagination={{
                         clickable: true,
                         }}
-                        modules={[Pagination]}
+                        modules={[Pagination, Mousewheel, Keyboard]}
                         className="menuSwiper"
                     >
                         <SwiperSlide>

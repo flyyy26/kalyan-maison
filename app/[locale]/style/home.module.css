@@ -80,8 +80,7 @@
     text-align: center;
 }
 .circle img{
-    width: 90%;
-    height: 90%;
+    max-width: 1vw;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -91,6 +90,9 @@
 }
 .btn_tab_left span{
     margin-bottom: -.95vw;
+}
+.btn_tab_left a img{
+    max-width: 1.4vw;
 }
 .btn_tab_right span{
     margin-bottom: -.95vw;

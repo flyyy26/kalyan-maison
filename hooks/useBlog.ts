@@ -68,6 +68,7 @@ export const useBlog = () => {
       const response = await fetch('/api/blog', {
         method: 'POST',
         body: formData,
+        cache: 'no-store'
       });
 
       if (response.ok) {
@@ -122,6 +123,7 @@ export const useBlog = () => {
       const response = await fetch(`/api/blog/${id}`, {
         method: "PUT",
         body: formData,
+        cache: 'no-store'
       });
   
       if (response.ok) {
@@ -156,7 +158,9 @@ export const useBlog = () => {
       if (!id) return;
       
       try {
-          const res = await fetch(`/api/blog/${id}`);
+          const res = await fetch(`/api/blog/${id}`, {
+            cache: 'no-store'
+          });
           if (!res.ok) throw new Error("Gagal mengambil data blog");
 
           const responseData: Blog = await res.json();
@@ -181,6 +185,7 @@ export const useBlog = () => {
       try {
         const res = await fetch(`/api/blog/${id}`, {
           method: "GET",
+          cache: 'no-store'
         });
         if (!res.ok) throw new Error("Gagal mengambil data blog");
   

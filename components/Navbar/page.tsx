@@ -60,7 +60,7 @@ const Navbar = () => {
                         <Link onClick={() => toggleMenu(true)} href="/about"><li>{t('aboutUs')}</li></Link>
                         <Link href="/"><li>{t('gallery')}</li></Link>
                         <Link href="/"><li>{t('contact')}</li></Link>
-                        <Link href="/"><li>{t('press')}</li></Link>
+                        <Link href="/press"><li>{t('press')}</li></Link>
                     </ul>
                 </div>
                 <div className={menu.navbar_layout}>

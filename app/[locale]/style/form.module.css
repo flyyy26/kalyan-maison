@@ -138,6 +138,7 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    background-color: white;
   }
 .dropzone_small {
     width: 100%;
@@ -153,6 +154,7 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    background-color: white;
   }
   .previewImage {
     width: 100%;

@@ -28,6 +28,7 @@ export function useAnalytics() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ page: pathname }),
+        cache: 'no-store'
       });
     } catch (error) {
       console.error("Error tracking visit", error);

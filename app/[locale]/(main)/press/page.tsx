@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl'
 import { useBlog } from '@/hooks/useBlog'; 
 import { useParams } from 'next/navigation';
 import LoadingPopup from '@/components/loading_popup/page';
+import GallerySection from '@/components/GallerySection/page';
 
 export default function Blog(){
     const t =  useTranslations();
@@ -20,15 +21,15 @@ export default function Blog(){
     const params = useParams();
     const locale = params.locale || 'id'; 
 
-    const formatDate = (dateString: string) => {
-    return new Date(dateString)
-        .toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        })
-        .replace(/(\d+) (\w+) (\d+)/, '$1 $2, $3'); // Menambahkan koma setelah bulan
-    }; 
+    // const formatDate = (dateString: string) => {
+    // return new Date(dateString)
+    //     .toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-GB', {
+    //     day: 'numeric',
+    //     month: 'long',
+    //     year: 'numeric',
+    //     })
+    //     .replace(/(\d+) (\w+) (\d+)/, '$1 $2, $3'); // Menambahkan koma setelah bulan
+    // }; 
  
   return (
     <>
@@ -45,7 +46,7 @@ export default function Blog(){
                     </div>
                     <div className={blog.list_content_blog}>
                         <div className={blog.list_heading_blog}>
-                            <span>{formatDate(blog_item.date)}</span>
+                            <span>Kompas.com</span>
                             <h3>{blog_item.title}</h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia alias dicta libero facere ullam numquam culpa.</p>
                         </div>
@@ -59,6 +60,7 @@ export default function Blog(){
             <p>Blog Kosong</p>
             )}
         </div>
+        <GallerySection/>
         <ContactSection/>
     </>
   )
