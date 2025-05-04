@@ -7,7 +7,7 @@ import { Link } from '@/i18n/routing';
 import ContactSection from "@/components/Contact_section/page"
 import { useTranslations } from 'next-intl'
 import { useBlog } from '@/hooks/useBlog'; 
-import { useParams } from 'next/navigation';
+// import { useParams } from 'next/navigation';
 import LoadingPopup from '@/components/loading_popup/page';
 import GallerySection from '@/components/GallerySection/page';
 
@@ -18,8 +18,8 @@ export default function Blog(){
         blogs
       } = useBlog(); 
 
-    const params = useParams();
-    const locale = params.locale || 'id'; 
+    // const params = useParams();
+    // const locale = params.locale || 'id'; 
 
     // const formatDate = (dateString: string) => {
     // return new Date(dateString)
