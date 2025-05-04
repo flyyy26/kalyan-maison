@@ -22,12 +22,12 @@
 }
 .list_blog{
     width: 100%;
-    padding: 0 8.7vw;
-    padding-bottom: 16vw; 
+    padding: 0 9.8vw;
+    padding-bottom: 4vw; 
     background-color: #1A1A1A;
-    display: flex;
-    flex-direction: column;
-    gap: 2vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4.5vw;
 }
 .list_blog p{
     font-size: 1vw;
@@ -37,7 +37,7 @@
 }
 .list_box_blog{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     grid-gap: 1.7vw;
 }
 .list_img_blog{
@@ -46,10 +46,10 @@
     position: relative;
 }
 .list_content_blog{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 1.7vw 0;
+    padding: 1vw 0;
+}
+.list_heading_blog{
+    text-align: start;
 }
 .list_heading_blog h3{
     font-size: 1.84vw;
@@ -64,11 +64,27 @@
     font-size: .95vw;
     color: white;
     letter-spacing: .05vw;
+    font-style: italic;
+    margin-bottom: .86vw;
+    display: block;
+}
+.list_heading_blog p{
+    text-align: start;
+    text-transform: capitalize;
+    font-size: .98vw;
+    line-height: 1.6;
+    letter-spacing: .05vw;
+    font-weight: 300;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .list_btn_blog button{
     width: max-content;
     font-size: 1vw;
-    padding: .83vw 2.8vw;
+    padding: .83vw 2vw;
     border: .1vw solid white;
     border-radius: 100vw;
     text-transform: uppercase;
@@ -81,6 +97,7 @@
     cursor: pointer;
     transition: .3s all;
     color: white;
+    margin-top: 2vw;
 }
 .list_btn_blog button:hover{
     background-color: #fff;

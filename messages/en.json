@@ -5,7 +5,11 @@
     "navbar" : {
         "reserve" : "Reserve",
         "allLounges" : "All Lounges",
+        "home" : "Home",
         "aboutUs" : "About Us",
+        "gallery" : "Gallery",
+        "contact" : "Contact",
+        "press" : "Press",
         "blog" : "Blog"
     },
     "home" : {
@@ -49,8 +53,8 @@
     "blog" : {
         "title" : "judul",
         "smallHeading" : "Our",
-        "heading" : "Blog",
-        "view" : "View Post",
+        "heading" : "Press Release",
+        "view" : "Read More",
         "other" : "Other Posts",
         "locale": "locale"
     },

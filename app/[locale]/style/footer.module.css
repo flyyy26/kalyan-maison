@@ -1,6 +1,7 @@
 .footer_container{
     width: 100%;
-    padding: .5vw 2.4vw;
+    padding: .5vw 1.3vw;
+    padding-right: 2.3vw;
     background-image: url(../../../public/images/bg_footer.png);
     background-size: cover;
     background-position: center;
@@ -9,12 +10,10 @@
     justify-content: space-between;
     align-items: center;
 }
-.footer_logo{ 
-    width: 15vw;
-    height: 6.8vw;
-    position: relative;
+.footer_logo img{ 
+    width: 16.9vw;
 }
-.menu ul{
+/* .menu ul{
     display: flex;
     gap: 3vw;
 }
@@ -26,9 +25,10 @@
     letter-spacing: .06vw;
     text-transform: uppercase;
     color: white;
-}
+} */
 .copyright span{
-    font-size: .95vw;
+    font-size: 1.06vw;
+    font-weight: 300;
     letter-spacing: .06vw;
     color: white;
 }

@@ -2,7 +2,6 @@
 
 import React from 'react'
 import menu from "@/app/[locale]/style/menu.module.css"
-import { AiOutlineMenu, AiOutlineClose  } from "react-icons/ai";
 // import Link from 'next/link';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
@@ -39,10 +38,10 @@ const Navbar = () => {
                 <div className={menu.navbar_layout}>
                     <Link href="/">
                         <div className={menu.logo} onClick={() => toggleMenu(true)}>
-                            <Image fill src={Logo} alt='Kalyan Maison Logo' objectFit='contain'/>
+                            <Image width={800} height={800} src={Logo} alt='Kalyan Maison Logo' style={{height: 'auto', objectFit:'cover'}}/>
                         </div>
                     </Link>
-                    <button
+                    {/* <button
                         className={`${menu.hamburger} ${isOpen ? menu.iconOpen : ''}`}
                         aria-label="Toggle Menu"
                         onClick={() => toggleMenu(false)}
@@ -53,10 +52,19 @@ const Navbar = () => {
                         <span className={`${menu.icon} ${isOpen ? menu.visible : menu.hidden}`}>
                             <AiOutlineClose />
                         </span>
-                    </button>
+                    </button> */}
+                </div>
+                <div className={menu.menu_layout}>
+                    <ul>
+                        <Link href="/"><li>{t('home')}</li></Link>
+                        <Link onClick={() => toggleMenu(true)} href="/about"><li>{t('aboutUs')}</li></Link>
+                        <Link href="/"><li>{t('gallery')}</li></Link>
+                        <Link href="/"><li>{t('contact')}</li></Link>
+                        <Link href="/"><li>{t('press')}</li></Link>
+                    </ul>
                 </div>
                 <div className={menu.navbar_layout}>
-                    {currentLocale === 'en' ? (
+                    {/* {currentLocale === 'en' ? (
                         <span onClick={() => changeLanguage('id')} style={{ cursor: 'pointer' }}>
                         ID
                         </span>
@@ -64,8 +72,12 @@ const Navbar = () => {
                         <span onClick={() => changeLanguage('en')} style={{ cursor: 'pointer' }}>
                         EN
                         </span>
-                    )}
-                    <Link href="/reservation"><button className={menu.btn_primary}>{t('reserve')}</button></Link>
+                    )} */}
+                    <span className={currentLocale === 'en' ? menu.active_lang : ''} onClick={() => changeLanguage('en')}>EN</span>/
+                    <span className={currentLocale === 'cn' ? menu.active_lang : ''} onClick={() => changeLanguage('cn')}>CN</span>/
+                    <span className={currentLocale === 'rs' ? menu.active_lang : ''} onClick={() => changeLanguage('rs')}>RS</span>
+
+                    {/* <Link href="/reservation"><button className={menu.btn_primary}>{t('reserve')}</button></Link> */}
                 </div>
             </div>
             <nav className={`${menu.menu} ${isOpen ? menu.menuOpen : ''}`}>

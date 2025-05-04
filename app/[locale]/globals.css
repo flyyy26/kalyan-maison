@@ -388,3 +388,18 @@ a {
   background-size: cover;
   background-position: center;
 }
+
+.gallerySwiper .swiper-slide{
+  width: max-content;
+}
+
+.menuSwiper .swiper-pagination-bullet{
+  width: 2vw;
+  height: .3vw;
+  border-radius: 100vw;
+  background: white;
+}
+.menuSwiper .swiper-pagination-bullet-active{
+  opacity: var(--swiper-pagination-bullet-opacity, 1);
+  background: white;
+}

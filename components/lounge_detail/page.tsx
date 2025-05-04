@@ -2,15 +2,36 @@
 
 import style from "@/app/[locale]/style/lounge_detail.module.css";
 import Image from "next/image";
-import ClientSwiper from "@/components/slideLounge/page";
 import ContactSection from "@/components/Contact_section/page";
 import { Link } from "@/i18n/routing";
 import { BsChevronLeft } from "react-icons/bs";
 import { useLounge } from "@/hooks/useLounge";
 import { useEffect } from "react";
+import GallerySection from "../GallerySection/page";
+import home from "@/app/[locale]/style/home.module.css"
+import {useContact} from '@/hooks/useContact'
+import { IoLogoYoutube } from "react-icons/io";
+import { FaInstagram } from "react-icons/fa";
+import React, { useState } from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import northLogo from "@/public/images/north_logo.png"
+import menu_one from "@/public/images/menu_1.png"
+import menu_two from "@/public/images/menu_2.png"
+import menu_three from "@/public/images/menu_3.png"
+import menu_four from "@/public/images/menu_4.png"
+import menu_five from "@/public/images/menu_5.png"
 
-export default function LoungeDetailPage({ loungeDetail, translations }: { loungeDetail: string; translations: { sectionHeading: string; spaces: string } }) {
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import { Pagination } from 'swiper/modules';
+
+export default function LoungeDetailPage({ loungeDetail }: { loungeDetail: string; translations: { sectionHeading: string; spaces: string } }) {
     const { lounges } = useLounge();
+    const { ContactDetail } = useContact();
+    const [menuCover, setMenuCover] = useState(true);
     const currentLounge = lounges.find((lounge) => lounge.slug === loungeDetail);
     const filteredLocations = lounges.filter((lounge) => lounge.slug !== loungeDetail);
 
@@ -47,11 +68,11 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
         return <h1>Blog not found</h1>;
     }
 
-    const swiperData = currentLounge.menu.map(item => ({
-        image: item.image,
-        name: item.name,
-        description: item.description
-    }));
+    // const swiperData = currentLounge.menu.map(item => ({
+    //     image: item.image,
+    //     name: item.name,
+    //     description: item.description
+    // }));
 
     return (
         <>
@@ -67,11 +88,76 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
                 <div className={style.heading_banner}>
                     <h1>Kalyan Maison {currentLounge.name}</h1>
                     <p>{currentLounge.address}</p>
-                    <p>{currentLounge.phone}</p>
+                    <div className={home.banner_social_media}>
+                        <Link href={`${ContactDetail.instagram}`} target='blank_'>
+                            <button className={home.banner_social_media_box}>
+                            <FaInstagram />
+                            </button>
+                        </Link>
+                        <Link href={`${ContactDetail.facebook}`} target='blank_'>
+                            <button className={home.banner_social_media_box}>
+                            <IoLogoYoutube />
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
 
-            <div className={style.section_2}>
+            <div className={style.menu_container}>
+                <div className={style.menu_heading}>
+                    <h2>Menu</h2>
+                    <p>Have a look at our menu in Kalyan Maison Gunawarman.</p>
+                </div>
+                <div className={style.menu_layout}>
+                    <div className={`${style.cover_img} ${menuCover ? style.active : ''}`}>
+                        <Image
+                        src={northLogo}
+                        width={800}
+                        height={800}
+                        alt="Menu North"
+                        style={{ height: 'auto', objectFit: 'cover' }}
+                        />
+                        <button onClick={() => setMenuCover(false)}>Open Menu</button>
+                    </div>
+                    <Swiper
+                        slidesPerView={3}
+                        spaceBetween={30}
+                        pagination={{
+                        clickable: true,
+                        }}
+                        modules={[Pagination]}
+                        className="menuSwiper"
+                    >
+                        <SwiperSlide>
+                            <div className={style.menu_box_img}>
+                                <Image src={menu_one} alt="Menu North" width={800} height={800} style={{height: 'auto', objectFit: 'cover'}} />
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={style.menu_box_img}>
+                                <Image src={menu_two} alt="Menu North" width={800} height={800} style={{height: 'auto', objectFit: 'cover'}} />
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={style.menu_box_img}>
+                                <Image src={menu_three} alt="Menu North" width={800} height={800} style={{height: 'auto', objectFit: 'cover'}} />
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={style.menu_box_img}>
+                                <Image src={menu_four} alt="Menu North" width={800} height={800} style={{height: 'auto', objectFit: 'cover'}} />
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={style.menu_box_img}>
+                                <Image src={menu_five} alt="Menu North" width={800} height={800} style={{height: 'auto', objectFit: 'cover'}} />
+                            </div>
+                        </SwiperSlide>
+                    </Swiper>
+                </div>
+            </div>
+
+            {/* <div className={style.section_2}>
                 <h1>{translations.sectionHeading}</h1>
                 <div className={style.section_2_img}>
                     <Image src={currentLounge.spaces?.[0].image} fill objectFit="cover" alt={`Kalyan Maison ${currentLounge.name}`} />
@@ -93,7 +179,9 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
+
+            <GallerySection />
 
             <ContactSection />
         </>

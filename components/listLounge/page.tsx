@@ -2,13 +2,11 @@
 
 import React from 'react'
 import home from "@/app/[locale]/style/home.module.css"
-import { useLocationContext } from '@/context/LocationContext'; 
-import { Link } from '@/i18n/routing';
 import {useTranslations} from 'next-intl';
 
 const ListLounge = () => {
   const t =  useTranslations("home");
-  const { loungesFe } = useLocationContext();
+
   return (
     <>
       <div className={home.section_2}> 
@@ -17,7 +15,7 @@ const ListLounge = () => {
           <p>{t('uniqueDesc')}</p>
         </div>
       </div>
-      {loungesFe.map((lounge, index) => (
+      {/* {loungesFe.map((lounge, index) => (
          index % 2 === 0 ? (
             <div
             className={home.branch_section}
@@ -75,7 +73,7 @@ const ListLounge = () => {
             </div>
           </div>
         )
-      ))}
+      ))} */}
     </>
   )
 }

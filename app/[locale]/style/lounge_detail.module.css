@@ -161,6 +161,89 @@
     position: relative;
 }
 
+.menu_container{
+    width: 100%;
+    padding: 6vw 10vw;
+}
+.menu_heading{
+    text-align: center;
+    margin-bottom: 3vw;
+}
+.menu_heading h2{
+    font-size: 4.96vw;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    letter-spacing: .05vw;
+    margin-bottom: .7vw;
+    color: white;
+}
+.menu_heading p{
+    letter-spacing: .05vw;
+    font-size: 1vw;
+    width: 70%;
+    line-height: 1.4;
+    margin: auto;
+    margin-bottom: 1.2vw;
+    color: white;
+}
+.menu_layout{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+.cover_img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    z-index: 10;
+    top: 0;
+    background-color: #202020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: .3s all;
+}
+.cover_img img{
+    width: 25vw;
+}
+.cover_img.active{
+    transform: translateX(0);
+    transition: .3s all;
+}
+.cover_img button{
+    width: max-content;
+    font-size: 1vw;
+    padding: .83vw 2vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+    color: white;
+    margin-top: 2vw;
+}
+.menu_box_img{
+    position: relative;
+    width: 100%;
+    height: 48vw;
+}
+.menu_box_img img{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 @media (max-width:768px) {
     .banner{
         padding: 50vw 0;

@@ -5,11 +5,11 @@ import Image from 'next/image';
 import home from "@/app/[locale]/style/home.module.css"
 import line from "@/public/images/line_banner.png"
 import lineDekstop from "@/public/images/circle_dekstop.png"
-import { HiChevronDown } from "react-icons/hi2";
+import { IoLogoYoutube } from "react-icons/io";
 import { useMenu } from '@/context/MenuContext';
 import { useLocationContext } from '@/context/LocationContext'; 
 import { Link } from '@/i18n/routing';
-import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 import {useTranslations} from 'next-intl';
 import { useEffect, useState } from 'react';
 import {useContact} from '@/hooks/useContact'
@@ -34,7 +34,7 @@ export default function Banner() {
   
       const [selectedCity, setSelectedCity] = useState<string | null>(null);
       const [selectedCityId, setSelectedCityId] = useState<string | null>(null);
-      const [openSelect, setOpenSelect] = useState(false);
+      // const [openSelect, setOpenSelect] = useState(false);
   
       useEffect(() => {
           if (cities.length > 0 && !selectedCity) {
@@ -43,13 +43,13 @@ export default function Banner() {
           }
       }, [cities, selectedCity]);
   
-      const toggleDropdown = () => setOpenSelect(!openSelect);
+      // const toggleDropdown = () => setOpenSelect(!openSelect);
   
-      const handleCityChange = (cityName: string, cityId: string) => {
-          setSelectedCity(cityName);
-          setSelectedCityId(cityId);
-          setOpenSelect(false);
-      };
+      // const handleCityChange = (cityName: string, cityId: string) => {
+      //     setSelectedCity(cityName);
+      //     setSelectedCityId(cityId);
+      //     setOpenSelect(false);
+      // };
 
       const filteredLounges = loungesFe.filter((location) => location.city === selectedCityId);
       
@@ -98,11 +98,11 @@ export default function Banner() {
           }}
         >
           <div
-  className={`${home.banner} ${hoveredTab === 100 ? 'shopBackground' : ''}`}
-  style={{
-    backgroundImage: hoveredTab !== 100 ? `url(${activeBannerImage})` : undefined
-  }}
-></div>
+            className={`${home.banner} ${hoveredTab === 100 ? 'shopBackground' : ''}`}
+            style={{
+              backgroundImage: hoveredTab !== 100 ? `url(${activeBannerImage})` : undefined
+            }}
+          ></div>
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
         <Image src={lineDekstop} width={800} height={800} alt="Banner Kalyan Maison" className={home.line_dekstop}/>
         {filteredLounges.map((lounge, index) => {
@@ -178,8 +178,7 @@ export default function Banner() {
           >
             <div className={home.heading_banner_dynamic}>
               <h1>Kalyan Maison {lounge.name}</h1>
-              <p>{lounge.address}</p> 
-              <p> {lounge.phone}</p>
+              <p>{lounge.address}</p>
             </div>
             <div className={home.galeri_banner_dynamic}>
               {lounge.spaces.slice(0, 2).map((image: { image: string }, index: number) => (
@@ -204,7 +203,7 @@ export default function Banner() {
         </div>
         <div className={`${home.banner_bottom_content} ${isOpen ? home.banner_bottom_content_active : ''}`}>
           <div className={home.banner_branch}>
-            <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
+            {/* <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
               <button onClick={toggleDropdown}>
                 {selectedCity || "Pilih Kota"}  <HiChevronDown /> 
               </button>
@@ -217,7 +216,7 @@ export default function Banner() {
                       </button>
                   ))}
               </div>
-            </div>
+            </div> */}
             <div className={`${home.branch_list} ${isOpen ? home.branch_list_active : ''}`}>
                 {filteredLounges.map((lounge) => (
                 <Link
@@ -239,17 +238,7 @@ export default function Banner() {
             </Link>
             <Link href={`${ContactDetail.facebook}`} target='blank_'>
               <button className={home.banner_social_media_box}>
-                <FaFacebook />
-              </button>
-            </Link>
-            <Link href={`${ContactDetail.tiktok}`} target='blank_'>
-              <button className={home.banner_social_media_box}>
-                <FaTiktok />
-              </button>
-            </Link>
-            <Link href={`https://api.whatsapp.com/send?phone=${ContactDetail.whatsapp}`} target='blank_'>
-              <button className={home.banner_social_media_box}>
-                <FaWhatsapp />
+                <IoLogoYoutube />
               </button>
             </Link>
           </div>

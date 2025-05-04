@@ -10,10 +10,12 @@
 }
 .navbar{
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    justify-items: center;
     align-items: center;
-    padding: 1.4vw 2.2vw;
+    padding: 1.24vw 0;
+    padding-right: 2vw;
     position: absolute;
     top: 0;
     left: 0;
@@ -29,14 +31,25 @@
 .navbar_layout{
     display: flex;
     align-items: center;
-    gap: 1.8vw;
+    gap: .4vw;
 }
-.logo{
-    width: 100%;
-    width: 5vw;
-    height: 4.6vw;
-    aspect-ratio: 70/45;
-    position: relative;
+.menu_layout{
+    display: flex;
+}
+.menu_layout ul{
+    display: flex;
+    list-style: none;
+    gap: 1.85vw;
+    letter-spacing: .04vw;
+    margin-left: .8vw;
+}
+.menu_layout ul li{
+    text-transform: uppercase;
+    font-size: 1.26vw;
+    font-weight: 300;
+}
+.logo img{
+    width: 3.48vw;
 }
 .hamburger{
     background-color: transparent;
@@ -120,10 +133,15 @@
     text-shadow: 0px 0px 22.5px 0px #FFFFFF80;
 }
 .navbar_layout span{
-    font-size: 1vw;
+    font-size: 1.26vw;
     text-transform: uppercase;
     letter-spacing: .05vw !important;
     color: white;
+    font-weight: 300;
+    cursor: pointer;
+}
+.active_lang{
+    font-weight: 600 !important;
 }
 .btn_primary{
     font-size: 1vw;

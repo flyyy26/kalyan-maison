@@ -1,0 +1,70 @@
+{
+    "welcome": "欢迎来到",
+    "kalyanTeks": "卡利扬梅森",
+    "allLounges": "所有休息室",
+    "navbar": {
+      "reserve": "预订",
+      "allLounges": "所有休息室",
+      "home" : "家",
+      "aboutUs" : "关于我们",
+      "gallery" : "画廊",
+      "contact" : "接触",
+      "press" : "按",
+      "blog": "文章"
+    },
+    "home": {
+      "unique": "独特的水烟体验",
+      "uniqueDesc": "我们根据您的需求完善每一个水烟，无论您喜欢柔和还是浓烈，淡雅还是香气四溢，水烟都会按照您的喜好进行个性化定制。这是我们致力于为您带来前所未有水烟体验的承诺之一。",
+      "explore": "探索更多"
+    },
+    "contactSection": {
+      "heading": "需要更多信息？",
+      "desc": "如有疑问，请随时联系我们的代表。",
+      "contact_wa": "通过Whatsapp联系",
+      "contact_ig": "通过Instagram联系"
+    },
+    "footer": {
+      "privacy": "隐私政策",
+      "use": "使用条款",
+      "copyright": "版权 © 2024 卡利扬梅森 | 保留所有权利"
+    },
+    "lounge": {
+      "heading": "休息室",
+      "smallHeading": "卡利扬梅森",
+      "sectionHeading": "位于雅加达市中心的现代创新休息室",
+      "spaces": "我们的空间"
+    },
+    "reservation": {
+      "heading": "预订",
+      "button": "立即预订",
+      "person": "人",
+      "hour": "小时",
+      "name": "姓名*",
+      "number": "电话号码*",
+      "space": "空间*",
+      "lounge": "休息室*",
+      "duration": "时长*",
+      "number_person": "人数*",
+      "reservation_error": "预订失败",
+      "reservation_success": "预订成功",
+      "select_first": "请先选择休息室",
+      "description": "欢迎来到我们的预订页面！提前预订以确保您的舒适体验。请选择您想要的日期、时间和服务，轻松完成预订。"
+    },
+    "blog": {
+      "title": "标题",
+      "smallHeading": "卡利扬梅森",
+      "heading": "新闻稿",
+      "view": "阅读更多",
+      "other": "其他文章",
+      "locale": "语言"
+    },
+    "about": {
+      "smallHeading": "关于",
+      "desc_one": "欢迎来到卡利扬梅森古纳瓦尔曼，一家提供高端餐饮体验的独家美食目的地，融合优雅与正宗风味。",
+      "desc_two": "我们提供特色西餐，遵循最高质量标准，呈现完美的味道、质地与令人惊叹的摆盘。凭借五星评级，卡利扬梅森古纳瓦尔曼已成为追求卓越餐饮体验的美食爱好者的首选。",
+      "desc_three": "我们每道菜品均选用最优质的食材，经过精心烹制，以保持其美味和一致性。我们相信食物不仅是一顿饭，更是一种带来快乐的艺术。",
+      "desc_four": "在卡利扬梅森，我们不仅提供美食，更创造珍贵时刻。享受优雅的环境与热情好客的服务，让每次到访都成为难忘的回忆。",
+      "desc_five": "在卡利扬梅森古纳瓦尔曼探索非凡风味，让每一道菜都带您踏上非同寻常的美食之旅。"
+    }
+  }
+  
