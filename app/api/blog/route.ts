@@ -1,8 +1,14 @@
 import { ConnectDB } from "@/app/lib/config/db";
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
 import BlogModel from "@/app/lib/models/blogModel";
 import fs from 'fs';
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!,
+});
 
 const LoadDB = async () => {
   await ConnectDB();
@@ -19,10 +25,9 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
-    const timestamp = Date.now();
 
-    // Ambil file gambar
     const image = formData.get("image") as File | null;
+
     if (!image) {
       return NextResponse.json(
         { success: false, msg: "Gambar tidak ditemukan dalam form data." },
@@ -30,30 +35,35 @@ export async function POST(request: Request) {
       );
     }
 
-    const imageByteData = await image.arrayBuffer();
-    const buffer = Buffer.from(imageByteData);
+    // 🔄 Upload ke Cloudinary
+    const buffer = Buffer.from(await image.arrayBuffer());
+    const base64Image = `data:${image.type};base64,${buffer.toString("base64")}`;
 
-    // Tentukan path dan URL gambar
-    const path = `./public/${timestamp}_${image.name}`;
-    await writeFile(path, buffer);
-    const imgurl = `/${timestamp}_${image.name}`;
+    const uploadResult = await cloudinary.uploader.upload(base64Image, {
+      folder: "blog", // 🔧 Sesuaikan folder di Cloudinary
+    });
 
+    const imgurl = uploadResult.secure_url;
     // Siapkan data blog
     const blogData = {
-      title: formData.get("title") as string,
-      slug: formData.get("slug") as string,
       titleEn: formData.get("titleEn") as string,
       slugEn: formData.get("slugEn") as string,
-      description: formData.get("description") as string,
       descriptionEn: formData.get("descriptionEn") as string,
+      titleCn: formData.get("titleCn") as string,
+      slugCn: formData.get("slugCn") as string,
+      descriptionCn: formData.get("descriptionCn") as string,
+      titleRs: formData.get("titleRs") as string,
+      slugRs: formData.get("slugRs") as string,
+      descriptionRs: formData.get("descriptionRs") as string,
       author: formData.get("author") as string,
       tags: JSON.parse(formData.get('tags') as string),
+      source: formData.get("source") as string,
       image: imgurl,
       visitCount: 0, // Inisialisasi visitCount
     };
 
     // Validasi data
-    if (!blogData.title || !blogData.slug || !blogData.titleEn || !blogData.slugEn || !blogData.description || !blogData.descriptionEn || !blogData.image || !blogData.author || blogData.tags.length === 0 ) {
+    if ( !blogData.titleEn || !blogData.slugEn || !blogData.descriptionEn || !blogData.image || !blogData.author || blogData.tags.length === 0 ) {
       return NextResponse.json(
         { success: false, msg: "Semua field wajib diisi." },
         { status: 400 }
@@ -62,13 +72,13 @@ export async function POST(request: Request) {
 
     // Simpan data blog ke database
     await BlogModel.create(blogData);
-    console.log("Blog Tersimpan:", blogData);
+    console.log("Press Tersimpan:", blogData);
 
-    return NextResponse.json({ success: true, msg: "Blog Berhasil ditambahkan" });
+    return NextResponse.json({ success: true, msg: "Press Berhasil ditambahkan" });
   } catch (error) {
-    console.error("Error saat menyimpan blog:", error);
+    console.error("Error saat menyimpan press:", error);
     return NextResponse.json(
-      { success: false, msg: "Terjadi kesalahan saat menambahkan blog." },
+      { success: false, msg: "Terjadi kesalahan saat menambahkan press." },
       { status: 500 }
     );
   }

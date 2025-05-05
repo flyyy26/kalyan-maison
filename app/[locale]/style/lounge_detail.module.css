@@ -14,6 +14,19 @@
     padding: 0 28vw;
     color: white;
 }
+.social_lounge_detail{
+   
+    justify-content: center;
+    align-items: center;
+    gap: .8vw;
+    position: absolute;
+    bottom: 3.5vw;
+    left: 2.5vw;
+    width: max-content;
+    z-index: 100;
+    display: flex;
+    height: max-content;
+}
 .location_arrow{
     display: flex;
     justify-content: space-between;
@@ -209,6 +222,7 @@
 }
 .cover_img img{
     width: 25vw;
+    filter: brightness(0) invert(1);
 }
 .cover_img.active{
     transform: translateX(0);
@@ -231,6 +245,24 @@
     transition: .3s all;
     color: white;
     margin-top: 2vw;
+}
+.heading_banner button{
+    width: max-content;
+    font-size: 1vw;
+    padding: .83vw 2vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+    color: white;
+    margin-top: 1vw;
 }
 .menu_box_img{
     position: relative;

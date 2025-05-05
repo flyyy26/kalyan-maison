@@ -9,6 +9,26 @@ const LoungeSchema  = new mongoose.Schema({
         type:String,
         required:true
     },
+    instagram:{
+        type:String,
+        required:false
+    },
+    facebook:{
+        type:String,
+        required:false
+    },
+    email:{
+        type:String,
+        required:false
+    },
+    whatsapp:{
+        type:String,
+        required:false
+    },
+    youtube:{
+        type:String,
+        required:false
+    },
     address:{
         type:String,
         required:true
@@ -41,31 +61,14 @@ const LoungeSchema  = new mongoose.Schema({
         required:true,
         ref: "City",
     },
-    taglineId:{
-        type:String,
-        required:false
+    menuImages: {
+        type: [String], // ⬅️ Disimpan langsung sebagai array URL
+        default: []
     },
-    taglineEn:{
-        type:String,
-        required:false
+    otherImages: {
+        type: [String], // ⬅️ Disimpan langsung sebagai array URL
+        default: []
     },
-    taglineBanner:{
-        type:String,
-        required:false
-    },
-    imageSlide: [{ 
-        name: { type: String, required: false }, 
-        image: { type: String, required: false } 
-    }],
-    menu:[{ 
-        name: { type: String, required: false }, 
-        description: { type: String, required: false }, 
-        image: { type: String, required: false } 
-    }],
-    spaces: [{ 
-        name: { type: String, required: false }, 
-        image: { type: String, required: false } 
-    }],
     date:{
         type:Date,
         default:Date.now()

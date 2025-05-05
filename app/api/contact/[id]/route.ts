@@ -38,6 +38,8 @@ export async function PUT(request: Request) {
       blog.instagram = formData.get("instagram") as string;
       blog.tiktok = formData.get("tiktok") as string;
       blog.whatsapp = formData.get("whatsapp") as string;
+      blog.youtube = formData.get("youtube") as string;
+      blog.email = formData.get("email") as string;
   
       await blog.save();
   

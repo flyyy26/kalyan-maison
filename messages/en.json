@@ -32,7 +32,10 @@
         "heading" : "Lounges",
         "smallHeading" : "Our",
         "sectionHeading" : "An innovative lounge in the heart of Jakarta",
-        "spaces" : "Our Spaces"
+        "spaces" : "Our Spaces",
+        "menu" : "Menu",
+        "descMenu" : "Have a look at our menu in",
+        "openMenu" : "Open Menu"
     },
     "reservation" : {
         "heading" : "Reservation",

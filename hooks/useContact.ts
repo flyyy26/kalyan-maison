@@ -10,6 +10,8 @@ type Contact = {
   facebook:string;
   tiktok:string;
   whatsapp:string;
+  youtube:string;
+  email:string;
 };
 
 export const useContact = () => {
@@ -22,6 +24,8 @@ export const useContact = () => {
     facebook:"",
     tiktok:"",
     whatsapp:"",
+    youtube: "",
+    email: ""
   });
   const [ContactDetail, setContactsDetail] = useState<Contact>({
     _id: "",
@@ -29,6 +33,8 @@ export const useContact = () => {
     facebook:"",
     tiktok:"",
     whatsapp:"",
+    youtube: "",
+    email: ""
   });
   
   const [loading, setLoading] = useState(false);

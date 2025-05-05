@@ -33,12 +33,16 @@ export default function CreateBlog(){
       deleteMedia
     } = useMedia();
 
-    const [title, setTitle] = useState('');
-    const [slug, setSlug] = useState('');
     const [titleEn, setTitleEn] = useState('');
+    const [source, setSource] = useState('');
     const [slugEn, setSlugEn] = useState('');
-    const [description, setDescription] = useState('');
     const [descriptionEn, setDescriptionEn] = useState('');
+    const [titleCn, setTitleCn] = useState('');
+    const [slugCn, setSlugCn] = useState('');
+    const [descriptionCn, setDescriptionCn] = useState('');
+    const [titleRs, setTitleRs] = useState('');
+    const [slugRs, setSlugRs] = useState('');
+    const [descriptionRs, setDescriptionRs] = useState('');
     const [author, setAuthor] = useState('');
     const [image, setImage] = useState<File | null>(null);
     const [tags, setTags] = useState<string[]>([]);
@@ -49,20 +53,6 @@ export default function CreateBlog(){
     const [uploading, setUploading] = useState<boolean>(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-    const createSlug = (text: string) => {
-        return text
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter khusus
-        .trim() // Hapus spasi di awal/akhir
-        .replace(/\s+/g, '-'); // Ganti spasi dengan tanda hubung
-    };
-    
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newTitle = e.target.value;
-        setTitle(newTitle);
-        setSlug(createSlug(newTitle)); // Buat slug otomatis dari judul
-    };
-
     const createSlugEn = (text: string) => {
         return text
         .toLowerCase()
@@ -72,9 +62,37 @@ export default function CreateBlog(){
     };
     
     const handleTitleChangeEn = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newTitle = e.target.value;
-        setTitleEn(newTitle);
-        setSlugEn(createSlugEn(newTitle)); // Buat slug otomatis dari judul
+        const newTitleEn = e.target.value;
+        setTitleEn(newTitleEn);
+        setSlugEn(createSlugEn(newTitleEn)); // Buat slug otomatis dari judul
+    };
+
+    const createSlugCn = (text: string) => {
+      return text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\p{Script=Han}\p{L}\p{N}-]+/gu, ''); // Pertahankan karakter Han (Mandarin), huruf Latin, angka, dan tanda hubung
+    };
+    
+    const handleTitleChangeCn = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTitleCn = e.target.value;
+        setTitleCn(newTitleCn);
+        setSlugCn(createSlugCn(newTitleCn)); // Buat slug otomatis dari judul
+    };
+
+    const createSlugRs = (text: string) => {
+      return text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\p{Script=Cyrillic}\p{L}\p{N}-]+/gu, ''); // Pertahankan karakter Cyrillic (Rusia), huruf Latin, angka, dan tanda hubung
+    };
+    
+    const handleTitleChangeRs = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTitleRs = e.target.value;
+        setTitleRs(newTitleRs);
+        setSlugRs(createSlugRs(newTitleRs)); // Buat slug otomatis dari judul
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,11 +123,9 @@ export default function CreateBlog(){
         }
     };
 
-    const openMediaLibrary = () => setIsMediaLibraryOpen(true);
     const closeMediaLibrary = () => setIsMediaLibraryOpen(false);
 
-    const insertImageToEditor = (imagePath: string, editorId: "description" | "descriptionEn") => {
-      console.log("📷 Image Path:", imagePath, "➡️ Editor:", editorId);
+    const insertImageToEditor = (imagePath: string, editorId: "descriptionEn" | "descriptionCn" | "descriptionRs") => {
     
       if (typeof window !== "undefined") {
         const editor = window.tinymce?.EditorManager.get(editorId);
@@ -189,18 +205,27 @@ export default function CreateBlog(){
       setSuccess(null);
   
       // 🔍 **Validasi Form**
-      if (!title || !slug || !description || !descriptionEn || !author || !image) {
+      if (!titleEn || !descriptionEn || !titleCn || !descriptionCn || !titleRs ||  !descriptionRs || !author || !image) {
           setError('⚠️ Semua kolom harus diisi!');
           return;
       }
+
+      if (!slugEn || !slugCn || !slugRs) {
+        console.error('Slug belum dibuat!');
+        return;
+      }
   
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('slug', slug);
       formData.append('titleEn', titleEn);
+      formData.append('source', source);
       formData.append('slugEn', slugEn);
-      formData.append('description', description);
       formData.append('descriptionEn', descriptionEn);
+      formData.append('titleCn', titleCn);
+      formData.append('slugCn', slugCn);
+      formData.append('descriptionCn', descriptionCn);
+      formData.append('titleRs', titleRs);
+      formData.append('slugRs', slugRs);
+      formData.append('descriptionRs', descriptionRs);
       formData.append('image', image);
       formData.append('author', author);
       formData.append('tags', JSON.stringify(tags));
@@ -210,19 +235,23 @@ export default function CreateBlog(){
       try {
           const success = await addBlog(formData);
           if (success) {
-              setTitle('');
-              setSlug('');
               setTitleEn('');
+              setSource('');
               setSlugEn('');
-              setDescription('');
               setDescriptionEn('');
+              setTitleCn('');
+              setSlugCn('');
+              setDescriptionCn('');
+              setTitleRs('');
+              setSlugRs('');
+              setDescriptionRs('');
               setAuthor('');
               setImage(null);
               setTags([]);
   
-              router.push(`/${locale}/dashboard/blog`);
+              router.push(`/${locale}/dashboard/press`);
           } else {
-              setError('⚠️ Gagal menambahkan blog.');
+              setError('⚠️ Gagal menambahkan press.');
           }
       } catch {
           setError('⚠️ Terjadi kesalahan jaringan.');
@@ -234,12 +263,12 @@ export default function CreateBlog(){
 
     return(
         <div className={`${styles.blog_form_container}`}>
-        <Link href={`/dashboard/blog`}>
+        <Link href={`/dashboard/press`}>
             <button className={styles.back_button}>
                 <AiOutlineRollback/>
             </button>
         </Link>
-        <h2>Add Blog</h2>
+        <h2>Add Press</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.form_single}>
             <label
@@ -267,59 +296,43 @@ export default function CreateBlog(){
               />
             </label>
           </div>
-          <div className={styles.form_double}>
+          <div className={styles.form_third}>
             <div className={styles.form_single}>
-              <label htmlFor="title">Blog Heading Id</label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={handleTitleChange}
-                required
-                placeholder="Enter blog heading Id"
-              />
-            </div>
-            <div className={styles.form_single}>
-              <label htmlFor="titleEn">Blog Heading En</label>
+              <label htmlFor="titleEn">Press Heading En</label>
               <input
                 type="text"
                 id="titleEn"
                 value={titleEn}
                 onChange={handleTitleChangeEn}
                 required
-                placeholder="Enter blog heading En"
+                placeholder="Enter Press heading English"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="titleCn">Press Heading Cn</label>
+              <input
+                type="text"
+                id="titleCn"
+                value={titleCn}
+                onChange={handleTitleChangeCn}
+                required
+                placeholder="Enter Press heading Chinese"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="titleRs">Press Heading Rs</label>
+              <input
+                type="text"
+                id="titleRs"
+                value={titleRs}
+                onChange={handleTitleChangeRs}
+                required
+                placeholder="Enter Press heading Russian"
               />
             </div>
           </div>
           <div className={styles.form_single}>
-            <div className={styles.blog_form_heading}>
-              <label htmlFor="description">Description Id</label>
-              <button 
-                type="button" 
-                className={styles.mediaLibraryButton} 
-                onClick={openMediaLibrary}
-              >
-                <PiImageThin />
-                Insert Image
-              </button>
-            </div>
-            <Editor
-              id="description"
-              value={description}
-              apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
-              init={{
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                relative_urls: false, // Pastikan URL tetap absolut
-                remove_script_host: false, // Jangan hapus bagian host (http://localhost:3000)
-                convert_urls: true, // Pastikan URL dikonversi dengan benar
-                document_base_url: "http://localhost:3000/",
-              }}
-              onEditorChange={(content) => setDescription(content)}
-            />
-          </div>
-          <div className={styles.form_single}>
-            <label htmlFor="description">Description En</label>
+            <label htmlFor="descriptionEn">Description En</label>
             <Editor
               id="descriptionEn"
               value={descriptionEn}
@@ -335,6 +348,40 @@ export default function CreateBlog(){
               onEditorChange={(content) => setDescriptionEn(content)}
             />
           </div>
+          <div className={styles.form_single}>
+            <label htmlFor="descriptionCn">Description Cn</label>
+            <Editor
+              id="descriptionCn"
+              value={descriptionCn}
+              apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
+              init={{
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                relative_urls: false, // Pastikan URL tetap absolut
+                remove_script_host: false, // Jangan hapus bagian host (http://localhost:3000)
+                convert_urls: true, // Pastikan URL dikonversi dengan benar
+                document_base_url: "http://localhost:3000/",
+              }}
+              onEditorChange={(content) => setDescriptionCn(content)}
+            />
+          </div>
+          <div className={styles.form_single}>
+            <label htmlFor="descriptionRs">Description Rs</label>
+            <Editor
+              id="descriptionRs"
+              value={descriptionRs}
+              apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
+              init={{
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                relative_urls: false, // Pastikan URL tetap absolut
+                remove_script_host: false, // Jangan hapus bagian host (http://localhost:3000)
+                convert_urls: true, // Pastikan URL dikonversi dengan benar
+                document_base_url: "http://localhost:3000/",
+              }}
+              onEditorChange={(content) => setDescriptionRs(content)}
+            />
+          </div>
           <div className={styles.form_double}>
             <div className={styles.form_single}>
               <label htmlFor="author">Author</label>
@@ -348,6 +395,18 @@ export default function CreateBlog(){
               />
             </div>
             <div className={styles.form_single}>
+              <label htmlFor="source">Source</label>
+              <input
+                type="text"
+                id="source"
+                value={source}
+                onChange={(e) => setSource(e.target.value)}
+                required
+                placeholder="Enter Source"
+              />
+            </div>
+          </div>
+          <div className={styles.form_single}>
               <label htmlFor="tags">Tags</label>
               <input
                 type="text"
@@ -356,24 +415,12 @@ export default function CreateBlog(){
                 onChange={(e) => setTags(e.target.value.split(',').map(tag => tag.trim()))}
               />
             </div>
-          </div>
           <button type="submit" disabled={loading} className={styles.btn_primary}>
-            {loading ? 'Adding...' : 'Add Blog'}
+            {loading ? 'Adding...' : 'Add Press'}
           </button>
-          <input
-            type="text"
-            id="slug"
-            value={slug}
-            style={{display: 'none'}}
-            readOnly // Slug hanya dibaca, dibuat otomatis
-          />
-          <input
-            type="text"
-            id="slug"
-            value={slugEn}
-            style={{display: 'none'}}
-            readOnly // Slug hanya dibaca, dibuat otomatis
-          />
+          <input name="slugEn" value={slugEn} readOnly hidden  />
+<input name="slugCn" value={slugCn} readOnly hidden  />
+<input name="slugRs" value={slugRs} readOnly hidden  />
         </form>
         <div className={styles.notif_form}>
           {loading && <p>Loading...</p>}
@@ -396,8 +443,9 @@ export default function CreateBlog(){
                       <div key={img._id} className={styles.imageItem}>
                         <Image width={800} height={800} priority src={img.image || "/fallback.jpg"} alt={`Image ${img._id}`} />
                         <div className={styles.imageActions}>
-                          <button onClick={() => insertImageToEditor(img.image, "description")}>For ID</button>
                           <button onClick={() => insertImageToEditor(img.image, "descriptionEn")}>For EN</button>
+                          <button onClick={() => insertImageToEditor(img.image, "descriptionCn")}>For Cn</button>
+                          <button onClick={() => insertImageToEditor(img.image, "descriptionRs")}>For Rs</button>
                           
                         </div>
                         <button className={styles.btnDeleteItem} onClick={() => deleteImage(img._id)} disabled={deletingImageId === img._id}>

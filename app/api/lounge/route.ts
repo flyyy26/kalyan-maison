@@ -1,12 +1,14 @@
 import { ConnectDB } from "@/app/lib/config/db";
 import { NextRequest, NextResponse } from "next/server";
-import { unlink, writeFile } from "fs/promises";
 import LoungeModel from "@/app/lib/models/loungeModel";
 import CityModel from "@/app/lib/models/cityModel"
-import fs from 'fs';
-import { promisify } from "util";
-import path from "path";
-const unlinkAsync = promisify(fs.unlink);
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const LoadDB = async () => {
   await ConnectDB();
@@ -18,8 +20,6 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const cityName = searchParams.get("city");
-
-    console.log("City Name:", cityName);
 
     let lounges;
 
@@ -39,8 +39,6 @@ export async function GET(request: Request) {
       lounges = await LoungeModel.find({});
     }
 
-    console.log("Found Lounges:", lounges);
-
     return NextResponse.json({ success: true, data: lounges });
   } catch (error) {
     console.error("Error fetching lounges:", error);
@@ -49,239 +47,178 @@ export async function GET(request: Request) {
 }
 
 
-  export async function POST(request: Request) {
-    try {
-      const formData = await request.formData();
-      const timestamp = Date.now();
-  
-      // Parse imageSlide
-      let imageSlide = JSON.parse(formData.get("imageSlide") as string);
-      let spaces = JSON.parse(formData.get("spaces") as string);
-      let menu = JSON.parse(formData.get("menu") as string);
-  
-      // 🔹 Proses gambar banner utama
-      const banner = formData.get("banner") as File | null;
-      if (!banner) {
-        return NextResponse.json(
-          { success: false, msg: "Gambar banner tidak ditemukan." },
-          { status: 400 }
-        );
-      }
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
 
-      const bannerBuffer = Buffer.from(await banner.arrayBuffer());
-      const bannerFilename = `${timestamp}_${banner.name}`;
-      const bannerPath = path.join("./public", bannerFilename);
-      await writeFile(bannerPath, bannerBuffer);
-      const bannerUrl = `/${bannerFilename}`;
+    let menuImages = JSON.parse(formData.get("menuImages") as string);
+    let otherImages = JSON.parse(formData.get("otherImages") as string);
 
-      // === Handle Logo Upload ===
-      const logo = formData.get("logo") as File | null;
-      if (!logo) {
-        return NextResponse.json(
-          { success: false, msg: "Gambar logo tidak ditemukan." },
-          { status: 400 }
-        );
-      }
-
-      const logoBuffer = Buffer.from(await logo.arrayBuffer());
-      const logoFilename = `${timestamp}_${logo.name}`;
-      const logoPath = path.join("./public", logoFilename);
-      await writeFile(logoPath, logoBuffer);
-      const logoUrl = `/${logoFilename}`;
-  
-      // 🔹 Proses taglineBanner
-      const taglineBanner = formData.get("taglineBanner") as File | null;
-      if (!taglineBanner) {
-        return NextResponse.json(
-          { success: false, msg: "Gambar tagline banner tidak ditemukan." },
-          { status: 400 }
-        );
-      }
-  
-      const taglineBannerByteData = await taglineBanner.arrayBuffer();
-      const bufferTagline = Buffer.from(taglineBannerByteData);
-      const pathTagline = `./public/${timestamp}_${taglineBanner.name}`;
-      await writeFile(pathTagline, bufferTagline);
-      const taglineBannerUrl = `/${timestamp}_${taglineBanner.name}`;
-  
-      // 🔹 Proses gambar imageSlide
-      const imageSlideFiles = formData.getAll("imageSlides") as File[];
-  
-      imageSlide = imageSlide.map((slide: { name: string; image: string }, index: number) => {
-        if (imageSlideFiles[index]) {
-          const file = imageSlideFiles[index];
-          const filePath = `./public/${timestamp}_${file.name}`;
-  
-          // Simpan gambar
-          return file.arrayBuffer().then((buffer) => {
-            return writeFile(filePath, Buffer.from(buffer)).then(() => {
-              return {
-                name: slide.name,
-                image: `/${timestamp}_${file.name}`, // Simpan path di DB
-              };
-            });
-          });
-        }
-        return { name: slide.name, image: "" };
-      });
-  
-      // Tunggu semua proses penyimpanan gambar selesai
-      imageSlide = await Promise.all(imageSlide);
-
-      const imageSpaceFiles = formData.getAll("imageSpaces") as File[];
-  
-      spaces = spaces.map((space: { name: string; image: string }, index: number) => {
-        if (imageSpaceFiles[index]) {
-          const fileSpace = imageSpaceFiles[index];
-          const filePathSpace = `./public/${timestamp}_${fileSpace.name}`;
-  
-          // Simpan gambar
-          return fileSpace.arrayBuffer().then((bufferSpaces) => {
-            return writeFile(filePathSpace, Buffer.from(bufferSpaces)).then(() => {
-              return {
-                name: space.name,
-                image: `/${timestamp}_${fileSpace.name}`, // Simpan path di DB
-              };
-            });
-          });
-        }
-        return { name: space.name, image: "" };
-      });
-  
-      // Tunggu semua proses penyimpanan gambar selesai
-      spaces = await Promise.all(spaces);
-
-      const imageMenuFiles = formData.getAll("imageMenu") as File[];
-  
-      menu = menu.map((menu: { name: string; image: string; description: string }, index: number) => {
-        if (imageMenuFiles[index]) {
-          const fileMenu = imageMenuFiles[index];
-          const filePathMenu = `./public/${timestamp}_${fileMenu.name}`;
-  
-          // Simpan gambar
-          return fileMenu.arrayBuffer().then((bufferMenus) => {
-            return writeFile(filePathMenu, Buffer.from(bufferMenus)).then(() => {
-              return {
-                name: menu.name,
-                image: `/${timestamp}_${fileMenu.name}`, // Simpan path di DB
-                description: menu.description,
-              };
-            });
-          });
-        }
-        return { name: menu.name, image: "", description: "" };
-      });
-  
-      // Tunggu semua proses penyimpanan gambar selesai
-      menu = await Promise.all(menu);
-  
-      // 🔹 Simpan data lounge ke database
-      const loungeData = {
-        name: formData.get("name") as string,
-        slug: formData.get("slug") as string,
-        phone: formData.get("phone") as string,
-        address: formData.get("address") as string,
-        day: formData.get("day") as string,
-        time: formData.get("time") as string,
-        city: formData.get("city") as string,
-        taglineId: formData.get("taglineId") as string,
-        taglineEn: formData.get("taglineEn") as string,
-        imageSlide,
-        menu,
-        spaces,
-        banner: bannerUrl,
-        logo: logoUrl,
-        taglineBanner: taglineBannerUrl,
-      };
-  
-      // Validasi data
-      if (!loungeData.name || !loungeData.slug || !loungeData.address || !loungeData.phone || !loungeData.city || !loungeData.taglineId || !loungeData.taglineEn || !loungeData.banner || !loungeData.logo || !loungeData.day || !loungeData.time || !loungeData.taglineBanner) {
-        return NextResponse.json(
-          { success: false, msg: "Semua field wajib diisi." },
-          { status: 400 }
-        );
-      }
-  
-      await LoungeModel.create(loungeData);
-      console.log("Lounge Tersimpan:", loungeData);
-  
-      return NextResponse.json({ success: true, msg: "Lounge Berhasil ditambahkan" });
-    } catch (error) {
-      console.error("Error saat menyimpan lounge:", error);
+    // === Handle Banner Upload to Cloudinary ===
+    const banner = formData.get("banner") as File | null;
+    if (!banner) {
       return NextResponse.json(
-        { success: false, msg: "Terjadi kesalahan saat menambahkan lounge." },
-        { status: 500 }
+        { success: false, msg: "Gambar banner tidak ditemukan." },
+        { status: 400 }
       );
     }
+    const bannerBuffer = Buffer.from(await banner.arrayBuffer());
+    const bannerBase64 = `data:${banner.type};base64,${bannerBuffer.toString("base64")}`;
+    const bannerUpload = await cloudinary.uploader.upload(bannerBase64, {
+      folder: "lounges/banner",
+    });
+
+    // === Handle Logo Upload to Cloudinary ===
+    const logo = formData.get("logo") as File | null;
+    if (!logo) {
+      return NextResponse.json(
+        { success: false, msg: "Gambar logo tidak ditemukan." },
+        { status: 400 }
+      );
+    }
+    const logoBuffer = Buffer.from(await logo.arrayBuffer());
+    const logoBase64 = `data:${logo.type};base64,${logoBuffer.toString("base64")}`;
+    const logoUpload = await cloudinary.uploader.upload(logoBase64, {
+      folder: "lounges/logo",
+    });
+
+    // === Handle Menu Images ===
+    const imageMenuFiles = formData.getAll("imageMenu") as File[];
+
+    menuImages = await Promise.all(
+      imageMenuFiles.map(async (file: File) => {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+        const uploadResult = await cloudinary.uploader.upload(base64, {
+          folder: "lounges/menu",
+        });
+        return uploadResult.secure_url; // ⬅️ Langsung kembalikan URL string saja
+      })
+    );    
+
+    const otherImagesFiles = formData.getAll("otherImageItem") as File[];
+
+    otherImages = await Promise.all(
+      otherImagesFiles.map(async (file: File) => {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+        const uploadResult = await cloudinary.uploader.upload(base64, {
+          folder: "lounges/other-image",
+        });
+        return uploadResult.secure_url; // ⬅️ Langsung kembalikan URL string saja
+      })
+    );    
+
+    // === Save Lounge Data ===
+    const loungeData = {
+      name: formData.get("name") as string,
+      instagram: formData.get("instagram") as string,
+      facebook: formData.get("facebook") as string,
+      email: formData.get("email") as string,
+      whatsapp: formData.get("whatsapp") as string,
+      youtube: formData.get("youtube") as string,
+      slug: formData.get("slug") as string,
+      phone: formData.get("phone") as string,
+      address: formData.get("address") as string,
+      day: formData.get("day") as string,
+      time: formData.get("time") as string,
+      city: formData.get("city") as string,
+      menuImages,
+      otherImages,
+      banner: bannerUpload.secure_url,
+      logo: logoUpload.secure_url,
+    };
+
+    if (!loungeData.name || !loungeData.slug || !loungeData.address || !loungeData.phone || !loungeData.city || !loungeData.banner || !loungeData.logo || !loungeData.day || !loungeData.time) {
+      return NextResponse.json(
+        { success: false, msg: "Semua field wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    await LoungeModel.create(loungeData);
+
+    return NextResponse.json({ success: true, msg: "Lounge Berhasil ditambahkan" });
+  } catch (error) {
+    console.error("Error saat menyimpan lounge:", error);
+    return NextResponse.json(
+      { success: false, msg: "Terjadi kesalahan saat menambahkan lounge." },
+      { status: 500 }
+    );
   }
+}
   
 
-  export async function DELETE(request: NextRequest) {
+function extractPublicId(url: string): string | null {
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split("/"); // ['','image','upload','v1746391430','lounges','menu','filename.png']
+    
+    // Remove version part (e.g., v1746391430)
+    const uploadIndex = pathParts.indexOf("upload");
+    const publicIdParts = pathParts.slice(uploadIndex + 2); // skip 'upload' and 'vXXX'
+    
+    const filename = publicIdParts.join("/").replace(/\.[^/.]+$/, ""); // Remove file extension
+    return filename;
+  } catch {
+    return null;
+  }
+}
+
+
+export async function DELETE(request: NextRequest) {
+  try {
     const id = request.nextUrl.searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ msg: "ID tidak diberikan" }, { status: 400 });
+    }
+
     const lounge = await LoungeModel.findById(id);
-  
     if (!lounge) {
       return NextResponse.json({ msg: "Lounge tidak ditemukan" }, { status: 404 });
     }
-  
-    fs.unlink(`./public${lounge.banner}`, () => {});
-    fs.unlink(`./public${lounge.logo}`, () => {});
-    fs.unlink(`./public${lounge.taglineBanner}`, () => {});
-  
-    await Promise.all([
-      lounge.banner && unlinkAsync(`./public${lounge.banner}`).catch(() => {}),
-      lounge.logo && unlinkAsync(`./public${lounge.logo}`).catch(() => {}),
-      lounge.taglineBanner && unlinkAsync(`./public${lounge.taglineBanner}`).catch(() => {}),
-    ]);
-  
-    // Hapus semua gambar dalam imageSlideFiles
-    if (Array.isArray(lounge.imageSlide)) {
-      await Promise.all(
-        lounge.imageSlide.map((slide: { name: string; image: string }) =>
-          slide.image ? unlinkAsync(`./public${slide.image}`).catch(() => {}) : null
-        )
-      );
+
+    // 🔹 Hapus banner dari Cloudinary
+    if (lounge.banner) {
+      const publicId = extractPublicId(lounge.banner);
+      if (publicId) await cloudinary.uploader.destroy(publicId);
     }
 
-    // Hapus semua gambar dalam imageSlideFiles
-    if (Array.isArray(lounge.spaces)) {
-      await Promise.all(
-        lounge.spaces.map((space: { name: string; image: string }) =>
-          space.image ? unlinkAsync(`./public${space.image}`).catch(() => {}) : null
-        )
-      );
+    // 🔹 Hapus logo dari Cloudinary
+    if (lounge.logo) {
+      const publicId = extractPublicId(lounge.logo);
+      if (publicId) await cloudinary.uploader.destroy(publicId);
     }
 
-    if (Array.isArray(lounge.menu)) {
+    // 🔹 Hapus gambar menu (array of string)
+    if (Array.isArray(lounge.menuImages)) {
       await Promise.all(
-        lounge.menu.map((menu: { name: string; image: string; description: string }) =>
-          menu.image ? unlinkAsync(`./public${menu.image}`).catch(() => {}) : null
-        )
-      );
-    }
-
-    if (Array.isArray(lounge.imageSlide)) {
-      console.log("🔎 lounge.imageSlide:", lounge.imageSlide);
-    
-      await Promise.all(
-        lounge.imageSlide.map(async (slide: { name: string; image: string }) => {
-          if (slide.image) {
-            const filePath = path.resolve(`./public${slide.image}`);
-            try {
-              await unlink(filePath);
-              console.log(`✅ File terhapus: ${filePath}`);
-            } catch (err) {
-              if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
-                console.error(`❌ Gagal menghapus file: ${filePath}`, err);
-              }
-            }
-          }
+        lounge.menuImages.map(async (imageUrl: string) => {
+          const publicId = extractPublicId(imageUrl);
+          if (publicId) await cloudinary.uploader.destroy(publicId);
         })
       );
     }
-  
-    await LoungeModel.findByIdAndDelete(id);
-    return NextResponse.json({ msg: "Lounge terhapus" });
-  }
 
-  
+    // 🔹 (Opsional) Jika ada otherImages dan juga bertipe string[]
+    if (Array.isArray(lounge.otherImages)) {
+      await Promise.all(
+        lounge.otherImages.map(async (imageUrl: string) => {
+          const publicId = extractPublicId(imageUrl);
+          if (publicId) await cloudinary.uploader.destroy(publicId);
+        })
+      );
+    }
+
+    // 🔹 Hapus data lounge dari database
+    await LoungeModel.findByIdAndDelete(id);
+
+    return NextResponse.json({ msg: "Lounge terhapus" });
+  } catch (error) {
+    console.error("Gagal menghapus lounge:", error);
+    return NextResponse.json(
+      { msg: "Terjadi kesalahan saat menghapus lounge." },
+      { status: 500 }
+    );
+  }
+}

@@ -4,26 +4,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useRouter } from "next/navigation";
 
-type ImageSlide = {
-  name: string;
-  image: string;
-};
-
-type ImageSpaces = {
-  _id: string
-  name: string;
-  image: string;
-};
-
-type menu = {
-  name: string;
-  description:string;
-  image: string;
-};
-
 type Lounge = {
   _id: string;
   name: string;
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  email: string;
+  whatsapp: string;
   slug:string;
   address:string;
   banner: string | File;
@@ -32,18 +20,19 @@ type Lounge = {
   day:string;
   time:string;
   city: string;
-  taglineId: string;
-  taglineEn: string;
-  taglineBanner: string | File;
-  imageSlide: ImageSlide[]; 
-  menu: menu[];
-  spaces: ImageSpaces[];
   date: string;
+  menuImages: [];
+  otherImages: [];
 };
 
 type LoungeFe = {
   _id: number;
   name: string;
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  email: string;
+  whatsapp: string;
   slug:string;
   address:string;
   banner: string | File;
@@ -52,12 +41,8 @@ type LoungeFe = {
   city: string;
   day:string;
   time:string;
-  taglineId: string;
-  taglineEn: string;
-  taglineBanner: string | File;
-  imageSlide: ImageSlide[]; 
-  menu: menu[];
-  spaces: ImageSpaces[];
+  menuImages:[];
+  otherImages: [];
   date: string;
   className: 'btn_tab_left' | 'btn_tab_right' | 'btn_tab_bottom'; 
 };
@@ -77,18 +62,19 @@ export const useLounge = () => {
   const [loungesDetail, setLoungesDetail] = useState<Lounge>({
     _id: "",
     name: "",
+    instagram: "",
+    facebook: "",
+    youtube: "",
+    email: "",
+    whatsapp: "",
     slug:"",
     address:"",
     banner: "" ,
-    logo: "" ,
+    logo: "",
     phone:"",
     city: "",
-    taglineId: "",
-    taglineEn: "",
-    taglineBanner: "",
-    imageSlide: [],
-    menu: [],
-    spaces: [],
+    menuImages: [],
+    otherImages: [],
     date: "",
     day: "",
     time: ""
@@ -99,7 +85,6 @@ export const useLounge = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
-  const [previewTaglineBanner, setPreviewTaglineBanner] = useState<string | null>(null);
 
   // Fetch lounges from API
   const fetchLounges = async () => {
@@ -258,11 +243,6 @@ export const useLounge = () => {
             setPreviewLogo(responseData.logo || ""); // Jika string (URL gambar), langsung gunakan
           }
 
-          if (responseData.taglineBanner instanceof File) {
-            setPreviewTaglineBanner(URL.createObjectURL(responseData.taglineBanner)); // Jika File, buat URL sementara
-          } else {
-            setPreviewTaglineBanner(responseData.taglineBanner || ""); // Jika string (URL gambar), langsung gunakan
-          }
         } catch (error) {
           console.error("Fetch error:", error);
         } finally {
@@ -286,7 +266,6 @@ export const useLounge = () => {
     loungesDetail,
     previewBanner,
     previewLogo,
-    previewTaglineBanner,
     citiesLounge,
     setCitiesLounge,
     setLoungesFe,

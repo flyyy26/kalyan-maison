@@ -77,7 +77,7 @@ export default function LoungeForm() {
                     <Image
                       width="100"
                       height="100"
-                      src={`http://localhost:3000${lounge.banner}`}
+                      src={`${lounge.banner}`}
                       alt={lounge.name}
                       className="lounge-image"
                     />

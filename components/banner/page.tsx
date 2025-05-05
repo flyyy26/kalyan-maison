@@ -6,14 +6,19 @@ import home from "@/app/[locale]/style/home.module.css"
 import line from "@/public/images/line_banner.png"
 import lineDekstop from "@/public/images/circle_dekstop.png"
 import { IoLogoYoutube } from "react-icons/io";
+import { FaInstagram } from "react-icons/fa";
 import { useMenu } from '@/context/MenuContext';
 import { useLocationContext } from '@/context/LocationContext'; 
 import { Link } from '@/i18n/routing';
-import { FaInstagram } from "react-icons/fa";
+
 import {useTranslations} from 'next-intl';
 import { useEffect, useState } from 'react';
 import {useContact} from '@/hooks/useContact'
 import { useCity } from '@/hooks/useCity';
+import { FaTiktok } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import { FaFacebook } from "react-icons/fa";
+
 
 export default function Banner() {
     const t =  useTranslations();
@@ -125,6 +130,8 @@ export default function Banner() {
                 onMouseEnter={() => handleHoverTab(lounge._id)}
                 onMouseLeave={() => setHoveredTab(null)}
               >
+                 <div className={home.pulse_ring}></div>
+                 <div className={home.pulse_dot}></div>
                 {hoveredTab === lounge._id && typeof lounge.logo === "string" && (
                     <Image
                       src={lounge.logo}
@@ -155,6 +162,8 @@ export default function Banner() {
             onMouseEnter={() => handleHoverTab(100)}
             onMouseLeave={() => setHoveredTab(null)}
           >
+             <div className={home.pulse_ring}></div>
+             <div className={home.pulse_dot}></div>
             {hoveredTab === 100 && <span>Kalyan Shop</span>}
           </Link>
           <span
@@ -181,11 +190,17 @@ export default function Banner() {
               <p>{lounge.address}</p>
             </div>
             <div className={home.galeri_banner_dynamic}>
-              {lounge.spaces.slice(0, 2).map((image: { image: string }, index: number) => (
-                <div key={index} className={home.galeri_banner_dynamic_box}>
-                  <Image src={image.image} fill alt={`Banner Image ${lounge.name}`} style={{objectFit: 'cover'}} />
-                </div>
-              ))}
+            {lounge.otherImages.slice(0, 2).map((image: string, index: number) => (
+              <div key={index} className={home.galeri_banner_dynamic_box}>
+                <Image
+                  src={image}
+                  fill
+                  alt={`Banner Image ${lounge.name}`}
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+            ))}
+
             </div>
           </div>
         ))}
@@ -231,32 +246,62 @@ export default function Banner() {
             </div>
           </div>
           <div className={home.banner_social_media}>
-            <Link href={`${ContactDetail.instagram}`} target='blank_'>
-              <button className={home.banner_social_media_box}>
-                <FaInstagram />
-              </button>
-            </Link>
-            <Link href={`${ContactDetail.facebook}`} target='blank_'>
-              <button className={home.banner_social_media_box}>
-                <IoLogoYoutube />
-              </button>
-            </Link>
+            {ContactDetail.instagram !== 'undefined' && (
+              <Link href={ContactDetail.instagram} target="_blank">
+                <button className={home.banner_social_media_box}>
+                  <FaInstagram />
+                </button>
+              </Link>
+            )}
+
+            {ContactDetail.youtube !== 'undefined' && (
+              <Link href={ContactDetail.youtube} target="_blank">
+                <button className={home.banner_social_media_box}>
+                  <IoLogoYoutube />
+                </button>
+              </Link>
+            )}
+
+            {ContactDetail.tiktok !== 'undefined' && (
+              <Link href={ContactDetail.tiktok} target="_blank">
+                <button className={home.banner_social_media_box}>
+                  <FaTiktok />
+                </button>
+              </Link>
+            )}
+
+            {ContactDetail.email !== 'undefined' && (
+              <Link href={`mailto:${ContactDetail.email}`} target="_blank">
+                <button className={home.banner_social_media_box}>
+                  <MdEmail />
+                </button>
+              </Link>
+            )}
+
+            {ContactDetail.facebook !== 'undefined' && (
+              <Link href={ContactDetail.facebook} target="_blank">
+                <button className={home.banner_social_media_box}>
+                  <FaFacebook />
+                </button>
+              </Link>
+            )}
           </div>
+
           <div className={`${home.image_hover} ${hoveredImageId ? home.image_hover_active : ''}`}>
             {hoveredImageId !== null && (
               <>
                 {loungesFe
-                  .find(loc => (loc._id) === hoveredImageId)
-                  ?.spaces.slice(0, 2) // Batasi hanya dua gambar
-                  .map((image, index) => (
+                  .find(loc => loc._id === hoveredImageId)
+                  ?.otherImages.slice(0, 2) // hanya ambil 2 gambar
+                  .map((imageUrl, index) => (
                     <div key={index} className={home.image_hover_box}>
                       <Image
-                        src={image.image}
+                        src={imageUrl}
                         fill
-                        alt={`Image ${image.name}`}
+                        alt={`Image Kalyan Maison ${index + 1}`}
                       />
                     </div>
-                  ))}
+                ))}
               </>
             )}
           </div>

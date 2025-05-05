@@ -47,6 +47,8 @@ export default function EditContact() {
       formData.append('instagram', ContactDetail.instagram);
       formData.append('tiktok', ContactDetail.tiktok);
       formData.append('whatsapp', ContactDetail.whatsapp);
+      formData.append('youtube', ContactDetail.youtube);
+      formData.append('email', ContactDetail.email);
 
       const success = await updateContact(contactId, formData);
 
@@ -75,7 +77,7 @@ export default function EditContact() {
               name="facebook"
               value={ContactDetail.facebook || ""}
               onChange={handleChange}
-              required
+              
               placeholder="Enter facebook link"
             />
           </div>
@@ -87,7 +89,7 @@ export default function EditContact() {
               name="instagram"
               value={ContactDetail.instagram || ""}
               onChange={handleChange}
-              required
+              
               placeholder="Enter instagram link"
             />
           </div>
@@ -101,7 +103,7 @@ export default function EditContact() {
               name="tiktok"
               value={ContactDetail.tiktok || ""}
               onChange={handleChange}
-              required
+              
               placeholder="Enter tiktok link"
             />
           </div>
@@ -113,8 +115,33 @@ export default function EditContact() {
               name="whatsapp"
               value={ContactDetail.whatsapp || ""}
               onChange={handleChange}
-              required
+              
               placeholder="Ex : 628xxxxxxxx"
+            />
+          </div>
+        </div>
+        <div className={styles.form_double}>
+          <div className={styles.form_single}>
+            <label htmlFor="youtube">Youtube</label>
+            <input
+              type="text"
+              id="youtube"
+              name="youtube"
+              value={ContactDetail.youtube || ""}
+              onChange={handleChange}
+              
+              placeholder="Enter youtube link"
+            />
+          </div>
+          <div className={styles.form_single}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={ContactDetail.email || ""}
+              onChange={handleChange}
+              placeholder="Enter email"
             />
           </div>
         </div>

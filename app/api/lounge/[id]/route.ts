@@ -1,9 +1,13 @@
-import { writeFile, unlink } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import LoungeModel from "@/app/lib/models/loungeModel";
 import { ConnectDB } from "@/app/lib/config/db";
-import path from "path";
-import fs from "fs/promises";
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const LoadDB = async () => {
   await ConnectDB();
@@ -29,9 +33,22 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
     }
 }
 
+export function extractPublicId(url: string): string | null {
+  try {
+    const parts = url.split('/');
+    const fileWithExtension = parts.pop();
+    if (!fileWithExtension) return null;
+
+    const [publicId] = fileWithExtension.split('.');
+    const folderPath = parts.slice(parts.indexOf('upload') + 1).join('/');
+    return `${folderPath}/${publicId}`;
+  } catch {
+    return null;
+  }
+}
+
 export async function PUT(request: Request) {
   try {
-
     const formData = await request.formData();
     const loungeId = formData.get("_id");
 
@@ -50,251 +67,136 @@ export async function PUT(request: Request) {
       );
     }
 
-    const timestamp = Date.now();
+    // 🔹 Handle Banner Upload
     const banner = formData.get("banner");
     let bannerUrl = lounge.banner;
 
-    // Cek apakah banner adalah file sebelum diproses
     if (banner instanceof File) {
-      const bannerByteData = await banner.arrayBuffer();
-      const buffer = Buffer.from(bannerByteData);
-      const newPath = `./public/${timestamp}_${banner.name}`;
-      await writeFile(newPath, buffer);
-      bannerUrl = `/${timestamp}_${banner.name}`;
+      const buffer = Buffer.from(await banner.arrayBuffer());
+      const base64 = `data:${banner.type};base64,${buffer.toString("base64")}`;
 
-      // Hapus gambar lama jika ada
+      // Hapus banner lama dari Cloudinary jika ada
       if (lounge.banner) {
-        const oldLoungePath = `./public${lounge.banner}`;
-        await unlink(oldLoungePath).catch(() => {});
+        const oldPublicId = extractPublicId(lounge.banner);
+        if (oldPublicId) await cloudinary.uploader.destroy(oldPublicId);
       }
+
+      // Upload baru
+      const result = await cloudinary.uploader.upload(base64, {
+        folder: 'lounges/banner',
+      });
+      bannerUrl = result.secure_url;
     }
 
+    // 🔹 Handle Logo Upload
     const logo = formData.get("logo");
     let logoUrl = lounge.logo;
 
-    // Cek apakah logo adalah file sebelum diproses
     if (logo instanceof File) {
-      const logoByteData = await logo.arrayBuffer();
-      const buffer = Buffer.from(logoByteData);
-      const newPath = `./public/${timestamp}_${logo.name}`;
-      await writeFile(newPath, buffer);
-      logoUrl = `/${timestamp}_${logo.name}`;
+      const buffer = Buffer.from(await logo.arrayBuffer());
+      const base64 = `data:${logo.type};base64,${buffer.toString("base64")}`;
 
-      // Hapus gambar lama jika ada
+      // Hapus logo lama dari Cloudinary jika ada
       if (lounge.logo) {
-        const oldLoungePath = `./public${lounge.logo}`;
-        await unlink(oldLoungePath).catch(() => {});
+        const oldPublicId = extractPublicId(lounge.logo);
+        if (oldPublicId) await cloudinary.uploader.destroy(oldPublicId);
       }
+
+      // Upload baru
+      const result = await cloudinary.uploader.upload(base64, {
+        folder: 'lounges/logo',
+      });
+      logoUrl = result.secure_url;
     }
 
-    const taglineBanner = formData.get("taglineBanner");
-    let taglineBannerUrl = lounge.taglineBanner;
+    const menuImagesRaw = formData.get("menuImages");
+    const otherImagesRaw = formData.get("otherImages");
 
-    // Cek apakah taglineBanner adalah file sebelum diproses
-    if (taglineBanner instanceof File) {
-      const taglineBannerByteData = await taglineBanner.arrayBuffer();
-      const bufferTagline = Buffer.from(taglineBannerByteData);
-      const pathTagline = `./public/${timestamp}_${taglineBanner.name}`;
-      await writeFile(pathTagline, bufferTagline);
-      taglineBannerUrl = `/${timestamp}_${taglineBanner.name}`;
+    const parsedMenuImages = menuImagesRaw ? JSON.parse(menuImagesRaw as string) : [];
+    const parsedOtherImages = otherImagesRaw ? JSON.parse(otherImagesRaw as string) : [];
 
-      // Hapus gambar lama jika ada
-      if (lounge.taglineBanner) {
-        const oldLoungePath = `./public${lounge.taglineBanner}`;
-        await unlink(oldLoungePath).catch(() => {});
-      }
-    }
+    const imageMenuFiles = formData.getAll("imageMenu") as File[];
+    const otherImagesFiles = formData.getAll("otherImageItem") as File[];
 
+    // === Menu Images ===
+    let newMenuImages: string[] = [];
+    let menuFileIndex = 0;
 
-    const slides = lounge.imageSlide || [];
-
-    const slidesString = formData.get("imageSlide") as string;
-    let newSlides = slidesString ? JSON.parse(slidesString) : [];
-    const imageSlideFiles = formData.getAll("imageSlide[]") as File[];
-
-    console.log("🔍 Data yang diterima:", newSlides);
-    console.log("📂 File yang diupload:", imageSlideFiles.map((file) => file.name));
-
-    // 🔹 Buat mapping file berdasarkan indeks "__file__X"
-    const fileIndexMapSlide: { [key: number]: File } = {};
-    newSlides.forEach((slide: { image: string }) => {
-      if (slide.image.startsWith("__file__")) {
-        const fileIndex = parseInt(slide.image.replace("__file__", ""), 10);
-        const file = imageSlideFiles.shift();
-        if (file) {
-          fileIndexMapSlide[fileIndex] = file;
-        }
-      }
-    });
-
-    newSlides = await Promise.all(
-      newSlides.map(async (slide: { image: string }, index: number) => {
-        if (typeof slide.image === "string" && slide.image.startsWith("__file__")) {
-          const file = fileIndexMapSlide[index]; // Ambil file berdasarkan index yang sesuai
-
-          if (file) {
-            const filePath = `/${timestamp}_${file.name}`;
-            const buffer = Buffer.from(await file.arrayBuffer());
-
-            // 🔹 Hapus file lama jika ada
-            if (slides[index]?.image && slides[index].image.startsWith("/")) {
-              const oldFilePath = path.join(process.cwd(), "public", slides[index].image);
-              try {
-                await fs.unlink(oldFilePath);
-                console.log(`🗑️ File lama dihapus: ${oldFilePath}`);
-              } catch (err) {
-                if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
-                  console.error(`❌ Gagal menghapus file lama: ${oldFilePath}`, err);
-                }
-              }
-            }
-
-            // 🔹 Simpan file baru
-            await fs.writeFile(path.join(process.cwd(), "public", filePath), buffer);
-            console.log(`✅ File baru disimpan: ${filePath}`);
-
-            return { ...slide, image: filePath }; // Update dengan path file baru
-          } else {
-            console.warn(`⚠️ File tidak ditemukan untuk index ${index}.`);
-          }
-        }
-
-        return slide;
-      })
-    );
-
-    // INI UNTUK SPACES
+    newMenuImages = await Promise.all(
+      parsedMenuImages.map(async (item: string) => {
+        if (item.startsWith("__file__")) {
+          const file = imageMenuFiles[menuFileIndex++];
+          if (!file) throw new Error("File menu tidak ditemukan pada index yang diharapkan");
     
-    const spaces = lounge.spaces || [];
-
-    const spacesString = formData.get("spaces") as string;
-    let newSpaces = spacesString ? JSON.parse(spacesString) : [];
-    const imageSpaceFiles = formData.getAll("imageSpaces[]") as File[];
-
-    console.log("🔍 Data yang diterima:", newSpaces);
-    console.log("📂 File yang diupload:", imageSpaceFiles.map((file) => file.name));
-
-    // 🔹 Buat mapping file berdasarkan indeks "__file__X"
-    const fileIndexMap: { [key: number]: File } = {};
-    newSpaces.forEach((space: { image: string }) => {
-      if (space.image.startsWith("__file__")) {
-        const fileIndex = parseInt(space.image.replace("__file__", ""), 10);
-        const file = imageSpaceFiles.shift();
-        if (file) {
-          fileIndexMap[fileIndex] = file;
+          const buffer = Buffer.from(await file.arrayBuffer());
+          const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+          const uploadResult = await cloudinary.uploader.upload(base64, {
+            folder: "lounges/menu",
+          });
+          return uploadResult.secure_url;
+        } else {
+          return item;
         }
-      }
-    });
-
-    newSpaces = await Promise.all(
-      newSpaces.map(async (space: { image: string }, index: number) => {
-        if (typeof space.image === "string" && space.image.startsWith("__file__")) {
-          const file = fileIndexMap[index]; // Ambil file berdasarkan index yang sesuai
-
-          if (file) {
-            const filePath = `/${timestamp}_${file.name}`;
-            const buffer = Buffer.from(await file.arrayBuffer());
-
-            // 🔹 Hapus file lama jika ada
-            if (spaces[index]?.image && spaces[index].image.startsWith("/")) {
-              const oldFilePath = path.join(process.cwd(), "public", spaces[index].image);
-              try {
-                await fs.unlink(oldFilePath);
-                console.log(`🗑️ File lama dihapus: ${oldFilePath}`);
-              } catch (err) {
-                if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
-                  console.error(`❌ Gagal menghapus file lama: ${oldFilePath}`, err);
-                }
-              }
-            }
-
-            // 🔹 Simpan file baru
-            await fs.writeFile(path.join(process.cwd(), "public", filePath), buffer);
-            console.log(`✅ File baru disimpan: ${filePath}`);
-
-            return { ...space, image: filePath }; // Update dengan path file baru
-          } else {
-            console.warn(`⚠️ File tidak ditemukan untuk index ${index}.`);
-          }
-        }
-
-        return space;
       })
     );
 
-    const menu = lounge.menu || [];
+    // Hapus gambar lama yang tidak digunakan lagi
+    const unusedMenuImages = lounge.menuImages.filter((old: string) => !newMenuImages.includes(old));
+    await Promise.all(
+      unusedMenuImages.map(async (url: string) => {
+        const publicId = extractPublicId(url);
+        if (publicId) await cloudinary.uploader.destroy(publicId);
+      })
+    );
 
-    const menuString = formData.get("menu") as string;
-    let newMenu = menuString ? JSON.parse(menuString) : [];
-    const imageMenuFiles = formData.getAll("menu[]") as File[];
+    // === Other Images ===
+    let newOtherImages: string[] = [];
+    let fileUploadIndex = 0;
 
-    console.log("🔍 Data yang diterima:", newMenu);
-    console.log("📂 File yang diupload:", imageMenuFiles.map((file) => file.name));
-
-    // 🔹 Buat mapping file berdasarkan indeks "__file__X"
-    const fileIndexMapMenu: { [key: number]: File } = {};
-    newMenu.forEach((item: { image: string }) => {
-      if (item.image.startsWith("__file__")) {
-        const fileIndex = parseInt(item.image.replace("__file__", ""), 10);
-        const file = imageMenuFiles.shift();
-        if (file) {
-          fileIndexMapMenu[fileIndex] = file;
+    newOtherImages = await Promise.all(
+      parsedOtherImages.map(async (item: string) => {
+        if (item.startsWith("__file__")) {
+          const file = otherImagesFiles[fileUploadIndex++];
+          if (!file) throw new Error("File tidak ditemukan pada index yang diharapkan");
+    
+          const buffer = Buffer.from(await file.arrayBuffer());
+          const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+          const uploadResult = await cloudinary.uploader.upload(base64, {
+            folder: "lounges/other-image",
+          });
+          return uploadResult.secure_url;
+        } else {
+          return item;
         }
-      }
-    });
+      })
+    );
 
-    newMenu = await Promise.all(
-      newMenu.map(async (item: { image: string }, index: number) => {
-        if (typeof item.image === "string" && item.image.startsWith("__file__")) {
-          const file = fileIndexMapMenu[index]; // Ambil file berdasarkan index yang sesuai
-
-          if (file) {
-            const filePath = `/${timestamp}_${file.name}`;
-            const buffer = Buffer.from(await file.arrayBuffer());
-
-            // 🔹 Hapus file lama jika ada
-            if (menu[index]?.image && menu[index].image.startsWith("/")) {
-              const oldFilePath = path.join(process.cwd(), "public", menu[index].image);
-              try {
-                await fs.unlink(oldFilePath);
-                console.log(`🗑️ File lama dihapus: ${oldFilePath}`);
-              } catch (err) {
-                if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
-                  console.error(`❌ Gagal menghapus file lama: ${oldFilePath}`, err);
-                }
-              }
-            }
-
-            // 🔹 Simpan file baru
-            await fs.writeFile(path.join(process.cwd(), "public", filePath), buffer);
-            console.log(`✅ File baru disimpan: ${filePath}`);
-
-            return { ...item, image: filePath }; // Update dengan path file baru
-          } else {
-            console.warn(`⚠️ File tidak ditemukan untuk index ${index}.`);
-          }
-        }
-
-        return item;
+    // Hapus gambar lama yang tidak digunakan
+    const unusedOtherImages = lounge.otherImages.filter((old: string) => !newOtherImages.includes(old));
+    await Promise.all(
+      unusedOtherImages.map(async (url: string) => {
+        const publicId = extractPublicId(url);
+        if (publicId) await cloudinary.uploader.destroy(publicId);
       })
     );
 
 
-    // Update lounge dengan data baru
+    // 🔹 Update data lain
     lounge.name = formData.get("name") as string;
+    lounge.youtube = formData.get("youtube") as string;
+    lounge.instagram = formData.get("instagram") as string;
+    lounge.facebook = formData.get("facebook") as string;
+    lounge.email = formData.get("email") as string;
+    lounge.whatsapp = formData.get("whatsapp") as string;
     lounge.slug = formData.get("slug") as string;
     lounge.phone = formData.get("phone") as string;
     lounge.city = formData.get("city") as string;
     lounge.day = formData.get("day") as string;
     lounge.time = formData.get("time") as string;
-    lounge.taglineId = formData.get("taglineId") as string;
-    lounge.taglineEn = formData.get("taglineEn") as string;
-    lounge.imageSlide = newSlides;
-    lounge.spaces = newSpaces;
-    lounge.menu = newMenu;
     lounge.banner = bannerUrl;
     lounge.logo = logoUrl;
-    lounge.taglineBanner = taglineBannerUrl;
+    lounge.menuImages = newMenuImages;
+    lounge.otherImages = newOtherImages;
 
     await lounge.save();
 
@@ -306,7 +208,7 @@ export async function PUT(request: Request) {
     console.error("Error saat memperbarui lounge:", error);
     const errorMessage = (error as Error).message;
     return NextResponse.json(
-      { success: false, msg: `Terjadi kesalahan saat memperbarui lounge: ${errorMessage}` },
+      { success: false, msg: `Terjadi kesalahan: ${errorMessage}` },
       { status: 500 }
     );
   }

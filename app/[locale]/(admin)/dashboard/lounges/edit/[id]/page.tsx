@@ -10,26 +10,6 @@ import Image from 'next/image';
 import { HiChevronDown } from "react-icons/hi2";
 import { GoTrash } from "react-icons/go"; 
 
-interface Space {
-  name: string;
-  image: string | null;
-  imageFile?: File; // Tambahkan imageFile untuk menyimpan File yang diunggah
-}
-
-interface Slide {
-  name: string;
-  image: string | null;
-  imageFile?: File; // Tambahkan imageFile untuk menyimpan File yang diunggah
-}
-
-interface Menu {
-  name: string;
-  description: string;
-  image: string | null;
-  imageFile?: File; // Tambahkan imageFile untuk menyimpan File yang diunggah
-}
-
-
 export default function EditLounge(){
     const router = useRouter();
     const params = useParams();
@@ -40,7 +20,6 @@ export default function EditLounge(){
         success,
         previewBanner,
         previewLogo,
-        previewTaglineBanner,
         loungesDetail,
         setError,
         setSuccess,
@@ -59,11 +38,9 @@ export default function EditLounge(){
 
     const [banner, setBanner] = useState<File | null>(null);
     const [logo, setLogo] = useState<File | null>(null);
-    const [taglineBanner, setTaglineBanner] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
     const [previewLogoEdit, setPreviewLogo] = useState<string | null>(null);
-    const [previewTagline, setPreviewTagline] = useState<string | null>(null);
     const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
     const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const buttonRef = useRef<HTMLButtonElement | null>(null); // Ref untuk tombol
@@ -72,36 +49,8 @@ export default function EditLounge(){
     const [selectedCity, setSelectedCity] = useState<string | null>(null); // Simpan _id, bukan nama
     const [selectedCityName, setSelectedCityName] = useState<string>("");
     const [, setDeletingCityId] = useState<string | null>(null);
-    const [spaces, setSpaces] = useState<Space[]>([]);
-    const [imageSlide, setImageSlide] = useState<Slide[]>([]);
-    const [menu, setMenu] = useState<Menu[]>([]);
-
-    useEffect(() => {
-      if (loungesDetail.imageSlide) {
-        setImageSlide(loungesDetail.imageSlide);
-      }
-    }, [loungesDetail.imageSlide]);
-
-    useEffect(() => {
-        if (loungesDetail?.spaces?.length) {
-            setSpaces(loungesDetail.spaces);
-        }
-    }, [loungesDetail.spaces]);
-    
-      useEffect(() => {
-        if (loungesDetail?.menu?.length) {
-            setMenu(loungesDetail.menu);
-        }
-    }, [loungesDetail.menu]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!loungesDetail) return;
-    
-      setLoungesDetail({
-        ...loungesDetail,
-        [e.target.name]: e.target.value, // Update field yang diubah
-      });
-    };
+    const [menuImages, setMenuImages] = useState<(string | File)[]>([]);
+    const [otherImages, setOtherImages] = useState<(string | File)[]>([]);
 
     useEffect(() => {
       if (loungesDetail?.name) {
@@ -112,116 +61,63 @@ export default function EditLounge(){
       }
   }, [loungesDetail?.name, setLoungesDetail]);
 
-    const handleImageSlideChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const file = event.target.files ? event.target.files[0] : null;
-    
-        if (!file) return;
-    
-        setImageSlide((prevSlides) => {
-            const newSlides = [...prevSlides];
-            newSlides[index] = {
-                ...newSlides[index],
-                image: URL.createObjectURL(file), // Untuk pratinjau
-                imageFile: file, // Simpan file asli
-            };
-            return newSlides;
-        });
-    };
-
-    const handleTitleSlideChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { value } = event.target;
-        setImageSlide((prevSlides) =>
-            prevSlides.map((slide, i) =>
-                i === index ? { ...slide, name: value } : slide
-            )
-        );
-    };
-
-    const addMoreSlide = () => {
-      setImageSlide((prevSlides) => [...prevSlides, { image: null, name: "" }]);
-    };
-
-
-    const handleImageSpacesChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const file = event.target.files ? event.target.files[0] : null;
-    
-        if (!file) return;
-    
-        setSpaces((prevSpaces) => {
-            const newSpaces = [...prevSpaces];
-            newSpaces[index] = {
-                ...newSpaces[index],
-                image: URL.createObjectURL(file), // Untuk pratinjau
-                imageFile: file, // Simpan file asli
-            };
-            return newSpaces;
-        });
-    };  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!loungesDetail) return;
   
+    setLoungesDetail({
+      ...loungesDetail,
+      [e.target.name]: e.target.value, // Update field yang diubah
+    });
+  };
     
-    const handleTitleSpacesChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { value } = event.target;
-        setSpaces((prevSpaces) =>
-            prevSpaces.map((space, i) =>
-                i === index ? { ...space, name: value } : space
-            )
-        );
-    };
+    useEffect(() => {
+      if (loungesDetail?.menuImages?.length) {
+        setMenuImages(loungesDetail.menuImages); // langsung array of string
+      }
+    }, [loungesDetail.menuImages]);
     
-    const addMoreSlideSpaces = () => {
-        setSpaces((prevSpaces) => [...prevSpaces, { image: null, name: "" }]);
-    };
-
-    const removeSpace = (index: number) => {
-      setSpaces((prevSpaces) => prevSpaces.filter((_, i) => i !== index));
-    };
-
-    const removeSlide = (index: number) => {
-      setImageSlide((prevSlides) => prevSlides.filter((_, i) => i !== index));
-    };
-  
-  
     const handleImageMenuChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const file = event.target.files ? event.target.files[0] : null;
+      const file = event.target.files?.[0];
+      if (!file) return;
     
-        if (!file) return;
-    
-        setMenu((prevMenu) => {
-            const newMenu = [...prevMenu];
-            newMenu[index] = {
-                ...newMenu[index],
-                image: URL.createObjectURL(file), // Untuk pratinjau
-                imageFile: file, // Simpan file asli
-            };
-            return newMenu;
-        });
-    };  
-
-    
-    const handleTitleMenuChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { value } = event.target;
-        setMenu((prevMenu) =>
-            prevMenu.map((menu, i) =>
-                i === index ? { ...menu, name: value } : menu
-            )
-        );
-    };
-
-    const handleDescriptionMenuChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { value } = event.target;
-        setMenu((prevMenu) =>
-            prevMenu.map((menu, i) =>
-                i === index ? { ...menu, description: value } : menu
-            )
-        );
-    };
+      setMenuImages(prevMenu => {
+        const updated = [...prevMenu];
+        updated[index] = file; // simpan File bukan URL
+        return updated;
+      });
+    };    
     
     const addMoreMenu = () => {
-        setMenu((prevMenu) => [...prevMenu, { image: null, name: "", description: "" }]);
+      setMenuImages(prevMenu => [...prevMenu, ""]);
+    };
+    
+    const removeMenu = (index: number) => {
+      setMenuImages(prevMenu => prevMenu.filter((_, i) => i !== index));
     };
 
-    const removeMenu = (index: number) => {
-      setMenu((prevMenu) => prevMenu.filter((_, i) => i !== index));
+    useEffect(() => {
+      if (loungesDetail?.otherImages?.length) {
+        setOtherImages(loungesDetail.otherImages);
+      }
+    }, [loungesDetail.otherImages]);
+    
+    const handleOtherImageChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+    
+      setOtherImages(prevMenu => {
+        const updated = [...prevMenu];
+        updated[index] = file;
+        return updated;
+      });
+    };
+    
+    const addMoreOtherImage = () => {
+      setOtherImages(prevMenu => [...prevMenu, ""]); // Tambah slot kosong (string kosong)
+    };
+    
+    const removeOtherImage = (index: number) => {
+      setOtherImages(prevMenu => prevMenu.filter((_, i) => i !== index));
     };
 
     const handleSelectCity = (cityId: string, cityName: string) => {
@@ -267,30 +163,21 @@ export default function EditLounge(){
       
           setLoungesDetail((prev) => ({
             ...prev,
-            image: selectedFile, // ✅ Sekarang bisa menyimpan File
+            banner: selectedFile, // ✅ Sekarang bisa menyimpan File
           }));
         }
     };
-
-    // const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    //     if (e.target.files && e.target.files[0]) {
-    //       const selectedFileLogo = e.target.files[0];
-    //       setLogo(selectedFileLogo);
-    //       setPreviewLogo(URL.createObjectURL(selectedFileLogo));
-      
-    //       setLoungesDetail((prev) => ({
-    //         ...prev,
-    //         image: selectedFileLogo, // ✅ Sekarang bisa menyimpan File
-    //       }));
-    //     }
-    // };
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFileLogo = e.target.files?.[0];
         if (selectedFileLogo) {
         setLogo(selectedFileLogo);
         setPreviewLogo(URL.createObjectURL(selectedFileLogo)); // Buat preview gambar
+
+        setLoungesDetail((prev) => ({
+          ...prev,
+          logo: selectedFileLogo, // ✅ Sekarang bisa menyimpan File
+        }));
         }
     };
 
@@ -314,35 +201,6 @@ export default function EditLounge(){
         }
     };
 
-    // for tagline banner
-    const handleImageTaglineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
-        setTaglineBanner(selectedFile);
-        setPreviewTagline(URL.createObjectURL(selectedFile)); // Buat preview gambar
-        }
-    };
-
-    const handleDragOverTagline = (e: React.DragEvent<HTMLLabelElement>) => {
-        e.preventDefault();
-        setDragActive(true);
-    };
-
-    const handleDragLeaveTagline = () => {
-        setDragActive(false);
-    };
-
-    const handleDropTagline = (e: React.DragEvent<HTMLLabelElement>) => {
-        e.preventDefault();
-        setDragActive(false);
-
-        const droppedFile = e.dataTransfer.files?.[0];
-        if (droppedFile) {
-          setTaglineBanner(droppedFile); // Correctly set the tagline banner
-          setPreviewTagline(URL.createObjectURL(droppedFile)); // Buat preview gambar
-        }
-    };
-
     const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
     
@@ -350,94 +208,77 @@ export default function EditLounge(){
     
       setError(null);
       setSuccess(null);
+      setLoading(true);
     
       try {
         const formData = new FormData();
         formData.append("_id", loungeId);
         formData.append("name", loungesDetail.name);
+        formData.append("youtube", loungesDetail.youtube);
+        formData.append("instagram", loungesDetail.instagram);
+        formData.append("facebook", loungesDetail.facebook);
+        formData.append("email", loungesDetail.email);
+        formData.append("whatsapp", loungesDetail.whatsapp);
         formData.append("slug", loungesDetail.slug);
         formData.append("address", loungesDetail.address);
         formData.append("day", loungesDetail.day);
         formData.append("time", loungesDetail.time);
         formData.append("phone", loungesDetail.phone);
         formData.append("city", selectedCity ?? loungesDetail.city ?? "");
-        formData.append("banner", loungesDetail.banner);
-        formData.append("logo", loungesDetail.logo);
-        formData.append("taglineBanner", loungesDetail.taglineBanner); // Correctly append taglineBanner
-        formData.append("taglineId", loungesDetail.taglineId);
-        formData.append("taglineEn", loungesDetail.taglineEn);
+    
+        // ⬇️ Jika banner/logo adalah file, masukkan sebagai File, jika string, tetap string
+        if (loungesDetail.banner instanceof File) {
+          formData.append("banner", loungesDetail.banner);
+        } else {
+          formData.append("banner", loungesDetail.banner); // tetap URL
+        }
+    
+        if (loungesDetail.logo instanceof File) {
+          formData.append("logo", loungesDetail.logo);
+        } else {
+          formData.append("logo", loungesDetail.logo); // tetap URL
+        }
+    
+        // menuImages
+        const finalMenuImages = menuImages.map((item, i) =>
+          item instanceof File ? `__file__${i}` : item
+        );
+        formData.append("menuImages", JSON.stringify(finalMenuImages));
 
-        // UNTUK IMAGE SLIDES
-        const slidesArray = imageSlide.map((slide, index) => ({
-          name: slide.name || "Untitled",
-          image: slide.imageFile ? `__file__${index}` : slide.image, // Sesuaikan indeks
-        }));
-
-        // 🛠 Gunakan filter agar hanya file yang valid yang ditambahkan ke FormData
-        const imageSlideFiles = imageSlide
-          .map((slide) => slide.imageFile)
-          .filter((file): file is File => !!file); // Pastikan hanya File yang valid
-
-        // 🚀 Kirim slidesArray & imageSlideFiles dengan urutan yang benar
-        formData.append("imageSlide", JSON.stringify(slidesArray));
-
-        imageSlideFiles.forEach((file) => {
-          formData.append("imageSlide[]", file);
+        menuImages.forEach((item) => {
+          if (item instanceof File) {
+            formData.append("imageMenu", item);
+          }
         });
 
-    
-        // UNTUK SPACES
-        const spacesArray = spaces.map((space, index) => ({
-          name: space.name || "Untitled",
-          image: space.imageFile ? `__file__${index}` : space.image, // Sesuaikan indeks
-        }));
-        
-        // 🛠 Gunakan filter agar hanya file yang valid yang ditambahkan ke FormData
-        const imageFiles = spaces
-          .map((space) => space.imageFile)
-          .filter((file): file is File => !!file); // Pastikan hanya File yang valid
-        
-        // 🚀 Kirim spacesArray & imageFiles dengan urutan yang benar
-        formData.append("spaces", JSON.stringify(spacesArray));
-        
-        imageFiles.forEach((file) => {
-          formData.append("imageSpaces[]", file);
+        // otherImages
+        const finalOtherImages = otherImages.map((item, i) =>
+          item instanceof File ? `__file__${i}` : item
+        );
+        formData.append("otherImages", JSON.stringify(finalOtherImages));
+
+        otherImages.forEach((item) => {
+          if (item instanceof File) {
+            formData.append("otherImageItem", item);
+          }
         });
-        
+      
     
-        // UNTUK SPACES
-        const menuArray = menu.map((menu, index) => ({
-          name: menu.name || "Untitled",
-          image: menu.imageFile ? `__file__${index}` : menu.image, // Sesuaikan indeks
-          description: menu.description || "Untitled",
-        }));
-        
-        // 🛠 Gunakan filter agar hanya file yang valid yang ditambahkan ke FormData
-        const imageMenuFiles = menu
-          .map((menu) => menu.imageFile)
-          .filter((file): file is File => !!file); // Pastikan hanya File yang valid
-        
-        // 🚀 Kirim menuArray & imageMenuFiles dengan urutan yang benar
-        formData.append("menu", JSON.stringify(menuArray));
-        
-        imageMenuFiles.forEach((file) => {
-          formData.append("menu[]", file);
-        });
-    
+        // Kirim ke endpoint PUT
         const success = await updateLounge(loungeId, formData);
     
         if (success) {
           router.push(`/${locale}/dashboard/lounges`);
         } else {
-          setError("⚠️ Gagal menambahkan lounge.");
+          setError("⚠️ Gagal memperbarui lounge.");
         }
-      } catch {
+      } catch (err) {
+        console.error(err);
         setError("⚠️ Terjadi kesalahan jaringan.");
       } finally {
         setLoading(false);
       }
     };
-    
 
     const toggleDropdown = (id: string) => {
         setOpenDropdowns((prev) => ({
@@ -647,6 +488,72 @@ export default function EditLounge(){
           </div>
           <div className={styles.form_double}>
             <div className={styles.form_single}>
+              <label htmlFor="instagram">Lounge Instagram</label>
+              <input
+                type="text"
+                id="instagram"
+                name="instagram"
+                value={loungesDetail.instagram || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter lounge instagram"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="facebook">Lounge Facebook</label>
+              <input
+                type="text"
+                id="facebook"
+                name="facebook"
+                value={loungesDetail.facebook || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter lounge facebook"
+              />
+            </div>
+          </div>
+          <div className={styles.form_double}>
+            <div className={styles.form_single}>
+              <label htmlFor="youtube">Lounge Youtube</label>
+              <input
+                type="text"
+                id="youtube"
+                name="youtube"
+                value={loungesDetail.youtube || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter lounge youtube"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="email">Lounge Email</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={loungesDetail.email || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter lounge email"
+              />
+            </div>
+          </div>
+          <div className={styles.form_double}>
+            <div className={styles.form_single}>
+              <label htmlFor="whatsapp">Lounge Whatsapp</label>
+              <input
+                type="text"
+                id="whatsapp"
+                name="whatsapp"
+                value={loungesDetail.whatsapp || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter lounge whatsapp"
+              />
+            </div>
+          </div>
+          <div className={styles.form_double}>
+            <div className={styles.form_single}>
               <label htmlFor="day">Day Open</label>
               <input
                 type="text"
@@ -671,132 +578,27 @@ export default function EditLounge(){
               />
             </div>
           </div>
-          <div className={styles.form_double}>
-            <div className={styles.form_single}>
-              <label htmlFor="taglineId">Tagline ID</label>
-              <input
-                type="text"
-                id="taglineId"
-                name="taglineId"
-                value={loungesDetail.taglineId || ""}
-                onChange={handleChange}
-                required
-                placeholder="Enter tagline id"
-              />
-            </div>
-            <div className={styles.form_single}>
-              <label htmlFor="taglineEn">Tagline EN</label>
-              <input
-                type="text"
-                id="taglineEn"
-                name="taglineEn"
-                value={loungesDetail.taglineEn || ""}
-                onChange={handleChange}
-                required
-                placeholder="Enter tagline en"
-              />
-            </div>
-          </div>
-          <div className={styles.form_single}>
-            <label
-              htmlFor="imageTagline"
-              className={`${styles.dropzone} ${dragActive ? styles.active : ""}`}
-              onDragOver={handleDragOverTagline}
-              onDragLeave={handleDragLeaveTagline}
-              onDrop={handleDropTagline}
-            >
-              {taglineBanner ? (
-                <Image width={800} height={800} src={previewTagline || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-              ) : (
-                <>
-                <Image width={800} height={800} src={previewTaglineBanner || '/fallback.jpg'} alt="Preview" className={styles.previewImage}/>
-                </>
-              )}
-              <input
-                type="file"
-                id="imageTagline"
-                accept="image/*"
-                onChange={handleImageTaglineChange}
-                className={styles.file_input}
-                required
-              />
-            </label>
-          </div>
-          <div className={styles.form_single}>
-            <label htmlFor="menu">Lounge Image Slide</label>
-
-              {imageSlide.map((slide, index) => (
-                <div key={index} className={styles.form_double}>
-                  {/* Input Gambar */}
-                  <div className={styles.form_single}>
-                    <label
-                      htmlFor={`image-${index}`}
-                      className={`${styles.dropzone_small} ${slide.image ? styles.active : ""}`}
-                    >
-                        {slide.image ? (
-                        <Image
-                          width={800}
-                          height={800}
-                          src={typeof slide.image === 'string' ? slide.image : URL.createObjectURL(slide.image)}
-                          alt="Preview"
-                          className={styles.previewImage}
-                        />
-                        ) : (
-                        <p>Upload Image</p>
-                        )}
-                      <input
-                        type="file"
-                        id={`image-${index}`}
-                        accept="image/*"
-                        onChange={(e) => handleImageSlideChange(e, index)}
-                        className={styles.file_input}
-                      />
-                    </label>
-                  </div>
-
-                  {/* Input Judul */}
-                  <div className={styles.form_single}>
-                    <input
-                      type="text"
-                      placeholder="Enter image slide title"
-                      name="name"
-                      value={slide.name || ""}
-                      onChange={(e) => handleTitleSlideChange(e, index)}
-                    />
-                  </div>
-
-                  {/* Tombol Hapus */}
-                  <button onClick={() => removeSlide(index)} className={styles.delete_button}>
-                      ❌
-                  </button>
-                </div>
-              ))}
-
-            {/* Tombol Tambah Slide */}
-            <button
-              type="button"
-              className={`${styles.btn_primary} ${styles.btn_primary_full}`}
-              onClick={addMoreSlide}
-            >
-              + Add More Slide
-            </button>
-          </div>
 
           <div className={styles.form_single}>
             <label htmlFor="menu">Lounge Menu</label>
-            {menu.map((menu, index) => (
+            {menuImages.map((menu, index) => (
               <div key={index} className={`${styles.form_double} ${styles.form_third}`}>
                 {/* Input Gambar */}
                 <div className={styles.form_single}>
                   <label
                     htmlFor={`imageMenu-${index}`}
-                    className={`${styles.dropzone_small} ${menu.image ? styles.active : ""}`}
+                    className={`${styles.dropzone_small} ${menu ? styles.active : ""}`}
+
                   >
-                    {menu.image ? (
+                    {menu ? (
                       <Image
                         width={800}
                         height={800}
-                        src={typeof menu.image === 'string' ? menu.image : URL.createObjectURL(menu.image)}
+                        src={
+                          typeof menu === "string"
+                            ? menu // URL dari server
+                            : URL.createObjectURL(menu) // File baru
+                        }
                         alt="Preview"
                         className={styles.previewImage}
                       />
@@ -812,29 +614,10 @@ export default function EditLounge(){
                     />
                   </label>
                 </div>
-
-                {/* Input Judul */}
-                <div className={styles.form_single}>
-                  <input
-                    type="text"
-                    placeholder="Enter menu name"
-                    value={menu.name || ""}
-                    onChange={(e) => handleTitleMenuChange(e, index)}
-                  />
-                </div>
-
-                <div className={styles.form_single}>
-                  <input
-                    type="text"
-                    placeholder="Enter menu description"
-                    value={menu.description || ""}
-                    onChange={(e) => handleDescriptionMenuChange(e, index)}
-                  />
-                </div>
                 {/* Tombol Hapus */}
                 <button onClick={() => removeMenu(index)} className={styles.delete_button}>
                         ❌
-                    </button>
+                </button>
                 
               </div>
             ))}
@@ -846,64 +629,57 @@ export default function EditLounge(){
               + Add More Menu
             </button>
           </div>
+
           <div className={styles.form_single}>
-            <label htmlFor="spaces">Lounge Spaces</label>
-            {spaces.map((space, index) => (
-                <div key={index} className={styles.form_double}>
-                    {/* Input Gambar */}
-                    <div className={styles.form_single}>
-                        <label
-                            htmlFor={`imageSpace-${index}`}
-                            className={`${styles.dropzone_small} ${space.image ? styles.active : ""}`}
-                        >
-                            {space.image ? (
-                                <Image
-                                    width={800}
-                                    height={800}
-                                    src={typeof space.image === 'string' ? space.image : URL.createObjectURL(space.image)}
-                                    alt="Preview"
-                                    className={styles.previewImage}
-                                />
-                            ) : (
-                                <p>Upload Image</p>
-                            )}
-                            <input
-                                type="file"
-                                id={`imageSpace-${index}`}
-                                accept="image/*"
-                                onChange={(e) => handleImageSpacesChange(e, index)}
-                                className={styles.file_input}
-                            />
-                        </label>
-                    </div>
+            <label htmlFor="otherImage">Other Image</label>
+            {otherImages.map((menu, index) => (
+              <div key={index} className={`${styles.form_double} ${styles.form_third}`}>
+                {/* Input Gambar */}
+                <div className={styles.form_single}>
+                  <label
+                    htmlFor={`otherImage-${index}`}
+                    className={`${styles.dropzone_small} ${menu ? styles.active : ""}`}
 
-                    {/* Input Nama */}
-                    <div className={styles.form_single}>
-                        <input
-                            type="text"
-                            placeholder="Enter image space name"
-                            name="name"
-                            value={space.name || ""}
-                            onChange={(e) => handleTitleSpacesChange(e, index)}
-                        />
-                    </div>
-
-                    {/* Tombol Hapus */}
-                    <button onClick={() => removeSpace(index)} className={styles.delete_button}>
-                        ❌
-                    </button>
+                  >
+                    {menu ? (
+                      <Image
+                        width={800}
+                        height={800}
+                        src={
+                          typeof menu === "string"
+                            ? menu // URL dari server
+                            : URL.createObjectURL(menu) // File baru
+                        }
+                        alt="Preview"
+                        className={styles.previewImage}
+                      />
+                    ) : (
+                      <p>Upload Image</p>
+                    )}
+                    <input
+                      type="file"
+                      id={`otherImage-${index}`}
+                      accept="image/*"
+                      onChange={(e) => handleOtherImageChange(e, index)}
+                      className={styles.file_input}
+                    />
+                  </label>
                 </div>
+                {/* Tombol Hapus */}
+                <button onClick={() => removeOtherImage(index)} className={styles.delete_button}>
+                        ❌
+                </button>
+                
+              </div>
             ))}
-
-            
             <button
-                type="button"
-                className={`${styles.btn_primary} ${styles.btn_primary_full}`}
-                onClick={addMoreSlideSpaces}
+              type="button"
+              className={`${styles.btn_primary} ${styles.btn_primary_full}`}
+              onClick={addMoreOtherImage}
             >
-                + Add More Spaces
+              + Add More Other Image
             </button>
-        </div>
+          </div>
 
           <button type="submit" onClick={handleSubmit} disabled={loading} className={styles.btn_primary}>
             {loading ? 'Saving...' : 'Save Lounge'}

@@ -34,6 +34,7 @@
     text-align: center;
     text-transform: uppercase;
     letter-spacing: .1vw;
+    color: white;
 }
 .list_box_blog{
     display: grid;
@@ -80,6 +81,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: white;
 }
 .list_btn_blog button{
     width: max-content;

@@ -1,25 +1,8 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 import { useLounge } from '@/hooks/useLounge';
 import useCity from '@/hooks/useCity';
-
-type ImageSlide = {
-  name: string;
-  image: string;
-};
-
-type ImageSpaces = {
-  _id: string
-  name: string;
-  image: string;
-};
-
-type menu = {
-  name: string;
-  description:string;
-  image: string;
-};
 
 type LoungeFe = {
   logo: string | File;
@@ -32,12 +15,8 @@ type LoungeFe = {
   day:string;
   time:string;
   city: string;
-  taglineId: string;
-  taglineEn: string;
-  taglineBanner: string | File;
-  imageSlide: ImageSlide[]; 
-  menu: menu[];
-  spaces: ImageSpaces[];
+  menuImages: []; 
+  otherImages: [];
   date: string;
   className: 'btn_tab_left' | 'btn_tab_right' | 'btn_tab_bottom'; 
 };

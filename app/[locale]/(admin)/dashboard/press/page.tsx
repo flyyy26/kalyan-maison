@@ -45,12 +45,12 @@ export default function BlogForm() {
       ${blogs.length > 2 ? styles.blog_form_container_index_active : ''}
     `}>
         <div className={styles.blog_form_heading}>
-          <h2>Blog List</h2>
-          <Link href={`/dashboard/blog/create`}>
+          <h2>Press List</h2>
+          <Link href={`/dashboard/press/create`}>
             <button
               className={styles.btn_primary}
             >
-              Add Blog
+              Add Press
             </button>
           </Link>
         </div>
@@ -58,8 +58,7 @@ export default function BlogForm() {
           <thead>
             <tr>
               <th>No</th>
-              <th>Heading Id</th>
-              <th>Heading En</th>
+              <th>Heading</th>
               <th>Author</th>
               <th>Image</th>
               <th>Visitors</th>
@@ -71,7 +70,6 @@ export default function BlogForm() {
               blogs.map((blog, index) => (
                 <tr key={blog._id}>
                   <td style={{textAlign: 'center'}}>{index + 1}</td>
-                  <td>{blog.title}</td>
                   <td>{blog.titleEn}</td>
                   <td style={{textAlign: 'center'}}>{blog.author}</td>
                   <td style={{textAlign: 'center'}}>
@@ -86,7 +84,7 @@ export default function BlogForm() {
                   <td style={{textAlign: 'center'}}>{blog.visitCount || 0}</td>
                   <td style={{padding: '0'}}>
                     <div className={styles.btn_action}>
-                      <Link href={`/dashboard/blog/edit/${blog._id}`}>
+                      <Link href={`/dashboard/press/edit/${blog._id}`}>
                         <button className={styles.btn_edit}><FiEdit2/></button>
                       </Link>
                       <button
@@ -101,7 +99,7 @@ export default function BlogForm() {
               ))
             ) : (
               <tr>
-                <td style={{textAlign: 'center'}} colSpan={6}>No blogs available.</td>
+                <td style={{textAlign: 'center'}} colSpan={6}>No press available.</td>
               </tr>
             )}
           </tbody>
@@ -111,10 +109,10 @@ export default function BlogForm() {
     {showConfirm && (
         <div className={styles.popupOverlay}>
           <div className={styles.popup}>
-            <p>Are you sure you want to delete your blog?</p>
+            <p>Are you sure you want to delete your press?</p>
             <div className={styles.flex_center}>
               <button className={styles.btn_primary} onClick={confirmDelete} disabled={isDeleting} >
-                {isDeleting ? 'Deleting...' : 'Delete Blog'}
+                {isDeleting ? 'Deleting...' : 'Delete press'}
               </button>
               <button className={styles.btn_primary} onClick={() => setShowConfirm(false)}>
                 Cancel

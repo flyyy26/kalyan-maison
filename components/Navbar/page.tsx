@@ -9,15 +9,38 @@ import Logo from "@/public/images/logo.png"
 import {useMenu} from "@/context/MenuContext"
 import {useTranslations} from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useBlog } from '@/hooks/useBlog';
 // import { useState } from 'react';
+
+type Blog = {
+    slugEn: string;
+    slugCn: string;
+    slugRs: string;
+  };
+  
 
 const Navbar = () => {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const currentLocale = pathname.split('/')[1];
+    const pathAfterLocale = pathname.replace(`/${currentLocale}`, '');
     const { isOpen, toggleMenu } = useMenu();
     const t =  useTranslations("navbar");
+    const { blogs } = useBlog();
+
+    const getLocalizedSlug = (blog: Blog, locale: string): string => {
+        switch (locale) {
+          case 'en':
+            return blog.slugEn;
+          case 'cn':
+            return blog.slugCn;
+          case 'rs':
+            return blog.slugRs;
+          default:
+            return blog.slugEn;
+        }
+      };
     // const [openSelect, setOpenSelect] = useState(false);
     
     //   const toggleDropdown = () => {
@@ -25,10 +48,26 @@ const Navbar = () => {
     //   };
 
     const changeLanguage = (lang: string) => {
-        // Buat URL baru dengan locale yang diinginkan
-        const newPathname = `/${lang}${pathname.replace(`/${currentLocale}`, '')}`;
-        router.push(newPathname + (searchParams.toString() ? `?${searchParams}` : ''));
-    };
+        let newPath = `/${lang}${pathAfterLocale}`;
+    
+        // Cek apakah kita di halaman press detail
+        const parts = pathAfterLocale.split('/').filter(Boolean); // misalnya ['press', 'testing-cn']
+        if (parts[0] === 'press' && parts[1]) {
+          const currentSlug = parts[1];
+          const matchedBlog = blogs.find(
+            (b) => b.slugEn === currentSlug || b.slugCn === currentSlug || b.slugRs === currentSlug
+          );
+    
+          if (matchedBlog) {
+            const newSlug = getLocalizedSlug(matchedBlog, lang);
+            newPath = `/${lang}/press/${newSlug}`;
+          }
+        }
+    
+        // Tambahkan query params kalau ada
+        const fullUrl = newPath + (searchParams.toString() ? `?${searchParams}` : '');
+        router.push(fullUrl);
+      };
     
 
     return ( 

@@ -20,6 +20,8 @@ export async function PUT(request: Request) {
       contact.instagram = formData.get("instagram") as string;
       contact.tiktok = formData.get("tiktok") as string;
       contact.whatsapp = formData.get("whatsapp") as string;
+      contact.youtube = formData.get("youtube") as string;
+      contact.email = formData.get("email") as string;
   
       await contact.save();
   
@@ -43,6 +45,8 @@ export async function POST(request: Request) {
             instagram: formData.get('instagram') as string,
             tiktok: formData.get('tiktok') as string,
             whatsapp: formData.get('whatsapp') as string,
+            youtube: formData.get('youtube') as string,
+            email: formData.get('email') as string,
         };
         // Simpan data contact ke database
         await ContactModel.create(reservationData);

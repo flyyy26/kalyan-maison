@@ -14,7 +14,7 @@ export async function PATCH(req: NextRequest, context: Context) {
   try {
     const blog = await BlogModel.findById(id);
     if (!blog) {
-      return NextResponse.json({ success: false, msg: "Blog tidak ditemukan." }, { status: 404 });
+      return NextResponse.json({ success: false, msg: "Press tidak ditemukan." }, { status: 404 });
     }
 
     blog.visitCount += 1;

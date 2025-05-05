@@ -6,12 +6,16 @@ import { useParams, useRouter } from "next/navigation";
 
 type Blog = {
   _id: string;
-  title: string;
-  slug:string;
   titleEn: string;
+  source: string;
   slugEn:string;
-  description: string;
   descriptionEn: string;
+  titleCn: string;
+  slugCn:string;
+  descriptionCn: string;
+  titleRs: string;
+  slugRs:string;
+  descriptionRs: string;
   visitCount: number;
   author: string;
   image: string | File;
@@ -26,12 +30,16 @@ export const useBlog = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [blogDetail, setBlogDetail] = useState<Blog>({
     _id: "",
-    title: "",
-    slug: "",
     titleEn: "",
+    source: "",
     slugEn: "",
-    description: "",
     descriptionEn: "",
+    titleCn: "",
+    slugCn: "",
+    descriptionCn: "",
+    titleRs: "",
+    slugRs: "",
+    descriptionRs: "",
     author: "",
     visitCount: 0,
     image: "",

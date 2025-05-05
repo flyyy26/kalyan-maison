@@ -403,3 +403,10 @@ a {
   opacity: var(--swiper-pagination-bullet-opacity, 1);
   background: white;
 }
+
+.popupSwiper{
+  width: 100%;
+}
+.popupSwiper .swiper-button-prev, .popupSwiper .swiper-button-next{
+  color: white;
+}

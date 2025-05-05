@@ -9,7 +9,6 @@ import Image from 'next/image';
 import { useMedia } from '@/hooks/useMedia';
 import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { PiImageThin } from "react-icons/pi";
 import { FiPlus } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { GoTrash } from "react-icons/go";
@@ -64,15 +63,6 @@ export default function EditBlogForm(){
         [e.target.name]: e.target.value, // Update field yang diubah
       });
     };
-
-    useEffect(() => {
-        if (blogDetail?.title) {
-            setBlogDetail((prevState) => ({
-                ...prevState!,
-                slug: blogDetail.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
-            }));
-        }
-    }, [blogDetail?.title, setBlogDetail]);
     
     useEffect(() => {
         if (blogDetail?.titleEn) {
@@ -82,6 +72,24 @@ export default function EditBlogForm(){
             }));
         }
     }, [blogDetail?.titleEn, setBlogDetail]);
+
+    useEffect(() => {
+        if (blogDetail?.titleCn) {
+            setBlogDetail((prevState) => ({
+                ...prevState!,
+                slugCn: blogDetail.titleCn.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
+            }));
+        }
+    }, [blogDetail?.titleCn, setBlogDetail]);
+
+    useEffect(() => {
+        if (blogDetail?.titleRs) {
+            setBlogDetail((prevState) => ({
+                ...prevState!,
+                slugRs: blogDetail.titleRs.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
+            }));
+        }
+    }, [blogDetail?.titleRs, setBlogDetail]);
 
     const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
         e.preventDefault();
@@ -103,11 +111,9 @@ export default function EditBlogForm(){
         }
     };
 
-    const openMediaLibrary = () => setIsMediaLibraryOpen(true);
     const closeMediaLibrary = () => setIsMediaLibraryOpen(false);
 
-    const insertImageToEditor = (imagePath: string, editorId: "description" | "descriptionEn") => {
-      console.log("📷 Image Path:", imagePath, "➡️ Editor:", editorId);
+    const insertImageToEditor = (imagePath: string, editorId:"descriptionEn" | "descriptionCn" | "descriptionRs") => {
     
       if (typeof window !== "undefined") {
         const editor = window.tinymce?.EditorManager.get(editorId);
@@ -118,8 +124,6 @@ export default function EditBlogForm(){
     
       closeMediaLibrary(); // Tutup popup setelah memilih
     };
-    
-       
     
     const deleteImage = async (imageId: string) => {
       setDeletingImageId(imageId);
@@ -153,8 +157,6 @@ export default function EditBlogForm(){
         return;
       }
     
-      console.log("✅ selectedFile dipilih:", selectedFile.name);
-    
       setSelectedFile(selectedFile);
       handleUpload(selectedFile); // Langsung upload saat memilih file
     };
@@ -175,8 +177,7 @@ export default function EditBlogForm(){
         console.error("⚠️ Tidak ada selectedFile untuk diupload.");
         return;
       }
-    
-      console.log("📤 Mulai upload:", selectedFile.name);
+
       setUploading(true);
     
       const formData = new FormData();
@@ -210,8 +211,10 @@ export default function EditBlogForm(){
       setSuccess(null);
     
       // 🔍 **Validasi Form**
-      if (!blogId || !blogDetail.title || !blogDetail.slug || !blogDetail.description || 
+      if (!blogId ||  
           !blogDetail.titleEn || !blogDetail.slugEn || !blogDetail.descriptionEn || 
+          !blogDetail.titleCn || !blogDetail.slugCn || !blogDetail.descriptionCn || 
+          !blogDetail.titleRs || !blogDetail.slugRs || !blogDetail.descriptionRs || 
           !blogDetail.author || !blogDetail.tags || blogDetail.tags.length === 0) {
             
         setError("Harap isi semua bidang yang diperlukan.");
@@ -222,12 +225,16 @@ export default function EditBlogForm(){
       try {
         const formData = new FormData();
         formData.append('_id', blogId);
-        formData.append('title', blogDetail.title);
-        formData.append('slug', blogDetail.slug);
         formData.append('titleEn', blogDetail.titleEn);
+        formData.append('source', blogDetail.source);
         formData.append('slugEn', blogDetail.slugEn);
-        formData.append('description', blogDetail.description);
         formData.append('descriptionEn', blogDetail.descriptionEn);
+        formData.append('titleCn', blogDetail.titleCn);
+        formData.append('slugCn', blogDetail.slugCn);
+        formData.append('descriptionCn', blogDetail.descriptionCn);
+        formData.append('titleRs', blogDetail.titleRs);
+        formData.append('slugRs', blogDetail.slugRs);
+        formData.append('descriptionRs', blogDetail.descriptionRs);
         formData.append('author', blogDetail.author);
         formData.append('tags', JSON.stringify(blogDetail.tags));
     
@@ -242,10 +249,10 @@ export default function EditBlogForm(){
         const success = await updateBlog(blogId, formData);
     
         if (success) {
-          setSuccess("Blog berhasil diperbarui!");
-          router.push(`/${locale}/dashboard/blog`);
+          setSuccess("Press berhasil diperbarui!");
+          router.push(`/${locale}/dashboard/press`);
         } else {
-          setError("Gagal memperbarui blog.");
+          setError("Gagal memperbarui press.");
         }
       } catch {
         setError("Terjadi kesalahan jaringan.");
@@ -253,17 +260,15 @@ export default function EditBlogForm(){
         setLoading(false);
       }
     };
-    
-  
 
     return(
         <div className={`${styles.blog_form_container}`}>
-        <Link href={`/dashboard/blog`}>
+        <Link href={`/dashboard/press`}>
             <button className={styles.back_button}>
                 <AiOutlineRollback/>
             </button>
         </Link>
-        <h2>Edit Blog</h2>
+        <h2>Edit Press</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.form_single}>
             <label
@@ -281,21 +286,9 @@ export default function EditBlogForm(){
               <input type="file" id="image" accept="image/*" onChange={handleFileChange} className={styles.file_input} required />
             </label>
           </div>
-          <div className={styles.form_double}>
+          <div className={styles.form_third}>
             <div className={styles.form_single}>
-              <label htmlFor="title">Blog Heading Id</label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={blogDetail.title || ""}
-                onChange={handleChange}
-                required
-                placeholder="Enter blog title"
-              />
-            </div>
-            <div className={styles.form_single}>
-              <label htmlFor="titleEn">Blog Heading En</label>
+              <label htmlFor="titleEn">Press Heading En</label>
               <input
                 type="text"
                 id="titleEn"
@@ -303,36 +296,37 @@ export default function EditBlogForm(){
                 value={blogDetail.titleEn || ""}
                 onChange={handleChange}
                 required
-                placeholder="Enter blog title english"
+                placeholder="Enter press title english"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="titleCn">Press Heading Cn</label>
+              <input
+                type="text"
+                id="titleCn"
+                name="titleCn"
+                value={blogDetail.titleCn || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter press title chinese"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="titleRs">Press Heading Rs</label>
+              <input
+                type="text"
+                id="titleRs"
+                name="titleRs"
+                value={blogDetail.titleRs || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter press title russian"
               />
             </div>
           </div>
           <div className={styles.form_single}>
             <div className={styles.blog_form_heading}>
-              <label htmlFor="description">Description Id</label>
-              <button 
-                type="button" 
-                className={styles.mediaLibraryButton} 
-                onClick={openMediaLibrary}
-              >
-                <PiImageThin />
-                Insert Image
-              </button>
-            </div>
-            <Editor
-              id="description"
-              apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
-              init={{
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-              }}
-              value={blogDetail.description || ""}
-              onEditorChange={(content) => updateBlogDetail({ description: content })}
-            />
-          </div>
-          <div className={styles.form_single}>
-            <div className={styles.blog_form_heading}>
-              <label htmlFor="description">Description En</label>
+              <label htmlFor="descriptionEn">Description En</label>
             </div>
             <Editor
               id="descriptionEn"
@@ -345,6 +339,36 @@ export default function EditBlogForm(){
               onEditorChange={(content) => updateBlogDetail({ descriptionEn: content })}
             />
           </div>
+          <div className={styles.form_single}>
+            <div className={styles.blog_form_heading}>
+              <label htmlFor="descriptionCn">Description Cn</label>
+            </div>
+            <Editor
+              id="descriptionCn"
+              apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
+              init={{
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+              }}
+              value={blogDetail.descriptionCn || ""}
+              onEditorChange={(content) => updateBlogDetail({ descriptionCn: content })}
+            />
+          </div>
+          <div className={styles.form_single}>
+            <div className={styles.blog_form_heading}>
+              <label htmlFor="descriptionRs">Description Rs</label>
+            </div>
+            <Editor
+              id="descriptionRs"
+              apiKey='f0qff2j87jgv24lrb8m0hd4yuglweewk56pa79tykafgtc6g'
+              init={{
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+              }}
+              value={blogDetail.descriptionRs || ""}
+              onEditorChange={(content) => updateBlogDetail({ descriptionRs: content })}
+            />
+          </div>
           <div className={styles.form_double}>
             <div className={styles.form_single}>
               <label htmlFor="author">Author</label>
@@ -355,10 +379,23 @@ export default function EditBlogForm(){
                 value={blogDetail.author || ""}
                 onChange={handleChange}
                 required
-                placeholder="Enter blog author"
+                placeholder="Enter press author"
               />
             </div>
             <div className={styles.form_single}>
+              <label htmlFor="source">Source</label>
+              <input
+                type="text"
+                id="source"
+                name="source"
+                value={blogDetail.source || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter press source"
+              />
+            </div>
+          </div>
+          <div className={styles.form_single}>
               <label htmlFor="tags">Tags</label>
               <input
                 type="text"
@@ -368,23 +405,30 @@ export default function EditBlogForm(){
                 onChange={handleChange}
               />
             </div>
-          </div>
           <button type="submit" onClick={handleSubmit} disabled={loading} className={styles.btn_primary}>
             {loading ? 'Saving...' : 'Save Changes'}
           </button>
           <input
             type="text"
-            id="slug"
-            name="slug"
-            value={blogDetail.slug || ""} // ✅ Ambil dari state
+            id="slugEn"
+            name="slugEn"
+            value={blogDetail.slugEn || ""} // ✅ Ambil dari state
             style={{ display: "none" }}
             readOnly
           />
           <input
             type="text"
-            id="slugEn"
-            name="slugEn"
-            value={blogDetail.slugEn || ""} // ✅ Ambil dari state
+            id="slugCn"
+            name="slugCn"
+            value={blogDetail.slugCn || ""} // ✅ Ambil dari state
+            style={{ display: "none" }}
+            readOnly
+          />
+          <input
+            type="text"
+            id="slugRs"
+            name="slugRs"
+            value={blogDetail.slugRs || ""} // ✅ Ambil dari state
             style={{ display: "none" }}
             readOnly
           />
@@ -411,8 +455,9 @@ export default function EditBlogForm(){
                       <div key={img._id} className={styles.imageItem}>
                         <Image width={800} height={800} priority src={img.image || "/fallback.jpg"} alt={`Image ${img._id}`} />
                         <div className={styles.imageActions}>
-                          <button onClick={() => insertImageToEditor(img.image, "description")}>For ID</button>
                           <button onClick={() => insertImageToEditor(img.image, "descriptionEn")}>For EN</button>
+                          <button onClick={() => insertImageToEditor(img.image, "descriptionCn")}>For Cn</button>
+                          <button onClick={() => insertImageToEditor(img.image, "descriptionRs")}>For Rs</button>
                           
                         </div>
                         <button className={styles.btnDeleteItem} onClick={() => deleteImage(img._id)} disabled={deletingImageId === img._id}>

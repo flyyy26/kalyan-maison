@@ -32,7 +32,10 @@
       "heading": "休息室",
       "smallHeading": "卡利扬梅森",
       "sectionHeading": "位于雅加达市中心的现代创新休息室",
-      "spaces": "我们的空间"
+      "spaces": "我们的空间",
+      "menu" : "菜单",
+      "descMenu" : "看看我们的菜单",
+      "openMenu" : "打开菜单"
     },
     "reservation": {
       "heading": "预订",

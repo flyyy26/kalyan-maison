@@ -11,6 +11,10 @@ export default async function DetailLounge({ params }: { params: Promise<{ loung
     const translations = {
         sectionHeading: t("lounge.sectionHeading"),
         spaces: t("lounge.spaces"),
+        menu: t("lounge.menu"),
+        descMenu: t("lounge.descMenu"),
+        openMenu: t("lounge.openMenu"),
+        reservation: t("reservation.heading"),
     };
     
 
