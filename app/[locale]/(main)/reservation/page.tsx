@@ -63,7 +63,11 @@ const Reservation = () => {
         setOpenDropdowns((prev) => ({ ...prev, menu2: false }));
     };
 
-    const availableSpaces = lounges.find(lounge => lounge._id === selectedLounge)?.spaces || [];
+    const availableSpaces = [
+        { _id: "1", name: "VIP Lounge" },
+        { _id: "2", name: "Outdoor Area" },
+        { _id: "3", name: "Private Room" },
+      ];
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import LoungeModel from "@/app/lib/models/loungeModel";
 import { ConnectDB } from "@/app/lib/config/db";
 import { v2 as cloudinary } from 'cloudinary';
+import { extractPublicId } from "@/app/lib/utils/cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -31,20 +32,6 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
     } catch {
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
-}
-
-export function extractPublicId(url: string): string | null {
-  try {
-    const parts = url.split('/');
-    const fileWithExtension = parts.pop();
-    if (!fileWithExtension) return null;
-
-    const [publicId] = fileWithExtension.split('.');
-    const folderPath = parts.slice(parts.indexOf('upload') + 1).join('/');
-    return `${folderPath}/${publicId}`;
-  } catch {
-    return null;
-  }
 }
 
 export async function PUT(request: Request) {

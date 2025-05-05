@@ -6,7 +6,12 @@ import useCity from '@/hooks/useCity';
 
 type LoungeFe = {
   logo: string | File;
-  _id: number;
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  email: string;
+  whatsapp: string;
+_id: number;
   name: string;
   slug:string;
   address:string;

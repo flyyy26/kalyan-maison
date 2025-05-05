@@ -6,16 +6,16 @@ import { HiChevronDown } from "react-icons/hi2";
 import { useLocationContext } from '@/context/LocationContext'; 
 import React, { useState, useEffect } from 'react';
 // Import Swiper React components
-import Image from 'next/image';
-import { Link } from '@/i18n/routing'; 
+// import Image from 'next/image';
+// import { Link } from '@/i18n/routing'; 
 import ContactSection from "@/components/Contact_section/page"
-import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Swiper, SwiperSlide } from 'swiper/react';
 import { useCity } from '@/hooks/useCity';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-import { Navigation } from 'swiper/modules';
+// import { Navigation } from 'swiper/modules';
 import { useTranslations } from 'next-intl';
 import LoadingPopup from '@/components/loading_popup/page';
 
@@ -25,7 +25,7 @@ export default function OurLounges() {
     const { cities } = useCity();
 
     const [selectedCity, setSelectedCity] = useState<string | null>(null);
-    const [selectedCityId, setSelectedCityId] = useState<string | null>(null);
+    const [, setSelectedCityId] = useState<string | null>(null);
     const [openSelect, setOpenSelect] = useState(false);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function OurLounges() {
     };
 
     // Filter lounges berdasarkan city ID yang dipilih
-    const filteredLounges = loungesFe.filter((location) => location.city === selectedCityId);
+    // const filteredLounges = loungesFe.filter((location) => location.city === selectedCityId);
 
     useEffect(() => {
         if (cities.length > 0) {
@@ -90,7 +90,7 @@ export default function OurLounges() {
             </div>
 
             {/* 🔹 Hanya menampilkan lounge yang sesuai dengan selectedCityId */}
-            {filteredLounges.map((location, index) => (
+            {/* {filteredLounges.map((location, index) => (
                 <div className={style.lounge_container} key={index}>
                     <div className={style.lounge_slide}>
                         <Swiper
@@ -133,7 +133,7 @@ export default function OurLounges() {
                         </div>
                     </div>
                 </div>
-            ))}
+            ))} */}
 
             <ContactSection />
         </> 
