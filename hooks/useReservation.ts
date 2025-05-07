@@ -56,30 +56,42 @@ const [reservationDetail, setReservationDetail] = useState<Reservation>({
     setError(null);
     setSuccess(null);
     try {
-      const response = await fetch('/api/reservation', {
-        method: 'POST',
-        body: formData,
-      });
+        const response = await fetch('/api/reservation', {
+            method: 'POST',
+            body: formData,
+        });
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          setSuccess('Reservation successfully added!');
-          await fetchReservations(); // Refresh reservations list
-          return true;
+        // Log status response untuk memastikan status kode yang diterima
+        console.log('Response Status:', response.status);
+
+        if (response.ok) {
+            const result = await response.json();
+            
+            // Log hasil response dari backend
+            console.log('Response JSON:', result);
+
+            if (result.success) {
+                setSuccess('Reservation successfully added!');
+                await fetchReservations(); // Refresh reservations list
+                return true;
+            } else {
+                setError(result.msg || 'Failed to add reservation.');
+            }
         } else {
-          setError(result.msg || 'Failed to add reservation.');
+            // Log response jika status bukan ok
+            const result = await response.json();
+            console.error('Error Response:', result);
+            setError(result.msg || 'Failed to add reservation.');
         }
-      } else {
-        setError('Failed to add reservation.');
-      }
     } catch (err) {
-      setError('Network error occurred.');
+        console.error('Network error occurred:', err);
+        setError(`Network error occurred:`);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
     return false;
-  };
+};
+
 
     useEffect(() => {
         if (!id) return;

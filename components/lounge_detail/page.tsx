@@ -13,15 +13,16 @@ import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { MdEmail } from "react-icons/md";
 import { FaFacebook } from "react-icons/fa";
-import home from "@/app/[locale]/style/home.module.css"
 import { IoLogoYoutube, IoLogoWhatsapp } from "react-icons/io";
 import { FaInstagram } from "react-icons/fa";
+import home from "@/app/[locale]/style/home.module.css"
+
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
-import { Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+import { Navigation, Mousewheel, Keyboard } from 'swiper/modules';
 
 export default function LoungeDetailPage({ loungeDetail, translations }: { loungeDetail: string; translations: { sectionHeading: string; spaces: string; reservation: string; menu: string; descMenu: string; openMenu: string; } }) {
     const { lounges } = useLounge();
@@ -109,14 +110,6 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
                     </Link>
                     )}
 
-                    {/* {currentLounge.tiktok !== 'undefined' && (
-                    <Link href={currentLounge.tiktok} target="_blank">
-                        <button className={home.banner_social_media_box}>
-                        <FaTiktok />
-                        </button>
-                    </Link>
-                    )} */}
-
                     {currentLounge.email !== 'undefined' && (
                     <Link href={`mailto:${currentLounge.email}`} target="_blank">
                         <button className={home.banner_social_media_box}>
@@ -156,13 +149,11 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
                     <Swiper
                         slidesPerView={3}
                         spaceBetween={30}
+                        navigation={true}
                         mousewheel={true}
                         keyboard={true}
                         cssMode={true}
-                        pagination={{
-                        clickable: true,
-                        }}
-                        modules={[Pagination, Mousewheel, Keyboard]}
+                        modules={[Mousewheel, Keyboard, Navigation]}
                         className="menuSwiper"
                     >
                         {currentLounge?.menuImages?.map((imageUrl, index) => (

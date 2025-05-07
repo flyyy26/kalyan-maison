@@ -20,9 +20,12 @@
     margin-top: .4vw;
     color: white;
 }
-.list_blog{
+.list_blog_container{
     width: 100%;
     padding: 0 9.8vw;
+}
+.list_blog{
+    /* padding: 0 9.8vw; */
     padding-bottom: 4vw; 
     background-color: #1A1A1A;
     display: grid;
@@ -39,7 +42,9 @@
 .list_box_blog{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
+    width: 100%;
     grid-gap: 1.7vw;
+    display: inline-block;
 }
 .list_img_blog{
     width: 100%;
@@ -47,10 +52,12 @@
     position: relative;
 }
 .list_content_blog{
+    width: 100%;
     padding: 1vw 0;
 }
 .list_heading_blog{
     text-align: start;
+    width: 100%;
 }
 .list_heading_blog h3{
     font-size: 1.84vw;
@@ -60,6 +67,11 @@
     text-shadow: 0px 0px 10px 0px #ffffffbb;
     margin-bottom: .7vw;
     color: white;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .list_heading_blog span{
     font-size: .95vw;
@@ -69,7 +81,7 @@
     margin-bottom: .86vw;
     display: block;
 }
-.list_heading_blog p{
+.list_content_blog p{
     text-align: start;
     text-transform: capitalize;
     font-size: .98vw;

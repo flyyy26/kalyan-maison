@@ -8,6 +8,7 @@ type LoungeFe = {
   logo: string | File;
   instagram: string;
   facebook: string;
+  maps: string;
   youtube: string;
   email: string;
   whatsapp: string;
@@ -21,6 +22,7 @@ _id: number;
   time:string;
   city: string;
   menuImages: []; 
+  spaces: string[]; 
   otherImages: [];
   date: string;
   className: 'btn_tab_left' | 'btn_tab_right' | 'btn_tab_bottom'; 

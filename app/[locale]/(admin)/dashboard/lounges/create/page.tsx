@@ -40,10 +40,12 @@ export default function CreateLounge(){
     const [email, setEmail] = useState('');
     const [youtube, setYoutube] = useState('');
     const [slug, setSlug] = useState('');
+    const [maps, setMaps] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [day, setDay] = useState('');
     const [time, setTime] = useState('');
+    const [spaces, setSpaces] = useState<string[]>([]);
     const [banner, setBanner] = useState<File | null>(null);
     const [logo, setLogo] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState(false);
@@ -195,6 +197,7 @@ export default function CreateLounge(){
     
       const formData = new FormData();
       formData.append("name", name);
+      formData.append("maps", maps);
       formData.append("instagram", instagram);
       formData.append("youtube", youtube);
       formData.append("facebook", facebook);
@@ -208,6 +211,7 @@ export default function CreateLounge(){
       formData.append("city", selectedCity);
       formData.append("banner", banner);
       formData.append("logo", logo);
+      formData.append('spaces', JSON.stringify(spaces));
 
       const menuArray = menuImages.map((menu) => ({
         image: menu.imageItemMenu ? `${menu.imageItemMenu.name}` : "",
@@ -243,6 +247,7 @@ export default function CreateLounge(){
         const success = await addLounge(formData);
         if (success) {
           setName("");
+          setMaps("");
           setInstagram("");
           setYoutube("");
           setWhatsapp("");
@@ -253,6 +258,7 @@ export default function CreateLounge(){
           setAddress("");
           setDay("");
           setTime("");
+          setSpaces([]);
           setSelectedCity(null);
           setBanner(null);
           setLogo(null);
@@ -456,7 +462,6 @@ export default function CreateLounge(){
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                required
                 placeholder="Enter lounge phone"
               />
             </div>
@@ -467,7 +472,6 @@ export default function CreateLounge(){
                 id="address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                required
                 placeholder="Enter lounge address"
               />
             </div>
@@ -480,7 +484,6 @@ export default function CreateLounge(){
                 id="instagram"
                 value={instagram}
                 onChange={(e) => setInstagram(e.target.value)}
-                required
                 placeholder="Enter lounge instagram"
               />
             </div>
@@ -491,7 +494,6 @@ export default function CreateLounge(){
                 id="facebook"
                 value={address}
                 onChange={(e) => setFacebook(e.target.value)}
-                required
                 placeholder="Enter lounge facebook"
               />
             </div>
@@ -504,7 +506,6 @@ export default function CreateLounge(){
                 id="youtube"
                 value={youtube}
                 onChange={(e) => setYoutube(e.target.value)}
-                required
                 placeholder="Enter lounge youtube"
               />
             </div>
@@ -515,7 +516,6 @@ export default function CreateLounge(){
                 id="email"
                 value={address}
                 onChange={(e) => setEmail(e.target.value)}
-                required
                 placeholder="Enter lounge email"
               />
             </div>
@@ -528,8 +528,18 @@ export default function CreateLounge(){
                 id="whatsapp"
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value)}
-                required
                 placeholder="Enter lounge whatsapp"
+              />
+            </div>
+            <div className={styles.form_single}>
+              <label htmlFor="maps">Lounge Maps</label>
+              <input
+                type="text"
+                id="maps"
+                value={maps}
+                onChange={(e) => setMaps(e.target.value)}
+                required
+                placeholder="Enter lounge maps"
               />
             </div>
           </div>
@@ -557,11 +567,19 @@ export default function CreateLounge(){
               />
             </div>
           </div>
-
+          <div className={styles.form_single}>
+              <label htmlFor="spaces">Spaces</label>
+              <input
+                type="text"
+                id="spaces"
+                placeholder="Enter spaces (separate with commas)"
+                onChange={(e) => setSpaces(e.target.value.split(',').map(space => space.trim()))}
+              />
+          </div>
           <div className={styles.form_single}>
             <label htmlFor="menu">Lounge Menu</label>
             {menuImages.map((menuItem, index) => (
-              <div key={index} className={`${styles.form_double} ${styles.form_third}`}>
+              <div key={index} className={`${styles.form_single}`}>
                 {/* Input Gambar */}
                 <div className={styles.form_single}>
                   <label
@@ -601,7 +619,7 @@ export default function CreateLounge(){
           <div className={styles.form_single}>
             <label htmlFor="menu">Other Image</label>
             {otherImages.map((menuItem, index) => (
-              <div key={index} className={`${styles.form_double} ${styles.form_third}`}>
+              <div key={index} className={`${styles.form_single}`}>
                 {/* Input Gambar */}
                 <div className={styles.form_single}>
                   <label

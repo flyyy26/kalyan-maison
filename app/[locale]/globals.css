@@ -393,6 +393,19 @@ a {
   width: max-content;
 }
 
+.menuSwiper{
+  padding: 0 5vw !important;
+}
+.menuSwiper .swiper-button-prev, .menuSwiper .swiper-button-next {
+  border-radius: 100vw;
+  border: .1vw solid #fff;
+  width: 3vw;
+  height: 3vw;
+  color: white;
+}
+.menuSwiper .swiper-button-prev:after, .menuSwiper .swiper-button-next:after {
+  font-size: 1.2vw;
+}
 .menuSwiper .swiper-pagination-bullet{
   width: 2vw;
   height: .3vw;

@@ -27,8 +27,6 @@ export async function GET(request: Request) {
       // Jika ada cityName, cari kota di database
       const city = await CityModel.findOne({ name: new RegExp(`^${cityName}$`, "i") });
 
-      console.log("Found City:", city);
-
       if (!city) {
         return NextResponse.json({ success: false, msg: "City not found" }, { status: 404 });
       }
@@ -112,6 +110,7 @@ export async function POST(request: Request) {
     // === Save Lounge Data ===
     const loungeData = {
       name: formData.get("name") as string,
+      maps: formData.get("maps") as string,
       instagram: formData.get("instagram") as string,
       facebook: formData.get("facebook") as string,
       email: formData.get("email") as string,
@@ -123,6 +122,7 @@ export async function POST(request: Request) {
       day: formData.get("day") as string,
       time: formData.get("time") as string,
       city: formData.get("city") as string,
+      spaces: JSON.parse(formData.get('spaces') as string),
       menuImages,
       otherImages,
       banner: bannerUpload.secure_url,

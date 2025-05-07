@@ -23,7 +23,9 @@ export default function EditBlogForm(){
         error,
         success,
         blogDetail,
+        keywordsString,
         previewImage,
+        setKeywordsString,
         setError,
         setSuccess,
         setLoading,
@@ -63,30 +65,55 @@ export default function EditBlogForm(){
         [e.target.name]: e.target.value, // Update field yang diubah
       });
     };
+
+    const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setKeywordsString(value);
+    
+      if (blogDetail) {
+        setBlogDetail({
+          ...blogDetail,
+          tags: value
+            .split(",")
+            .map((k) => k.trim())
+            .filter((k) => k.length > 0),
+        });
+      }
+    };
     
     useEffect(() => {
         if (blogDetail?.titleEn) {
             setBlogDetail((prevState) => ({
                 ...prevState!,
-                slugEn: blogDetail.titleEn.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
+                slugEn: blogDetail.titleEn
+                  .toLowerCase()
+                  .replace(/[^\p{L}\p{N}]+/gu, '-')  // Unicode-friendly slug
+                  .replace(/^-+|-+$/g, ''),
             }));
         }
     }, [blogDetail?.titleEn, setBlogDetail]);
 
     useEffect(() => {
-        if (blogDetail?.titleCn) {
-            setBlogDetail((prevState) => ({
-                ...prevState!,
-                slugCn: blogDetail.titleCn.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
-            }));
-        }
+      if (blogDetail?.titleCn) {
+        setBlogDetail((prevState) => ({
+          ...prevState!,
+          slugCn: blogDetail.titleCn
+            .toLowerCase()
+            .replace(/[^\p{L}\p{N}]+/gu, '-')  // Unicode-friendly slug
+            .replace(/^-+|-+$/g, ''),
+        }));
+      }
     }, [blogDetail?.titleCn, setBlogDetail]);
+    
 
     useEffect(() => {
         if (blogDetail?.titleRs) {
             setBlogDetail((prevState) => ({
                 ...prevState!,
-                slugRs: blogDetail.titleRs.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
+                slugRs: blogDetail.titleRs
+                .toLowerCase()
+                .replace(/[^\p{L}\p{N}]+/gu, '-')  // Unicode-friendly slug
+                .replace(/^-+|-+$/g, ''),
             }));
         }
     }, [blogDetail?.titleRs, setBlogDetail]);
@@ -231,7 +258,7 @@ export default function EditBlogForm(){
         formData.append('descriptionEn', blogDetail.descriptionEn);
         formData.append('titleCn', blogDetail.titleCn);
         formData.append('slugCn', blogDetail.slugCn);
-        formData.append('descriptionCn', blogDetail.descriptionCn);
+        formData.append('descriptionCn', blogDetail.descriptionCn); 
         formData.append('titleRs', blogDetail.titleRs);
         formData.append('slugRs', blogDetail.slugRs);
         formData.append('descriptionRs', blogDetail.descriptionRs);
@@ -401,10 +428,11 @@ export default function EditBlogForm(){
                 type="text"
                 id="tags"
                 placeholder="Enter tags (separate with commas)"
-                value={blogDetail.tags ? blogDetail.tags.join(', ') : ''} 
-                onChange={handleChange}
+                name="tags"
+                onChange={handleKeywordsChange}
+                value={keywordsString}
               />
-            </div>
+          </div>
           <button type="submit" onClick={handleSubmit} disabled={loading} className={styles.btn_primary}>
             {loading ? 'Saving...' : 'Save Changes'}
           </button>

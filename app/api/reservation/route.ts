@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("Error saat menyimpan reservasi:", error);
         return NextResponse.json(
-            { success: false, msg: "Terjadi kesalahan saat menambahkan reservasi." },
+            { success: false },
             { status: 500 }
         );
     }

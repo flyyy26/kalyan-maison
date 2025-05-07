@@ -414,7 +414,7 @@ export default function CreateBlog(){
                 placeholder="Enter tags (separate with commas)"
                 onChange={(e) => setTags(e.target.value.split(',').map(tag => tag.trim()))}
               />
-            </div>
+          </div>
           <button type="submit" disabled={loading} className={styles.btn_primary}>
             {loading ? 'Adding...' : 'Add Press'}
           </button>

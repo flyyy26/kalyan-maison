@@ -56,6 +56,10 @@ const LoungeSchema  = new mongoose.Schema({
         type:String,
         required:true,
     },
+    maps:{
+        type:String,
+        required:true,
+    },
     city:{
         type: Schema.Types.ObjectId,
         required:true,
@@ -64,6 +68,11 @@ const LoungeSchema  = new mongoose.Schema({
     menuImages: {
         type: [String], // ⬅️ Disimpan langsung sebagai array URL
         default: []
+    },
+    spaces: {
+        type: [String], // ⬅️ Disimpan langsung sebagai array URL
+        default: [],
+        required: true,
     },
     otherImages: {
         type: [String], // ⬅️ Disimpan langsung sebagai array URL

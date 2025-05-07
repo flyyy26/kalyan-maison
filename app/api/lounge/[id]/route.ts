@@ -170,6 +170,7 @@ export async function PUT(request: Request) {
 
     // 🔹 Update data lain
     lounge.name = formData.get("name") as string;
+    lounge.maps = formData.get("maps") as string;
     lounge.youtube = formData.get("youtube") as string;
     lounge.instagram = formData.get("instagram") as string;
     lounge.facebook = formData.get("facebook") as string;
@@ -180,6 +181,7 @@ export async function PUT(request: Request) {
     lounge.city = formData.get("city") as string;
     lounge.day = formData.get("day") as string;
     lounge.time = formData.get("time") as string;
+    lounge.spaces = JSON.parse(formData.get("spaces") as string);
     lounge.banner = bannerUrl;
     lounge.logo = logoUrl;
     lounge.menuImages = newMenuImages;

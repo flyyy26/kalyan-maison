@@ -21,6 +21,8 @@ export default function EditLounge(){
         previewBanner,
         previewLogo,
         loungesDetail,
+        keywordsString,
+        setKeywordsString,
         setError,
         setSuccess,
         setLoading,
@@ -68,6 +70,21 @@ export default function EditLounge(){
       ...loungesDetail,
       [e.target.name]: e.target.value, // Update field yang diubah
     });
+  };
+
+  const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setKeywordsString(value);
+  
+    if (loungesDetail) {
+      setLoungesDetail({
+        ...loungesDetail,
+        spaces: value
+          .split(",")
+          .map((k) => k.trim())
+          .filter((k) => k.length > 0),
+      });
+    }
   };
     
     useEffect(() => {
@@ -214,6 +231,7 @@ export default function EditLounge(){
         const formData = new FormData();
         formData.append("_id", loungeId);
         formData.append("name", loungesDetail.name);
+        formData.append("maps", loungesDetail.maps);
         formData.append("youtube", loungesDetail.youtube);
         formData.append("instagram", loungesDetail.instagram);
         formData.append("facebook", loungesDetail.facebook);
@@ -225,6 +243,7 @@ export default function EditLounge(){
         formData.append("time", loungesDetail.time);
         formData.append("phone", loungesDetail.phone);
         formData.append("city", selectedCity ?? loungesDetail.city ?? "");
+        formData.append('spaces', JSON.stringify(loungesDetail.spaces));
     
         // ⬇️ Jika banner/logo adalah file, masukkan sebagai File, jika string, tetap string
         if (loungesDetail.banner instanceof File) {
@@ -551,6 +570,18 @@ export default function EditLounge(){
                 placeholder="Enter lounge whatsapp"
               />
             </div>
+            <div className={styles.form_single}>
+              <label htmlFor="maps">Lounge Maps</label>
+              <input
+                type="text"
+                id="maps"
+                name="maps"
+                value={loungesDetail.maps || ""}
+                onChange={handleChange}
+                required
+                placeholder="Enter lounge maps"
+              />
+            </div>
           </div>
           <div className={styles.form_double}>
             <div className={styles.form_single}>
@@ -578,11 +609,21 @@ export default function EditLounge(){
               />
             </div>
           </div>
-
+          <div className={styles.form_single}>
+              <label htmlFor="spaces">Spaces</label>
+              <input
+                type="text"
+                id="spaces"
+                placeholder="Enter spaces (separate with commas)"
+                name="spaces"
+                onChange={handleKeywordsChange}
+                value={keywordsString}
+              />
+          </div>
           <div className={styles.form_single}>
             <label htmlFor="menu">Lounge Menu</label>
             {menuImages.map((menu, index) => (
-              <div key={index} className={`${styles.form_double} ${styles.form_third}`}>
+              <div key={index} className={`${styles.form_single}`}>
                 {/* Input Gambar */}
                 <div className={styles.form_single}>
                   <label
@@ -633,7 +674,7 @@ export default function EditLounge(){
           <div className={styles.form_single}>
             <label htmlFor="otherImage">Other Image</label>
             {otherImages.map((menu, index) => (
-              <div key={index} className={`${styles.form_double} ${styles.form_third}`}>
+              <div key={index} className={`${styles.form_single}`}>
                 {/* Input Gambar */}
                 <div className={styles.form_single}>
                   <label

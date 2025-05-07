@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 type Lounge = {
   _id: string;
   name: string;
+  maps: string;
   instagram: string;
   facebook: string;
   youtube: string;
@@ -21,6 +22,7 @@ type Lounge = {
   time:string;
   city: string;
   date: string;
+  spaces:string[];
   menuImages: [];
   otherImages: [];
 };
@@ -28,6 +30,7 @@ type Lounge = {
 type LoungeFe = {
   _id: number;
   name: string;
+  maps: string;
   instagram: string;
   facebook: string;
   youtube: string;
@@ -41,6 +44,7 @@ type LoungeFe = {
   city: string;
   day:string;
   time:string;
+  spaces:string[];
   menuImages:[];
   otherImages: [];
   date: string;
@@ -64,6 +68,7 @@ export const useLounge = () => {
   const [loungesDetail, setLoungesDetail] = useState<Lounge>({
     _id: "",
     name: "",
+    maps: "",
     instagram: "",
     facebook: "",
     youtube: "",
@@ -77,6 +82,7 @@ export const useLounge = () => {
     city: "",
     menuImages: [],
     otherImages: [],
+    spaces: [],
     date: "",
     day: "",
     time: ""
@@ -87,6 +93,7 @@ export const useLounge = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+  const [keywordsString, setKeywordsString] = useState("");
 
   // Fetch lounges from API
   const fetchLounges = async () => {
@@ -233,6 +240,7 @@ export const useLounge = () => {
     
           const responseData: Lounge = await res.json();
           setLoungesDetail(responseData);
+          setKeywordsString(responseData.spaces?.join(", ") || "");
           if (responseData.banner instanceof File) {
             setPreviewBanner(URL.createObjectURL(responseData.banner)); // Jika File, buat URL sementara
           } else {
@@ -269,6 +277,8 @@ export const useLounge = () => {
     previewBanner,
     previewLogo,
     citiesLounge,
+    keywordsString,
+    setKeywordsString,
     setCitiesLounge,
     setLoungesFe,
     setError,

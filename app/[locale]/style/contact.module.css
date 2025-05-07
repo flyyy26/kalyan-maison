@@ -1,0 +1,113 @@
+.contact_container{
+    width: 100%;
+    padding:13vw 9vw;
+    padding-bottom: 30vw;
+    text-align: center;
+    background-color: #1A1A1A;
+    background-image: url(../../../public/images/bg_about.png);
+    background-position:bottom center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.contact_header span{ 
+    font-size: 1.84vw;
+    letter-spacing: .06vw;
+    color: white;
+}
+.contact_header h1{
+    font-size: 4.96vw;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 0px 0px 10px 0px #ffffffbb;
+    letter-spacing: .05vw;
+    margin-top: .4vw;
+    color: white;
+}
+
+.contact_layout{
+    display: flex;
+    flex-direction: column;
+    gap: 3.5vw;
+    margin-top: 5vw;
+}
+.contact_box{
+    width: 100%;
+    display: grid;
+    grid-gap: 3vw;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+.contact_maps{
+    width: 100%;
+    height: 29vw;
+    position: relative;
+}
+.contact_maps iframe{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.contact_content{
+    text-align: center;
+    padding: 0 5vw;
+}
+.contact_logo img{
+    width: 25vw;
+    filter: brightness(0) invert(1);
+    margin-bottom: 1.3vw;
+}
+.contact_content p{
+    font-size: .97vw;
+    color: white;
+    letter-spacing: .05vw;
+    line-height: 1.5;
+    margin-bottom: 1vw;
+}
+.contact_content span{
+    font-size: .78vw;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: .05vw;
+    word-spacing: .3vw;
+}
+.social_lounge_detail{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.6vw;
+    gap: .87vw;
+}
+.social_lounge_detail button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.social_lounge_detail svg{
+    color: white;
+    transition: .4s all;
+    font-size: 1.7vw;
+}
+.social_lounge_detail svg:hover{
+    transform: scale(1.07);
+}
+.contact_content button{
+    width: max-content;
+    font-size: 1vw;
+    padding: .83vw 2vw;
+    border: .1vw solid white;
+    border-radius: 100vw;
+    text-transform: uppercase;
+    background: #FFFFFF1A;
+    font-weight: 400;
+    font-family: 'montserrat';
+    letter-spacing: .05vw !important;
+    backdrop-filter: blur(15.399999618530273px);
+    box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
+    cursor: pointer;
+    transition: .3s all;
+    color: white;
+    margin-top: 1.2vw;
+}

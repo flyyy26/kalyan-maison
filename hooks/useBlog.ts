@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useRouter } from "next/navigation";
+import { useCallback } from 'react';
 
 type Blog = {
   _id: string;
@@ -28,6 +29,7 @@ export const useBlog = () => {
   const router = useRouter();
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [pressDetail, setPressDetail] = useState<Blog | null>(null);
   const [blogDetail, setBlogDetail] = useState<Blog>({
     _id: "",
     titleEn: "",
@@ -52,6 +54,7 @@ export const useBlog = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [keywordsString, setKeywordsString] = useState("");
 
   // Fetch blogs from API
   const fetchBlogs = async () => {
@@ -174,6 +177,7 @@ export const useBlog = () => {
           const responseData: Blog = await res.json();
  
           setBlogDetail(responseData);
+          setKeywordsString(responseData.tags?.join(", ") || "");
           if (responseData.image instanceof File) {
             setPreviewImage(URL.createObjectURL(responseData.image)); // Jika File, buat URL sementara
           } else {
@@ -199,6 +203,7 @@ export const useBlog = () => {
   
         const responseData: Blog = await res.json();
         setBlogDetail(responseData);
+        setKeywordsString(responseData.tags?.join(", ") || "");
         if (responseData.image instanceof File) {
           setPreviewImage(URL.createObjectURL(responseData.image)); // Jika File, buat URL sementara
         } else {
@@ -214,6 +219,26 @@ export const useBlog = () => {
     fetchBlogDetail();
   }, [id]);
 
+  const getBlogBySlug = useCallback(async (slug: string) => {
+    if (!slug) return;
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/blog/${slug}`, {
+        method: 'GET',
+        cache: 'no-store',
+      });
+      if (!res.ok) throw new Error('Gagal mengambil data blog detail');
+      const data = await res.json();
+      setPressDetail(data);
+      return data;
+    } catch (err) {
+      console.error('Error fetching blog by slug:', err);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -225,6 +250,10 @@ export const useBlog = () => {
     success,
     blogDetail,
     previewImage,
+    pressDetail,
+    keywordsString,
+    setKeywordsString,
+    getBlogBySlug,
     setError,
     setSuccess,
     updateBlogDetail,

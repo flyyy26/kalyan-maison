@@ -27,47 +27,40 @@ const Navbar = () => {
     const pathAfterLocale = pathname.replace(`/${currentLocale}`, '');
     const { isOpen, toggleMenu } = useMenu();
     const t =  useTranslations("navbar");
-    const { blogs } = useBlog();
+    const { pressDetail } = useBlog();
 
     const getLocalizedSlug = (blog: Blog, locale: string): string => {
-        switch (locale) {
-          case 'en':
-            return blog.slugEn;
-          case 'cn':
-            return blog.slugCn;
-          case 'rs':
-            return blog.slugRs;
-          default:
-            return blog.slugEn;
-        }
-      };
-    // const [openSelect, setOpenSelect] = useState(false);
-    
-    //   const toggleDropdown = () => {
-    //     setOpenSelect(!openSelect); // Toggle dropdown visibility
-    //   };
+      switch (locale) {
+        case 'en':
+          return blog.slugEn;
+        case 'cn':
+          return blog.slugCn;
+        case 'rs':
+          return blog.slugRs;
+        default:
+          return blog.slugEn;
+      }
+    };
 
     const changeLanguage = (lang: string) => {
-        let newPath = `/${lang}${pathAfterLocale}`;
-    
-        // Cek apakah kita di halaman press detail
-        const parts = pathAfterLocale.split('/').filter(Boolean); // misalnya ['press', 'testing-cn']
-        if (parts[0] === 'press' && parts[1]) {
-          const currentSlug = parts[1];
-          const matchedBlog = blogs.find(
-            (b) => b.slugEn === currentSlug || b.slugCn === currentSlug || b.slugRs === currentSlug
-          );
-    
-          if (matchedBlog) {
-            const newSlug = getLocalizedSlug(matchedBlog, lang);
-            newPath = `/${lang}/press/${newSlug}`;
-          }
-        }
-    
-        // Tambahkan query params kalau ada
-        const fullUrl = newPath + (searchParams.toString() ? `?${searchParams}` : '');
-        router.push(fullUrl);
-      };
+      let newPath = `/${lang}${pathAfterLocale}`;
+      const parts = pathAfterLocale.split('/').filter(Boolean); // misalnya ['press', 'testing-cn']
+
+      // Check if we are on the press detail page
+      if (parts[0] === 'press' && parts[1] && pressDetail) {
+        // Get the localized slug for the selected language
+        const newSlug = getLocalizedSlug(pressDetail, lang);
+        newPath = `/${lang}/press/${newSlug}`;
+      } else {
+        // Handle other page types or fallback behavior
+        // You might need to handle this part based on other page types
+        newPath = `/${lang}${pathAfterLocale}`;
+      }
+
+      // Add query params if there are any
+      const fullUrl = newPath + (searchParams.toString() ? `?${searchParams}` : '');
+      router.push(fullUrl);
+    };    
     
 
     return ( 
@@ -98,7 +91,7 @@ const Navbar = () => {
                         <Link href="/"><li>{t('home')}</li></Link>
                         <Link onClick={() => toggleMenu(true)} href="/about"><li>{t('aboutUs')}</li></Link>
                         <Link href="/"><li>{t('gallery')}</li></Link>
-                        <Link href="/"><li>{t('contact')}</li></Link>
+                        <Link href="/contact"><li>{t('contact')}</li></Link>
                         <Link href="/press"><li>{t('press')}</li></Link>
                     </ul>
                 </div>
