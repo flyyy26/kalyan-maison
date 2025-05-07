@@ -1,6 +1,6 @@
 .reservation_layout{
     width: 100%;
-    padding: 11.7vw 10vw;
+    padding: 7vw 10vw;
     padding-bottom: 13vw;
     background-image: url(../../../public/images/bg_reservation.png);
     background-position: bottom center;
@@ -35,10 +35,13 @@
     width: 87%;
     display: block;
 }
-.reservation_form form{
+.reservation_form{
     display: flex;
     flex-direction: column;
     gap: 1.75vw;
+    margin: auto;
+    margin-top: 4vw;
+    width: 87%;
 }
 .form_double{
     width: 100%;

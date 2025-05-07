@@ -209,11 +209,11 @@ export default function Banner() {
           className={`${home.detail_branch_banner} ${
             hoveredTab === (100) ? home.active : ''
           }`}  
-        >
+        > 
           <div className={home.heading_banner_dynamic}>
             <h1>Kalyan Shop</h1>
-            <p>Temukan Koleksi Eksklusif Kalyan</p> 
-            <p>Jelajahi ragam produk pilihan dari Kalyan Maison—mulai dari perasa shisha dengan cita rasa khas, bowl shisha premium berdesain elegan, hingga merchandise eksklusif yang dirancang untuk para penikmat gaya hidup modern.</p>
+            <p>{t('home.shopHeading')}</p> 
+            <p>{t('home.shopDesc')}</p>
           </div>
         </div>
         <div className={`${home.banner_bottom_content} ${isOpen ? home.banner_bottom_content_active : ''}`}>

@@ -15,7 +15,9 @@
     "home" : {
         "unique" : "Unique Hookah Experience",
         "uniqueDesc" : "We perfected every hookah to your request, whether you want it to be soft or strong, bland or flavourful, your hookah will be personalized according how you like it. It is one of our commitment to give you a hookah experience that you`ve never had before.",
-        "explore" : "Explore More"
+        "explore" : "Explore More",
+        "shopHeading" : "Discover Kalyan's Exclusive Collection",
+        "shopDesc" : "Explore a selection of products from Kalyan Maison—from distinctive shisha flavors to elegantly designed premium shisha bowls to exclusive merchandise designed for the modern lifestyle enthusiast."
     },
     "contactSection" : {
         "heading" : "Need More Information?",

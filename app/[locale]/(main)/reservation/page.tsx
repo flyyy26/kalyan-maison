@@ -452,7 +452,7 @@ const Reservation: React.FC = () => {
               name: formData.name,
               date: formData.date,
               time: formData.time,
-              duration: formData.duration,
+              duration: formData.duration, 
               person: formData.person,
               space: formData.space,
               phoneNumber: formData.phoneNumber,
@@ -476,10 +476,15 @@ const Reservation: React.FC = () => {
 
   const handleSendEmail = (email?: string) => {
       if (email) {
-       const subject = t('reservation.email_subject');
-       const body = `Halo ${formData.name},\n\n` +
-        `Terima kasih atas reservasi Anda di ${formData.lounge}, ruang ${formData.space} pada tanggal ${formData.date} pukul ${formData.time} selama ${formData.duration} untuk ${formData.person} orang.\n\n` +
-        `Kalyan Maison Website`;
+       const subject = 'Reservasi Kalyan Maison'
+       const body = `Konfirmasi Reservasi:\n\n` +
+                  `Nama: ${reservationDetails.name}\n` +
+                  `Tanggal: ${reservationDetails.date}\n` +
+                  `Waktu: ${reservationDetails.time}\n` +
+                  `Durasi: ${reservationDetails.duration}\n` +
+                  `Lounge: ${reservationDetails.lounge}\n` +
+                  `Ruang: ${reservationDetails.space}\n` +
+                  `Jumlah Orang: ${reservationDetails.person}`;
        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       } else {
        alert('email');
@@ -488,7 +493,6 @@ const Reservation: React.FC = () => {
      };
     
      const handleSendWhatsApp = (phone: string) => {
-      console.log("formData saat kirim WhatsApp:", reservationDetails);
       const message = `Konfirmasi Reservasi:\n\n` +
                   `Nama: ${reservationDetails.name}\n` +
                   `Tanggal: ${reservationDetails.date}\n` +
@@ -535,142 +539,147 @@ const Reservation: React.FC = () => {
   }
 
   return (
+    <div className={style.reservation_layout}>
     <form onSubmit={handleSubmit} className={`max-w-md mx-auto mt-8 p-6 border rounded shadow-md ${style.reservationForm}`} style={{ paddingTop: '9vw' }}>
-                       <h1>{t('reservation.heading')}</h1>
-                 <p>{t('reservation.description')}</p>
+      <div className={style.reservation_content}>
+            <h1>{t('reservation.heading')}</h1>
+            <p>{t('reservation.description')}</p>
+      </div>
 
       {successMessage && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">{successMessage}</div>}
       {errorMessage && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">{errorMessage}</div>}
 
-      <div className={style.form_double}>
-        <div className={`${style.dropdown} ${openDropdowns["menu1"] ? style.dropdown_active : ""}`}>
-          <button type="button" onClick={() => toggleDropdown("menu1")}>
-            {selectedLoungeName} <HiChevronDown />
-          </button>
-          {openDropdowns["menu1"] && (
-            <div
-              ref={(el) => { dropdownRefs.current["menu1"] = el; }}
-              className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${style.dropdown_menu_show}`}
-            >
-              {lounges.map((lounge) => (
-                <div key={lounge._id} className={style.loungeContainer}>
-                  <button type="button" onClick={() => handleSelectLounge(lounge._id, lounge.name)}>
-                    {lounge.name}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className={`${style.dropdown} ${openDropdowns["menu2"] ? style.dropdown_active : ""}`}>
-          <button type="button" onClick={() => toggleDropdown("menu2")} disabled={!selectedLoungeObj?.spaces?.length}>
-            {selectedLoungeNameSpace} <HiChevronDown />
-          </button>
-          {openDropdowns["menu2"] && (
-            <div
-              ref={(el) => { dropdownRefs.current["menu2"] = el; }}
-              className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${style.dropdown_menu_show}`}
-            >
-              {selectedLoungeObj?.spaces && selectedLoungeObj.spaces.length > 0 ? (
-                selectedLoungeObj.spaces.map((space, index) => (
-                    <div key={index} className={style.loungeContainer}>
-                    <button type="button" onClick={() => handleSelectSpace(space as string)}>
-                        {space}
+      <div className={style.reservation_form}>
+        <div className={style.form_double}>
+          <div className={`${style.dropdown} ${openDropdowns["menu1"] ? style.dropdown_active : ""}`}>
+            <button type="button" onClick={() => toggleDropdown("menu1")}>
+              {selectedLoungeName} <HiChevronDown />
+            </button>
+            {openDropdowns["menu1"] && (
+              <div
+                ref={(el) => { dropdownRefs.current["menu1"] = el; }}
+                className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${style.dropdown_menu_show}`}
+              >
+                {lounges.map((lounge) => (
+                  <div key={lounge._id} className={style.loungeContainer}>
+                    <button type="button" onClick={() => handleSelectLounge(lounge._id, lounge.name)}>
+                      {lounge.name}
                     </button>
-                    </div>
-                ))
-                ) : (
-                <div className={style.noSpaces}>{t("reservation.select_first")}</div>
-                )}
-            </div>
-          )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className={`${style.dropdown} ${openDropdowns["menu2"] ? style.dropdown_active : ""}`}>
+            <button type="button" onClick={() => toggleDropdown("menu2")} disabled={!selectedLoungeObj?.spaces?.length}>
+              {selectedLoungeNameSpace} <HiChevronDown />
+            </button>
+            {openDropdowns["menu2"] && (
+              <div
+                ref={(el) => { dropdownRefs.current["menu2"] = el; }}
+                className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${style.dropdown_menu_show}`}
+              >
+                {selectedLoungeObj?.spaces && selectedLoungeObj.spaces.length > 0 ? (
+                  selectedLoungeObj.spaces.map((space, index) => (
+                      <div key={index} className={style.loungeContainer}>
+                      <button type="button" onClick={() => handleSelectSpace(space as string)}>
+                          {space}
+                      </button>
+                      </div>
+                  ))
+                  ) : (
+                  <div className={style.noSpaces}>{t("reservation.select_first")}</div>
+                  )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <div className={style.form_single}>
-        <input
-          type="text"
-          name="name"
-          placeholder={t('reservation.name')}
-          value={formData.name}
-          onChange={handleChangeInput}
-          required
-        />
-      </div>
-      <div className={style.form_single}>
-        <input
-          type="tel"
-          name="phoneNumber"
-          placeholder={t('reservation.number')}
-          value={formData.phoneNumber}
-          onChange={handleChangeInput}
-          required
-        />
-      </div>
-      <div className={style.form_double}>
-        <input
-          type="date"
-          name="date"
-          onChange={handleDateChange}
-          className={style.date_input}
-          required
-        />
         <div className={style.form_single}>
           <input
-            type="time"
-            name="time"
-            value={formData.time}
-            onChange={handleTimeChange}
+            type="text"
+            name="name"
+            placeholder={t('reservation.name')}
+            value={formData.name}
+            onChange={handleChangeInput}
+            required
+          />
+        </div>
+        <div className={style.form_single}>
+          <input
+            type="tel"
+            name="phoneNumber"
+            placeholder={t('reservation.number')}
+            value={formData.phoneNumber}
+            onChange={handleChangeInput}
+            required
+          />
+        </div>
+        <div className={style.form_double}>
+          <input
+            type="date"
+            name="date"
+            onChange={handleDateChange}
             className={style.date_input}
             required
           />
-          {timeError && selectedLoungeObj && selectedLoungeObj.time && (
-            <p style={{ color: '#FF4646' }}>
-              {timeError} ({selectedLoungeObj.time})
-            </p>
-          )}
-        </div>
-      </div>
-      <div className={style.form_double}>
-        <div className={`${style.dropdown} ${openDropdowns["dropdown5"] ? style.dropdown_active : ""}`}>
-          <button type="button" onClick={() => toggleDropdown("dropdown5")}>
-            {selectedDuration || t('reservation.duration')}  <HiChevronDown />
-          </button>
-          <div
-            ref={(el) => { dropdownRefs.current["dropdown5"] = el; }}
-            className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${
-              openDropdowns["dropdown5"] ? style.dropdown_menu_show : ""
-            }`}
-          >
-            {[1, 2, 3, 4, 5].map((hour) => (
-              <button key={hour} type="button" onClick={() => selectDuration(`${hour} ${t('reservation.hour')}`)}>
-                {hour} {t('reservation.hour')}
-              </button>
-            ))}
+          <div className={style.form_single}>
+            <input
+              type="time"
+              name="time"
+              value={formData.time}
+              onChange={handleTimeChange}
+              className={style.date_input}
+              required
+            />
+            {timeError && selectedLoungeObj && selectedLoungeObj.time && (
+              <p style={{ color: '#FF4646' }}>
+                {timeError} ({selectedLoungeObj.time})
+              </p>
+            )}
           </div>
         </div>
-        <div className={`${style.dropdown} ${openDropdowns["dropdown6"] ? style.dropdown_active : ""}`}>
-          <button type="button" onClick={() => toggleDropdown("dropdown6")}>
-            {selectedPerson || t('reservation.number_person')} <HiChevronDown />
-          </button>
-          <div
-            ref={(el) => { dropdownRefs.current["dropdown6"] = el; }}
-            className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${
-              openDropdowns["dropdown6"] ? style.dropdown_menu_show : ""
-            }`}
-          >
-            {[1, 2, 3, 4, 5].map((person) => (
-              <button key={person} type="button" onClick={() => selectPerson(`${person}`)}>
-                {person} {t('reservation.person')}
-              </button>
-            ))}
+        <div className={style.form_double}>
+          <div className={`${style.dropdown} ${openDropdowns["dropdown5"] ? style.dropdown_active : ""}`}>
+            <button type="button" onClick={() => toggleDropdown("dropdown5")}>
+              {selectedDuration || t('reservation.duration')}  <HiChevronDown />
+            </button>
+            <div
+              ref={(el) => { dropdownRefs.current["dropdown5"] = el; }}
+              className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${
+                openDropdowns["dropdown5"] ? style.dropdown_menu_show : ""
+              }`}
+            >
+              {[1, 2, 3, 4, 5].map((hour) => (
+                <button key={hour} type="button" onClick={() => selectDuration(`${hour} ${t('reservation.hour')}`)}>
+                  {hour} {t('reservation.hour')}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={`${style.dropdown} ${openDropdowns["dropdown6"] ? style.dropdown_active : ""}`}>
+            <button type="button" onClick={() => toggleDropdown("dropdown6")}>
+              {selectedPerson || t('reservation.number_person')} <HiChevronDown />
+            </button>
+            <div
+              ref={(el) => { dropdownRefs.current["dropdown6"] = el; }}
+              className={`${style.dropdown_menu} ${style.dropdown_menu_bottom} ${
+                openDropdowns["dropdown6"] ? style.dropdown_menu_show : ""
+              }`}
+            >
+              {[1, 2, 3, 4, 5].map((person) => (
+                <button key={person} type="button" onClick={() => selectPerson(`${person}`)}>
+                  {person} {t('reservation.person')}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <button type="submit" className={style.btn_primary} disabled={loadingSubmit}>
-        {loadingSubmit ? 'Mengirim' + '...' : t('reservation.button')}
-      </button>
-      <div className={style.notif_form}>
-        {loadingSubmit && <p>Loading...</p>}
+        <button type="submit" className={style.btn_primary} disabled={loadingSubmit}>
+          {loadingSubmit ? 'Mengirim' + '...' : t('reservation.button')}
+        </button>
+        <div className={style.notif_form}>
+          {loadingSubmit && <p>Loading...</p>}
+        </div>
       </div>
 
       {showConfirmationPopup && selectedLoungeForContact && (
@@ -693,6 +702,7 @@ const Reservation: React.FC = () => {
     </div>
    )}
     </form>
+    </div>
   );
 };
 

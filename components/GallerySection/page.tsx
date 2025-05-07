@@ -64,7 +64,7 @@ export default function GallerySection(){
       
     return(
         <>
-             <div className={home.gallerySection}>
+             <div className={home.gallerySection} id="gallery">
                 <div className={home.marqueeContainer}>
                     <div className={home.marqueeContent} ref={marqueeRef1} style={{ animationDuration: duration1 }}>
                         {[...mediaFirst, ...mediaFirst].map((item, i) => (
