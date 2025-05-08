@@ -16,8 +16,11 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Kalyan Maison",
-  description: "Kalyan Maison Official Website",
+  title: "Kalyan Maison Official Website",
+  description: "Kalyan Maison menghadirkan pengalaman shisha terbaik di Jakarta dengan layanan personalisasi dan suasana lounge yang elegan.",
+  icons: {
+    icon: "/images/logo.png", // gunakan path string relatif dari folder `public`
+  },
 };
 
 export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode; params: { locale: string } }>) {
