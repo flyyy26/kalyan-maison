@@ -124,7 +124,7 @@
 .form_single input::placeholder{
     color: #ACAAB1;
     text-transform: uppercase;
-}
+} 
 .dropzone {
     width: 100%;
     height: 20vw;

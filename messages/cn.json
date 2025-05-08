@@ -40,6 +40,10 @@
       "openMenu" : "打开菜单"
     },
     "reservation": {
+      "konfirmasi": "确认",
+      "pilihAplikasi": "选择发送消息的应用程序",
+      "kirimEmail": "发送至电子邮件",
+      "kirimWhatsapp": "发送至 Whatsapp",
       "heading": "预订",
       "button": "立即预订",
       "person": "人",

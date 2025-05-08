@@ -37,11 +37,12 @@
     .footer_container{
         padding: 7vw 4vw;
         flex-direction: column;
-        gap: 4vw;
+        justify-content: center;
+        align-items: center;
+        gap: 2vw;
     }
-    .footer_logo{ 
-        width: 45vw;
-        height: 14.8vw;
+    .footer_logo img{ 
+        width: 35vw;
     }
     .menu ul{
         gap: 7vw;

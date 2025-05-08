@@ -15,7 +15,6 @@ import { MdEmail } from "react-icons/md";
 import { FaFacebook } from "react-icons/fa";
 import { IoLogoYoutube, IoLogoWhatsapp } from "react-icons/io";
 import { FaInstagram } from "react-icons/fa";
-import home from "@/app/[locale]/style/home.module.css"
 
 
 // Import Swiper styles
@@ -63,12 +62,6 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
         return <h1>Blog not found</h1>;
     }
 
-    // const swiperData = currentLounge.menu.map(item => ({
-    //     image: item.image,
-    //     name: item.name,
-    //     description: item.description
-    // }));
-
     return (
         <>
         
@@ -83,48 +76,38 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
                 <div className={style.heading_banner}>
                     <h1>Kalyan Maison {currentLounge.name}</h1>
                     <p>{currentLounge.address}</p>
+                    <div className={style.social_lounge_detail}>
+                        {currentLounge.instagram !== 'undefined' && (
+                        <Link href={currentLounge.instagram} target="_blank">
+                            <FaInstagram />
+                        </Link>
+                        )}
+
+                        {currentLounge.youtube !== 'undefined' && (
+                        <Link href={currentLounge.youtube} target="_blank">
+                            <IoLogoYoutube />
+                        </Link>
+                        )}
+
+                        {currentLounge.whatsapp !== 'undefined' && (
+                        <Link href={`https://api.whatsapp.com/send?phone=${currentLounge.whatsapp}`} target="_blank">
+                            <IoLogoWhatsapp />
+                        </Link>
+                        )}
+
+                        {currentLounge.email !== 'undefined' && (
+                        <Link href={`mailto:${currentLounge.email}`} target="_blank">
+                            <MdEmail />
+                        </Link>
+                        )}
+
+                        {currentLounge.facebook !== 'undefined' && (
+                        <Link href={currentLounge.facebook} target="_blank">
+                            <FaFacebook />
+                        </Link>
+                        )}
+                    </div>
                     <Link href={`/reservation`}><button>{translations.reservation}</button></Link>
-                </div>
-                <div className={style.social_lounge_detail}>
-                    {currentLounge.instagram !== 'undefined' && (
-                    <Link href={currentLounge.instagram} target="_blank">
-                        <button className={home.banner_social_media_box}>
-                        <FaInstagram />
-                        </button>
-                    </Link>
-                    )}
-
-                    {currentLounge.youtube !== 'undefined' && (
-                    <Link href={currentLounge.youtube} target="_blank">
-                        <button className={home.banner_social_media_box}>
-                        <IoLogoYoutube />
-                        </button>
-                    </Link>
-                    )}
-
-                    {currentLounge.whatsapp !== 'undefined' && (
-                    <Link href={`https://api.whatsapp.com/send?phone=${currentLounge.whatsapp}`} target="_blank">
-                        <button className={home.banner_social_media_box}>
-                        <IoLogoWhatsapp />
-                        </button>
-                    </Link>
-                    )}
-
-                    {currentLounge.email !== 'undefined' && (
-                    <Link href={`mailto:${currentLounge.email}`} target="_blank">
-                        <button className={home.banner_social_media_box}>
-                        <MdEmail />
-                        </button>
-                    </Link>
-                    )}
-
-                    {currentLounge.facebook !== 'undefined' && (
-                    <Link href={currentLounge.facebook} target="_blank">
-                        <button className={home.banner_social_media_box}>
-                        <FaFacebook />
-                        </button>
-                    </Link>
-                    )}
                 </div>
             </div>
 
@@ -147,12 +130,26 @@ export default function LoungeDetailPage({ loungeDetail, translations }: { loung
                         <button onClick={() => setMenuCover(false)}>{translations.openMenu}</button>
                     </div>
                     <Swiper
-                        slidesPerView={3}
-                        spaceBetween={30}
+                        slidesPerView={1}
+                        spaceBetween={20}
                         navigation={true}
                         mousewheel={true}
                         keyboard={true}
                         cssMode={true}
+                        breakpoints={{
+                            640: {
+                              slidesPerView: 1,
+                              spaceBetween: 20,
+                            },
+                            768: {
+                              slidesPerView: 3,
+                              spaceBetween: 20,
+                            },
+                            1024: {
+                              slidesPerView: 3,
+                              spaceBetween: 30,
+                            },
+                        }}
                         modules={[Mousewheel, Keyboard, Navigation]}
                         className="menuSwiper"
                     >

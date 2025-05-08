@@ -427,3 +427,15 @@ a {
 .popupSwiper .swiper-button-prev, .popupSwiper .swiper-button-next{
   color: white;
 }
+@media (max-width:768px) {
+  .menuSwiper{
+    padding: 0 11vw !important;
+  }
+  .menuSwiper .swiper-button-prev, .menuSwiper .swiper-button-next {
+    width: 7vw;
+    height: 7vw;
+  }
+  .menuSwiper .swiper-button-prev:after, .menuSwiper .swiper-button-next:after {
+    font-size: 3vw;
+  }
+}

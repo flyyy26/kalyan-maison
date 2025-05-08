@@ -40,6 +40,10 @@
         "openMenu" : "Open Menu"
     },
     "reservation" : {
+        "konfirmasi": "Confirmation",
+        "pilihAplikasi": "Select the application to send the message",
+        "kirimEmail": "Send to Email",
+        "kirimWhatsapp": "Send to WhatsApp",
         "heading" : "Reservation",
         "button" : "Reserve",
         "person" : "Person",

@@ -281,6 +281,9 @@ import style from "@/app/[locale]/style/reservation.module.css";
 import { HiChevronDown } from 'react-icons/hi';
 import { useLounge } from '@/hooks/useLounge'; 
 import { useTranslations } from 'next-intl';
+import { BsEnvelope } from "react-icons/bs";
+import LoadingPopup from '@/components/loading_popup/page';
+import { FaWhatsapp } from "react-icons/fa";
 
 interface ReservationForm {
   name: string;
@@ -375,8 +378,7 @@ const Reservation: React.FC = () => {
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTime = e.target.value;
     setFormData(prev => ({ ...prev, time: selectedTime }));
-    if (selectedLoungeObj && selectedLoungeObj.time) {
-      // Contoh validasi waktu, sesuaikan dengan kebutuhan backend Anda
+    if (selectedLoungeObj?.time?.includes(' - ')) {
       const [openTimeStr, closeTimeStr] = selectedLoungeObj.time.split(' - ');
       const [openHour, openMinute] = openTimeStr.split(':').map(Number);
       const [closeHour, closeMinute] = closeTimeStr.split(':').map(Number);
@@ -531,7 +533,7 @@ const Reservation: React.FC = () => {
   }, [openDropdowns]);
 
   if (loadingLounges) {
-    return <div>Loading...</div>; // Atau tampilan loading yang lebih baik
+    return <LoadingPopup duration={700} />; // Atau tampilan loading yang lebih baik
   }
 
   if (!lounges) {
@@ -545,9 +547,6 @@ const Reservation: React.FC = () => {
             <h1>{t('reservation.heading')}</h1>
             <p>{t('reservation.description')}</p>
       </div>
-
-      {successMessage && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">{successMessage}</div>}
-      {errorMessage && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">{errorMessage}</div>}
 
       <div className={style.reservation_form}>
         <div className={style.form_double}>
@@ -679,28 +678,29 @@ const Reservation: React.FC = () => {
         </button>
         <div className={style.notif_form}>
           {loadingSubmit && <p>Loading...</p>}
+          {successMessage && <p>{successMessage}</p>}
+          {errorMessage && <p>{errorMessage}</p>}
         </div>
       </div>
 
       {showConfirmationPopup && selectedLoungeForContact && (
-    <div className={style.confirmationPopup}>
-     <h3>Konfirmasi</h3>
-     <p>Pilih Pesan</p>
-     <div className={style.popupButtons}>
-      <button onClick={() => handleSendEmail(selectedLoungeForContact?.email)}>
-       Kirim ke email
-      </button>
-      {selectedLoungeForContact?.phone && (
-       <button onClick={() => handleSendWhatsApp(selectedLoungeForContact.phone)}>
-        kirim ke whatsapp
-       </button>
+        <div className={style.confirmationPopup}>
+          <h3>{t('reservation.konfirmasi')}</h3>
+          <p>{t('reservation.pilihAplikasi')}</p>
+          <div className={style.popupButtons}>
+            <button onClick={() => handleSendEmail(selectedLoungeForContact?.email)}>
+              <BsEnvelope/>
+              {t('reservation.kirimEmail')}
+            </button>
+            {selectedLoungeForContact?.phone && (
+            <button onClick={() => handleSendWhatsApp(selectedLoungeForContact.phone)}>
+              <FaWhatsapp/>
+              {t('reservation.kirimWhatsapp')}
+            </button>
+            )}
+          </div>
+        </div>
       )}
-      <button onClick={() => setShowConfirmationPopup(false)}>
-       Tutup
-      </button>
-     </div>
-    </div>
-   )}
     </form>
     </div>
   );

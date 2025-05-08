@@ -2,15 +2,8 @@
 
 import home from "@/app/[locale]/style/home.module.css";
 import React, { useEffect, useRef } from 'react';
-import Image, { StaticImageData } from "next/image";
-
-import Image1 from "@/public/images/homeGallery_1.png"
-import Image2 from "@/public/images/homeGallery_2.png"
-import Image3 from "@/public/images/homeGallery_3.png"
-import Image4 from "@/public/images/homeGallery_4.png"
-import Image5 from "@/public/images/galeri_2.png"
-import Image6 from "@/public/images/galeri_3.png"
-import Image7 from "@/public/images/galeri_4.png"
+import Image from "next/image";
+import { useGallery } from "@/hooks/useGallery";
 
 import { IoCloseOutline } from "react-icons/io5";
 
@@ -22,44 +15,56 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 
 type MediaItem = {
-    type: 'image' | 'video';
-    src: string | StaticImageData;
-  };
-
-  const media: MediaItem[] = [
-    { type: 'image', src: Image1 },
-    { type: 'video', src: '/video/video.mp4' },
-    { type: 'image', src: Image2 },
-    { type: 'image', src: Image3 },
-    { type: 'image', src: Image4 },
-    { type: 'image', src: Image5 },
-    { type: 'image', src: Image6 },
-    { type: 'image', src: Image7 },
-];
-
-const half = Math.ceil(media.length / 2);
-const mediaFirst = media.slice(0, half);
-const mediaSecond = media.slice(half);
+    type: "image" | "video";
+    src: string;
+};  
 
 export default function GallerySection(){
+    const { galleriesDetail } = useGallery();
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [activeIndex, setActiveIndex] = React.useState(0);
 
     const marqueeRef1 = useRef<HTMLDivElement>(null);
     const marqueeRef2 = useRef<HTMLDivElement>(null);
 
-    const [duration1, setDuration1] = React.useState('30s');
-    const [duration2, setDuration2] = React.useState('30s');
+    const [duration1, ] = React.useState('30s');
+    const [duration2, ] = React.useState('30s');
+
+    const dynamicMedia: MediaItem[] = [
+        ...(galleriesDetail?.imageGallery || []).map((url) => ({
+          type: "image" as const,
+          src: url as string,
+        })),
+        ...(galleriesDetail?.videoGallery || []).map((url) => ({
+          type: "video" as const,
+          src: url as string,
+        })),
+      ];
+
+      console.log('galeri', dynamicMedia)
+
+    const half = Math.ceil(dynamicMedia.length / 2);
+    const mediaFirst = dynamicMedia.slice(0, half);
+    const mediaSecond = dynamicMedia.slice(half);
 
     useEffect(() => {
-    if (marqueeRef1.current) {
-        const scrollWidth = marqueeRef1.current.scrollWidth;
-        setDuration1(`${scrollWidth * 0.01}s`); // Adjust multiplier as needed
-    }
-    if (marqueeRef2.current) {
-        const scrollWidth = marqueeRef2.current.scrollWidth;
-        setDuration2(`${scrollWidth * 0.01}s`);
-    }
+        const updateScrollVars = () => {
+          if (marqueeRef1.current) {
+            const scrollWidth = marqueeRef1.current.scrollWidth;
+            marqueeRef1.current.style.setProperty('--scroll-width', (scrollWidth / 100).toString()); // sesuaikan skala
+          }
+          if (marqueeRef2.current) {
+            const scrollWidth = marqueeRef2.current.scrollWidth;
+            marqueeRef2.current.style.setProperty('--scroll-width', (scrollWidth / 100).toString());
+          }
+        };
+      
+        updateScrollVars();
+        window.addEventListener('resize', updateScrollVars);
+      
+        return () => {
+          window.removeEventListener('resize', updateScrollVars);
+        };
     }, []); 
       
     return(
@@ -71,7 +76,7 @@ export default function GallerySection(){
                         <div className={home.imageBox} key={`first-${i}`} style={{ cursor: 'pointer' }}  onClick={() => {
                             setActiveIndex(i % mediaFirst.length);
                             setIsModalOpen(true);
-                          }}>
+                          }}> 
                             {item.type === 'image' ? (
                             <Image
                                 src={item.src}
@@ -88,7 +93,7 @@ export default function GallerySection(){
                                 playsInline
                                 style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
                             >
-                                <source src={typeof item.src === 'string' ? item.src : item.src.src} type="video/mp4" />
+                                <source src={typeof item.src === 'string' ? item.src : item.src} type="video/mp4" />
                             </video>
                             )}
                         </div>
@@ -117,9 +122,9 @@ export default function GallerySection(){
                                 loop
                                 muted
                                 playsInline
-                                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             >
-                                <source src={typeof item.src === 'string' ? item.src : item.src.src} type="video/mp4" />
+                                <source src={typeof item.src === 'string' ? item.src : item.src} type="video/mp4" />
                             </video>
                             )}
                         </div>
@@ -140,7 +145,7 @@ export default function GallerySection(){
                     modules={[Navigation]}
                     className="popupSwiper"
                 >
-                    {media.map((item, idx) => (
+                    {dynamicMedia.map((item, idx) => (
                     <SwiperSlide key={idx}>
                         <div className={home.gallery_box_popup}>
                         {item.type === 'image' ? (
@@ -154,7 +159,7 @@ export default function GallerySection(){
                                 <video
                                     controls
                                 >
-                                    <source src={typeof item.src === 'string' ? item.src : item.src.src} type="video/mp4" />
+                                    <source src={typeof item.src === 'string' ? item.src : item.src} type="video/mp4" />
                                 </video>
                         )}
                         </div>

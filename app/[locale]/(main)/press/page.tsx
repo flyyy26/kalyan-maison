@@ -20,31 +20,18 @@ interface Blog {
 }
 
 export default function Blog(){
-    const t =  useTranslations();
-    // const blogs = await fetchBlogs();
-    const {
-        blogs
-      } = useBlog(); 
+  const t = useTranslations();
+  const { blogs, loading } = useBlog(); 
+  const params = useParams();
+  const locale = params.locale || 'en';
 
-    const params = useParams();
-    const locale = params.locale || 'en';
-
-    // const params = useParams();
-    // const locale = params.locale || 'id'; 
-
-    // const formatDate = (dateString: string) => {
-    // return new Date(dateString)
-    //     .toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-GB', {
-    //     day: 'numeric',
-    //     month: 'long',
-    //     year: 'numeric',
-    //     })
-    //     .replace(/(\d+) (\w+) (\d+)/, '$1 $2, $3'); // Menambahkan koma setelah bulan
-    // }; 
+  if (loading) {
+    return  <LoadingPopup duration={700} />; // Ganti dengan spinner/skeleton sesuai style kamu
+  }
  
   return (
     <>
-    <LoadingPopup duration={700} />
+   
     <div className={blog.list_blog_container}>
         <div className={blog.heading_blog}>
             <h1>{t('blog.heading')}</h1>
@@ -62,7 +49,7 @@ export default function Blog(){
                       en: blog_item.descriptionEn,
                       cn: blog_item.descriptionCn,
                       rs: blog_item.descriptionRs,
-                  };
+                  }; 
 
                   function stripHtmlTags(html: string, tagNames: string[]): string {
                     const tagsPattern = tagNames.map(tag => `<${tag}[^>]*>|</${tag}>`).join('|');
@@ -83,18 +70,6 @@ export default function Blog(){
                   const rawDesc = descMap[safeLocale];
                   const cleanDesc = stripHtmlTags(rawDesc, ['p', 'strong']);
 
-                  const getLocalizedSlug = (blog: Blog) => {
-                      switch (locale) {
-                        case 'en':
-                          return blog.slugEn;
-                        case 'cn':
-                          return blog.slugCn;
-                        case 'rs':
-                          return blog.slugRs;
-                        default:
-                          return blog.slugEn; // fallback ke English
-                      }
-                    };
 
                   return (
                       <div className={blog.list_box_blog} key={blog_item._id}>
@@ -113,7 +88,7 @@ export default function Blog(){
                       <div className={blog.list_content_blog}>
                           <div className={blog.list_heading_blog}>
                           <span>{blog_item.source}</span>
-                          <Link href={`/press/${getLocalizedSlug(blog_item)}`}>
+                          <Link href={`/press/${blog_item.slugEn}`}>
                             <h3>{titleMap[safeLocale]}</h3>
                           </Link>
                           

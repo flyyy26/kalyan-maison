@@ -89,52 +89,6 @@ export default function OurLounges() {
                 </div>
             </div>
 
-            {/* 🔹 Hanya menampilkan lounge yang sesuai dengan selectedCityId */}
-            {/* {filteredLounges.map((location, index) => (
-                <div className={style.lounge_container} key={index}>
-                    <div className={style.lounge_slide}>
-                        <Swiper
-                            slidesPerView={'auto'}
-                            spaceBetween={0}
-                            loop={true}
-                            navigation={true}
-                            modules={[Navigation]}
-                            className="slideLounge"
-                        >
-                            {location.imageSlide.map((image, index) => (
-                                <SwiperSlide key={index}>
-                                    <div className={style.lounge_image}>
-                                        <div className='lounge_image_overlay'></div>
-                                        <Image src={image.image} fill objectFit='cover' alt={`Kalyan Maison ${image.name}`}/>
-                                    </div>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-                    </div>
-                    <div className={home.branch_section_page} key={location._id}>
-                        <div className={home.branch_layout}>
-                            <button className={home.branch_heading}>{location.name}</button>
-                            <div className={home.branch_detail_layout}>
-                                <p className={home.address_content}>{location.address}</p>
-                                <div className={home.branch_time}>
-                                    <span>{location.day}</span>
-                                    <p>{location.time}</p>
-                                </div>
-                            </div>
-                            <div className={home.branch_phone}>
-                                <p>{location.phone}</p>
-                            </div>
-                        </div>
-                        <div className={home.branch_layout}>
-                            <div className={home.branch_button}>
-                                <Link href={`/our-lounges/${location.slug}`}><button>{t('home.explore')}</button></Link>
-                                <Link href={`/our-lounges/${location.slug}#menu`}><button>Menu</button></Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ))} */}
-
             <ContactSection />
         </> 
     );

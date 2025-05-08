@@ -7,6 +7,7 @@ import { Link } from '@/i18n/routing';
 import { useBlog } from '@/hooks/useBlog';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
+import LoadingPopup from '@/components/loading_popup/page';
 
 interface Blog {
   slugEn: string;
@@ -76,7 +77,7 @@ export default function BlogDetailContent({
   }, [currentBlog?._id, currentBlog]);
 
   if (!currentBlog) {
-    return <div>Loading...</div>;
+    return  <LoadingPopup duration={700} />;
   }
 
   // Utility untuk ambil konten sesuai locale
@@ -89,7 +90,6 @@ export default function BlogDetailContent({
     const value = obj[key];
     return typeof value === 'string' ? value : fallback;
   };
-  
 
   return (
     <>
@@ -123,7 +123,17 @@ export default function BlogDetailContent({
           <h1>{translations.other}</h1>
         </div>
         <div className={style.list_blog_layout}>
-          {filteredBlogData.map((blog_item) => (
+          {filteredBlogData.map((blog_item) => { 
+            function stripHtmlTags(html: string, tagNames: string[]): string {
+              const tagsPattern = tagNames.map(tag => `<${tag}[^>]*>|</${tag}>`).join('|');
+              const regex = new RegExp(tagsPattern, 'gi');
+              const stripped = html.replace(regex, '');
+              return stripped.slice(0, 100); // Batasi jadi 100 huruf
+            }   
+
+            const rawDesc = getLocalizedValue('description', blog_item);
+            const cleanDesc = stripHtmlTags(rawDesc, ['p', 'strong']);
+            return(
             <div className={style.list_box_blog} key={blog_item._id}>
               <div className={style.list_img_blog}>
                 <Image
@@ -139,19 +149,20 @@ export default function BlogDetailContent({
               </div>
               <div className={style.list_content_blog}>
                 <div className={style.list_heading_blog}>
-                  <Link href={`/press/${getLocalizedSlug(blog_item)}`}>
+                  <span>{blog_item.source}</span>
+                  <Link href={`/press/${blog_item.slugEn}`}>
                     <h3>{getLocalizedValue('title', blog_item)}</h3>
                   </Link>
-                  <span>{formatDate(blog_item.date)}</span>
+                  <p>{cleanDesc}</p>
                 </div>
                 <div className={style.list_btn_blog}>
-                  <Link href={`/press/${getLocalizedSlug(blog_item)}`}>
+                  <Link href={`/press/${blog_item.slugEn}`}>
                     <button>{translations.view}</button>
                   </Link>
                 </div>
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </div>
       <ContactSection />

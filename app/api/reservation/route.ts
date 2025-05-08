@@ -45,7 +45,6 @@ export async function POST(request: Request) {
 
         // Simpan data reservasi ke database
         await ReservationModel.create(reservationData);
-        console.log("Reservasi Tersimpan:", reservationData);
 
         return NextResponse.json({ success: true, msg: "Reservasi Berhasil ditambahkan" });
     } catch (error) {

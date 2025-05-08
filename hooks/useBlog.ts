@@ -64,7 +64,7 @@ export const useBlog = () => {
       const response = await axios.get('/api/blog');
       setBlogs(response.data.blogs);
     } catch (err) {
-      setError('Failed to fetch blogs.');
+      setError('Failed to fetch press.');
     } finally {
       setLoading(false);
     }
@@ -85,14 +85,14 @@ export const useBlog = () => {
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
-          setSuccess('Blog successfully added!');
+          setSuccess('Press successfully added!');
           await fetchBlogs(); // Refresh blogs list
           return true;
         } else {
-          setError(result.msg || 'Failed to add blog.');
+          setError(result.msg || 'Failed to add press.');
         }
       } else {
-        setError('Failed to add blog.');
+        setError('Failed to add press.');
       }
     } catch (err) {
       setError('Network error occurred.');
@@ -112,11 +112,11 @@ export const useBlog = () => {
       });
 
       if (response.status === 200) {
-        setSuccess('Blog successfully deleted!');
+        setSuccess('Press successfully deleted!');
         await fetchBlogs(); // Refresh blogs list
         return true;
       } else {
-        setError('Failed to delete blog.');
+        setError('Failed to delete press.');
       }
     } catch (err) {
       setError('Network error occurred.');
@@ -140,7 +140,7 @@ export const useBlog = () => {
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
-          setSuccess("Blog updated successfully!");
+          setSuccess("Press updated successfully!");
   
           // Perbarui state blogDetail setelah berhasil update
           updateBlogDetail(result.updatedBlog);
@@ -148,10 +148,10 @@ export const useBlog = () => {
           await fetchBlogs(); // Jika perlu memperbarui daftar blog
           return true;
         } else {
-          setError(result.msg || "Failed to update blog.");
+          setError(result.msg || "Failed to update press.");
         }
       } else {
-        setError("Failed to update blog.");
+        setError("Failed to update press.");
       }
     } catch (err) {
       setError("Network error occurred.");
@@ -172,7 +172,7 @@ export const useBlog = () => {
           const res = await fetch(`/api/blog/${id}`, {
             cache: 'no-store'
           });
-          if (!res.ok) throw new Error("Gagal mengambil data blog");
+          if (!res.ok) throw new Error("Gagal mengambil data press");
 
           const responseData: Blog = await res.json();
  
@@ -199,7 +199,7 @@ export const useBlog = () => {
           method: "GET",
           cache: 'no-store'
         });
-        if (!res.ok) throw new Error("Gagal mengambil data blog");
+        if (!res.ok) throw new Error("Gagal mengambil data press");
   
         const responseData: Blog = await res.json();
         setBlogDetail(responseData);
@@ -227,12 +227,12 @@ export const useBlog = () => {
         method: 'GET',
         cache: 'no-store',
       });
-      if (!res.ok) throw new Error('Gagal mengambil data blog detail');
+      if (!res.ok) throw new Error('Gagal mengambil data press detail');
       const data = await res.json();
       setPressDetail(data);
       return data;
     } catch (err) {
-      console.error('Error fetching blog by slug:', err);
+      console.error('Error fetching press by slug:', err);
       return null;
     } finally {
       setLoading(false);

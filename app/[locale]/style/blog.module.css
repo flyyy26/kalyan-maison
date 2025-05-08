@@ -70,6 +70,7 @@
     -webkit-line-clamp: 2;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+    line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -120,8 +121,8 @@
 
 @media (max-width:768px) {
     .heading_blog{
-        padding: 17vw;
-        padding-top: 38vw;
+        padding: 7vw;
+        padding-top: 35vw;
     }
     .heading_blog span{
         font-size: 3.4vw;
@@ -132,40 +133,48 @@
         letter-spacing: .15vw;
         margin-top: 1vw;
     }
+    .list_blog_container{
+        width: 100%;
+        padding: 0 6vw;
+    }
     .list_blog{
-        padding: 0 7vw;
+        padding: 0 0;
         padding-bottom: 16vw;
         gap: 5vw;
+        grid-template-columns: repeat(1, 1fr);
     }
     .list_box_blog{
         grid-template-columns: repeat(1, 1fr);
         grid-gap: 3vw;
     }
     .list_img_blog{
-        height: 45vw;
+        height: 50vw;
+        margin-bottom: 2vw;
     }
     .list_content_blog{
         padding: 3vw 0;
     }
     .list_heading_blog h3{
-        font-size: 4vw;
+        font-size: 4.5vw;
         letter-spacing: .16vw;
         margin-bottom: 2vw;
+        line-height: 1.5;
     }
     .list_heading_blog span{
-        font-size: 3vw;
-        letter-spacing: .15vw;
+        font-size: 3.4vw;
+        margin-bottom: 1.6vw;
+        letter-spacing: .2vw;
     }
     .list_btn_blog button{
-        font-size: 3vw;
+        font-size: 3.4vw;
         padding: 2vw 4.3vw;
-        letter-spacing: .15vw !important;
+        letter-spacing: .2vw !important;
         margin-top: 5vw;
     }
     .list_blog p{
-        font-size: 3vw;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: .1vw;
+        font-size: 3.4vw;
+        line-height: 1.4;
+        text-align: start;
+        letter-spacing: .2vw;
     }
 }

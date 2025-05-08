@@ -4,13 +4,10 @@ import React from 'react'
 import Image from 'next/image';
 import home from "@/app/[locale]/style/home.module.css"
 import line from "@/public/images/line_banner.png"
-import lineDekstop from "@/public/images/circle_dekstop.png"
-import { IoLogoYoutube } from "react-icons/io";
-import { FaInstagram } from "react-icons/fa";
+import lineDekstop from "@/public/images/circle_mobile.png"
 import { useMenu } from '@/context/MenuContext';
 import { useLocationContext } from '@/context/LocationContext'; 
 import { Link } from '@/i18n/routing';
-
 import {useTranslations} from 'next-intl';
 import { useEffect, useState } from 'react';
 import {useContact} from '@/hooks/useContact'
@@ -18,20 +15,19 @@ import { useCity } from '@/hooks/useCity';
 import { FaTiktok } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaFacebook } from "react-icons/fa";
+import { IoLogoYoutube } from "react-icons/io";
+import { FaInstagram } from "react-icons/fa";
 
 
 export default function Banner() {
     const t =  useTranslations();
-  const {
-    isOpen,
-    hoveredImageId,
-    setHoveredImageId,
-    hoveredTab,
-    setHoveredTab,
-    activeBannerImage,
-    updateActiveBannerImage
-  } = useMenu();
-  const { loungesFe } = useLocationContext();
+    const {
+      hoveredTab,
+      setHoveredTab,
+      activeBannerImage,
+      updateActiveBannerImage
+    } = useMenu();
+    const { loungesFe } = useLocationContext();
 
   const { ContactDetail } = useContact();
 
@@ -76,10 +72,6 @@ export default function Banner() {
               }
           }, [cities, loungesFe]);
 
-  const handleHoverImage = (tabId: number) => {
-    setHoveredImageId(tabId); // Update the hovered image ID
-  };
-
   const handleHoverTab = (tabId: number) => {
     setHoveredTab(tabId); // Update the hovered tab
     updateActiveBannerImage(tabId, loungesFe); 
@@ -109,6 +101,7 @@ export default function Banner() {
             }}
           ></div>
         <Image src={line} fill alt="Banner Kalyan Maison" className={home.line}/>
+        <Image src={lineDekstop} width={800} height={800} alt="Banner Kalyan Maison" className={home.line_dekstop}/>
         <Image src={lineDekstop} width={800} height={800} alt="Banner Kalyan Maison" className={home.line_dekstop}/>
         {filteredLounges.map((lounge, index) => {
           if (index > 1) return null; // hanya render 2 lounge pertama (kiri & kanan)
@@ -143,6 +136,7 @@ export default function Banner() {
                 )}
 
               </Link>
+              <Link href={`/our-lounges/${lounge.slug}`}>
               <span
                 className={`${home.tab_name} ${
                   hoveredTab === lounge._id ? home.hidden : ''
@@ -150,10 +144,11 @@ export default function Banner() {
               >
                 {lounge.name}
               </span>
+              </Link>
             </div>
           );
         })}
-        <div className={`${home.btn_tab} ${home.btn_tab_bottom}`}>
+        <div className={`${home.btn_tab} ${home.circle_dekstop} ${home.btn_tab_bottom}`}>
           <Link
             href={`https://www.tokopedia.com/kalyanmaison`}
             className={`${home.circle} ${
@@ -177,6 +172,7 @@ export default function Banner() {
         <div className={`${home.heading_banner} ${hoveredTab ? home.active : ''}`}>
           <span>{t('welcome')}</span>
           <h1 translate="no">Kalyan Maison</h1>
+          <Link href={'https://www.tokopedia.com/kalyanmaison'}><button>Kalyan Shop</button></Link>
         </div>
         {loungesFe.map((lounge) => (
           <div
@@ -216,35 +212,7 @@ export default function Banner() {
             <p>{t('home.shopDesc')}</p>
           </div>
         </div>
-        <div className={`${home.banner_bottom_content} ${isOpen ? home.banner_bottom_content_active : ''}`}>
-          <div className={home.banner_branch}>
-            {/* <div className={`${home.dropdown} ${openSelect ? home.dropdown_active : ''}`}>
-              <button onClick={toggleDropdown}>
-                {selectedCity || "Pilih Kota"}  <HiChevronDown /> 
-              </button>
-              <div className={`${home.dropdown_menu} ${openSelect ? home.dropdown_menu_show : ''}`}>
-                  {cities
-                  .filter((city) => city.name !== selectedCity) 
-                  .map((city) => (
-                      <button key={city._id} onClick={() => handleCityChange(city.name, city._id)}>
-                          {city.name}
-                      </button>
-                  ))}
-              </div>
-            </div> */}
-            <div className={`${home.branch_list} ${isOpen ? home.branch_list_active : ''}`}>
-                {filteredLounges.map((lounge) => (
-                <Link
-                  key={lounge._id}
-                  href="/"
-                  onMouseEnter={() => handleHoverImage(lounge._id)} // Set ID saat di-hover
-                  onMouseLeave={() => setHoveredImageId(null)}
-                >
-                  {lounge.name}
-                </Link>
-                ))}
-            </div>
-          </div>
+        <div className={`${home.banner_bottom_content}`}>
           <div className={home.banner_social_media}>
             {ContactDetail.instagram !== 'undefined' && (
               <Link href={ContactDetail.instagram} target="_blank">
@@ -287,7 +255,7 @@ export default function Banner() {
             )}
           </div>
 
-          <div className={`${home.image_hover} ${hoveredImageId ? home.image_hover_active : ''}`}>
+          {/* <div className={`${home.image_hover} ${hoveredImageId ? home.image_hover_active : ''}`}>
             {hoveredImageId !== null && (
               <>
                 {loungesFe
@@ -304,7 +272,7 @@ export default function Banner() {
                 ))}
               </>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

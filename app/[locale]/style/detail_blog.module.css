@@ -93,7 +93,7 @@
     width: 100%;
     height: 25vw;
     position: relative;
-    margin-bottom: 1.1vw;
+    margin-bottom: 1.7vw;
 }
 .list_content_blog{
     text-align: start;
@@ -115,7 +115,24 @@
 }
 .list_content_blog span{
     font-size: .95vw;
+    color: white;
     letter-spacing: .05vw;
+    font-style: italic;
+    margin-bottom: .86vw;
+    display: block;
+}
+.list_content_blog p{
+    text-align: start;
+    text-transform: capitalize;
+    font-size: .98vw;
+    line-height: 1.6;
+    letter-spacing: .05vw;
+    font-weight: 300;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: white;
 }
 .list_btn_blog button{
@@ -133,7 +150,7 @@
     box-shadow: 0px 0px 17.8px 0px #FFFFFF40;
     cursor: pointer;
     transition: .3s all;
-    margin-top: 2.8vw;
+    margin-top: 2vw;
     color: white;
 }
 .list_btn_blog button:hover{
@@ -167,6 +184,39 @@
         line-height: 1.5;
         color: white;
     }
+    .blog_desc ul, .blog_desc ol{
+        margin-bottom: 3vw;
+        margin-left: 3.4vw;
+    }
+    .blog_desc ul li, .blog_desc ol li{
+        margin-bottom: 1.3vw;
+        font-size: 3.4vw;
+        letter-spacing: .05vw;
+        line-height: 1.4;
+        color: white;
+    }
+    .blog_desc strong{
+        color: white;
+    }
+    .blog_desc a{
+        color: white;
+    }
+    .blog_desc h2{
+        font-size: 4.3vw;
+        color: white;
+    }
+    .blog_desc h3{
+        font-size: 4vw;
+        color: white;
+    }
+    .blog_desc h4{
+        font-size: 3.7vw;
+        color: white;
+    }
+    .blog_desc h5{
+        font-size: 3.6vw;
+        color: white;
+    }
 
     .other_post{
         padding: 6vw 5vw;
@@ -175,18 +225,18 @@
         margin-bottom: 5vw;
     }
     .other_post_heading h1{
-        font-size: 5vw;
+        font-size: 5.5vw;
         letter-spacing: .08vw;
     }
     .list_blog_layout{
         grid-template-columns: repeat(1, 1fr);
-        grid-gap: 2.4vw;
+        grid-gap: 6vw;
     }
     .list_box_blog{
         margin-bottom: 2.8vw;
     }
     .list_img_blog{
-        height: 45vw;
+        height: 50vw;
         margin-bottom: 5vw;
     }
     .list_content_blog{
@@ -199,12 +249,19 @@
     }
     .list_content_blog span{
         font-size: 3.4vw;
-        letter-spacing: .08vw;
+        margin-bottom: 1.6vw;
+        letter-spacing: .2vw;
+    }
+    .list_content_blog p{
+        font-size: 3.4vw;
+        line-height: 1.4;
+        text-align: start;
+        letter-spacing: .2vw;
     }
     .list_btn_blog button{
         font-size: 3vw;
         padding: 1.83vw 3.8vw;
         letter-spacing: .08vw !important;
-        margin-top: 7vw;
+        margin-top: 6vw;
     }
 }

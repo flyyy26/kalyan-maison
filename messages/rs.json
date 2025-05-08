@@ -40,6 +40,10 @@
       "openMenu" : "открыть меню"
     },
     "reservation": {
+      "konfirmasi": "Подтверждение",
+      "pilihAplikasi": "Выберите приложение для отправки сообщения",
+      "kirimEmail": "Отправить по электронной почте",
+      "kirimWhatsapp": "Отправить в WhatsApp",
       "heading": "Бронирование",
       "button": "Забронировать",
       "person": "Человек",

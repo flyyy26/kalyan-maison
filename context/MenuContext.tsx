@@ -31,13 +31,8 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateActiveBannerImage = (tabId: number | null, loungesFe: any[]) => {
-      console.log('Tab ID:', tabId);
-      console.log('Lounges:', loungesFe);
 
       const newActiveBannerImage = loungesFe.find((lounge) => lounge._id === tabId)?.banner || '/images/bg_banner.png';
-      
-      console.log('New Active Banner:', newActiveBannerImage);
-      console.log('Current Active Banner:', activeBannerImage);
 
       if (newActiveBannerImage !== activeBannerImage) {
           setActiveBannerImage(newActiveBannerImage);
